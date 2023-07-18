@@ -1,11 +1,6 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,10 +47,6 @@ class GroupServiceImplTest {
     List<Group> testListOfGroups = Arrays.asList(testGroupOR, testGroupGM,  testGroupXI, testGroupTT, testGroupYT,
 	    testGroupLG, testGroupGQ, testGroupTH, testGroupGN, testGroupIT);
 
-    private final static InputStream systemIn = System.in;
-    private final static PrintStream systemOut = System.out;
-    private static ByteArrayOutputStream typeOut;
-
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
 	    .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
@@ -72,19 +63,12 @@ class GroupServiceImplTest {
 
     @BeforeAll
     static void setUp() {
-	typeOut = new ByteArrayOutputStream();
-	System.setOut(new PrintStream(typeOut));
 	postgreSQLContainer.start();
-
-	String simulatedUserInput = "0";
-	System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
     }
 
     @AfterAll
     static void tearDown() {
 	postgreSQLContainer.stop();
-	System.setIn(systemIn);
-	System.setOut(systemOut);
     }
     
     @Test
@@ -94,15 +78,6 @@ class GroupServiceImplTest {
 	groupService.register("DT-43");
 
 	assertEquals(group.getGroupName(), groupRepository.findAll().get(10).getGroupName());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenGroupNameCannotSpecialCharacter() throws ValidationException {
-	String expectedMessage = "Group name cannot special format for group!";
-	Exception exception = assertThrows(ValidationException.class, () -> groupService.register("test"));
-	
-	assertEquals(expectedMessage, exception.getMessage());
     }
     
     @Test

@@ -6,8 +6,8 @@ import ua.foxminded.university.entity.Student;
 import ua.foxminded.university.enums.Status;
 import ua.foxminded.university.exceptions.ValidationException;
 
-public interface StudentService {
-    void register(String groupId, UserDto userDto) throws ValidationException;
+public interface StudentService {   
+    void register(UserDto userDto) throws ValidationException;
     
     void updateEmail(Student student) throws ValidationException;
     
@@ -22,8 +22,6 @@ public interface StudentService {
     void addStudentCourse(String studentId, String courseId);
     
     void removeStudentFromCourse(String studentId, String courseId);
-    
-    void createStudent(String firstName, String lastName);
-    
+
     void deleteById(String id);
 }

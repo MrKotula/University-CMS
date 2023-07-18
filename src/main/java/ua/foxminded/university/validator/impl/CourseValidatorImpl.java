@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
-import ua.foxminded.university.validator.ValidatorCourse;
+import ua.foxminded.university.validator.CourseValidator;
 
 @ValidationService
 @NoArgsConstructor
 @Log4j2
-public class ValidatorCourseImpl implements ValidatorCourse {
+public class CourseValidatorImpl implements CourseValidator {
     private static final int MAX_LENGTH_OF_COURSE_NAME = 24;
     private static final int MAX_LENGTH_OF_COURSE_DESCRIPTION = 36;
     private static final Pattern SPECIAL = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");

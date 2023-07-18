@@ -7,23 +7,23 @@ import ua.foxminded.university.dao.repository.GroupRepository;
 import ua.foxminded.university.entity.Group;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.service.GroupService;
-import ua.foxminded.university.validator.ValidatorGroup;
+import ua.foxminded.university.validator.GroupValidator;
 
 @Service
 @AllArgsConstructor
 public class GroupServiceImpl implements GroupService {    
-    private final ValidatorGroup validatorGroup;
+    private final GroupValidator groupValidator;
     private final GroupRepository groupRepository;
     
     @Override
     public void register(String groupName) throws ValidationException {
-	validatorGroup.validateGroupName(groupName);
+	groupValidator.validateGroupName(groupName);
 	groupRepository.save(new Group(groupName));
     }
     
     @Override
     public void updateGroupName(Group group) throws ValidationException {
-	validatorGroup.validateGroupName(group.getGroupName());
+	groupValidator.validateGroupName(group.getGroupName());
 	
 	groupRepository.save(group);
     }
