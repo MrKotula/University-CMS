@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
     </parent>
     
     <groupId>ua.foxminded</groupId>
@@ -21,10 +21,11 @@
         <postgres.version>42.6.0</postgres.version>
         <jpa.version>3.1.0</jpa.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
-        <testconteinerspostgres.verion>1.17.3</testconteinerspostgres.verion>
+        <testconteinerspostgres.version>1.17.3</testconteinerspostgres.version>
         <lombok.verion>1.18.24</lombok.verion>
-        <spring-security-core.verion>6.1.0</spring-security-core.verion>
-        <maven-surefire.verion>3.1.2</maven-surefire.verion>
+        <spring-security-core.version>6.1.0</spring-security-core.version>
+        <maven-surefire.version>3.1.2</maven-surefire.version>
+        <devtools.version>3.1.0</devtools.version>
     </properties>
     
     <dependencies>
@@ -38,53 +39,73 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring-security-core.verion}</version>
         </dependency>
+        
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
+        
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${jpa.version}</version>
         </dependency>
+        
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${testconteinerspostgres.verion}</version>
+            <version>${testconteinerspostgres.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -110,7 +131,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire.verion}</version>
+                <version>${maven-surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -134,7 +155,7 @@
                         <exclude>ua/foxminded/university/entity/*</exclude>
                         <exclude>ua/foxminded/university/config/SpringConfig.class</exclude>
                         <exclude>ua/foxminded/university/dto/UserDto.class</exclude>
-                        <exclude>ua/foxminded/university/enums/Status.class</exclude>
+                        <exclude>ua/foxminded/university/enums/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

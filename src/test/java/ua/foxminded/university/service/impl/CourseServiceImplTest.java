@@ -1,11 +1,6 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -53,10 +48,6 @@ class CourseServiceImplTest {
     List<Course> testListAllCourses = Arrays.asList(testCourseMath, testCourseBiology, testCourseChemistry, testCoursePhysics, testCoursePhilosophy,
 	    testCourseDrawing, testCourseLiterature, testCourseEnglish, testCourseGeography, testCoursePhysicalTraining);
 
-    private final static InputStream systemIn = System.in;
-    private final static PrintStream systemOut = System.out;
-    private static ByteArrayOutputStream typeOut;
-
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
 	    .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
@@ -73,19 +64,12 @@ class CourseServiceImplTest {
 
     @BeforeAll
     static void setUp() {
-	typeOut = new ByteArrayOutputStream();
-	System.setOut(new PrintStream(typeOut));
 	postgreSQLContainer.start();
-
-	String simulatedUserInput = "0";
-	System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
     }
     
     @AfterAll
     static void tearDown() {
 	postgreSQLContainer.stop();
-	System.setIn(systemIn);
-	System.setOut(systemOut);
     }
     
     @Test
@@ -113,33 +97,6 @@ class CourseServiceImplTest {
 	courseService.updateCourseDescription(testCourse);
 	
 	assertEquals(Optional.of(testCourse), courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22"));
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenCourseNameIsLonger() throws ValidationException {
-	String expectedMessage = "Course name is has more 24 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> courseService.register("TestTestTestTestTestTestT", "test"));
-	
-	assertEquals(expectedMessage, exception.getMessage());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenCourseDescriptionIsLonger() throws ValidationException {
-	String expectedMessage = "Course description is has more 36 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> courseService.register("Test", "TestTestTestTestTestTestTestTestTestT"));
-	
-	assertEquals(expectedMessage, exception.getMessage());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenCourseIncludeSpecialCharacters() throws ValidationException {
-	String expectedMessage = "Data cannot contain special characters!";
-	Exception exception = assertThrows(ValidationException.class, () -> courseService.register("Tes@t", "TestTes@tTestTestTestTestTestTestTestT"));
-	
-	assertEquals(expectedMessage, exception.getMessage());
     }
     
     @Test

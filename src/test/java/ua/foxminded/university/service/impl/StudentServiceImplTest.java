@@ -1,11 +1,6 @@
 package ua.foxminded.university.service.impl;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.dao.repository.StudentRepository;
 import ua.foxminded.university.dto.UserDto;
 import ua.foxminded.university.entity.Student;
+import ua.foxminded.university.enums.RegistrationStatus;
 import ua.foxminded.university.enums.Status;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.service.StudentService;
@@ -41,13 +37,8 @@ class StudentServiceImplTest {
     @Autowired
     StudentRepository studentRepository;
     
-    Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2",
-	    "John", "Doe", null, null, Status.STUDENT);
-    Student testStudentSecond = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", null, "John", "Doe", null, null, Status.NEW);
-
-    private final static InputStream systemIn = System.in;
-    private final static PrintStream systemOut = System.out;
-    private static ByteArrayOutputStream typeOut;
+    Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null, Status.STUDENT, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+    Student testStudentSecond = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null, Status.NEW, RegistrationStatus.NEW, null);
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -65,42 +56,36 @@ class StudentServiceImplTest {
 
     @BeforeAll
     static void setUp() {
-	typeOut = new ByteArrayOutputStream();
-	System.setOut(new PrintStream(typeOut));
 	postgreSQLContainer.start();
-
-	String simulatedUserInput = "0";
-	System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
     }
 
     @AfterAll
     static void tearDown() {
 	postgreSQLContainer.stop();
-	System.setIn(systemIn);
-	System.setOut(systemOut);
     }
 
     @Test
     @Transactional
     void verifyUseMethodRegister() throws ValidationException {
-	studentService.register("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", new UserDto("John", "Doe", "testemail@ukr.net", "12345678"));
+	studentService.register(new UserDto("John", "Doe", "testemail@ukr.net", "12345678", "12345678", Status.STUDENT, RegistrationStatus.NEW));
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
     }
     
     @Test
     @Transactional
-    void verifyUseMethodRegisterWhenGroupIdIsNull() throws ValidationException {
-	studentService.register(null, new UserDto("John", "Doe", "testemail@ukr.net", "12345678"));
+    void verifyUseMethodRegisterWithStudentAttribute() throws ValidationException {
+	UserDto userDto = new UserDto("John", "Dou", "test@email", "pass", "pass", Status.STUDENT, RegistrationStatus.NEW);
+	studentService.register(userDto);
 
-	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+	assertEquals(testStudent.getFirstName(), studentRepository.findAll().get(2).getFirstName());
     }
     
     @Test
     @Transactional
     void verifyUseMethodUpdateEmail() throws ValidationException {
-	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2",
-		    "John", "Doe", "testemail@ukr.net", null, Status.STUDENT);
+	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "testemail@ukr.net", null, null, 
+		Status.STUDENT,	RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
 	studentService.updateEmail(testStudent);
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
@@ -109,8 +94,8 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUpdatePassword() {
-	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2",
-		    "John", "Doe", "testemail@ukr.net", "1234", Status.STUDENT);
+	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "testemail@ukr.net", "1234", "1234", 
+		Status.STUDENT, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
 	studentService.updatePassword(testStudent);
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
@@ -127,7 +112,8 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUChangeGroup() {
-	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "John", "Doe", null, "12345678", Status.STUDENT);
+	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, "12345678", "12345678",
+		Status.STUDENT, RegistrationStatus.REGISTRATED, "3c01e6f1-762e-43b8-a6e1-7cf493ce5325");
 	studentService.changeGroup("3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
@@ -136,8 +122,8 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void shouldReturnListOfStudentsWhenUseGetStudentsWithCourseName() {
-	List<Student> testListStudent = Arrays.asList(new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1",
-		"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", null, null, Status.STUDENT));
+	List<Student> testListStudent = Arrays.asList(new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null,
+		Status.STUDENT, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2"));
 	
 	assertEquals(testListStudent, studentService.findByCourseName("math"));
     }
@@ -156,7 +142,7 @@ class StudentServiceImplTest {
     @Transactional
     void verifyUseMethodWhenUseInsertSaveAndAddStudentCourse() {
 	List<Student> testListStudent = Arrays.asList(testStudent);
-	studentRepository.save(new Student("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", "asd@sa", "123140", Status.NEW));
+	studentRepository.save(new Student("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", "asd@sa", "123140", "123140", Status.NEW, RegistrationStatus.NEW));
 	studentService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
 	assertEquals(testListStudent, studentService.findByCourseName("drawing"));
@@ -165,59 +151,10 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodWhenUseDeleteById() {
-	List<Student> testListStudent = Arrays.asList(new Student("33c99439-aaf0-4ebd-a07a-bd0c550d2311",
-		"3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "Jane", "Does", null, null, Status.STUDENT));
+	List<Student> testListStudent = Arrays.asList(new Student("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", null, null, null,
+		Status.STUDENT, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce5325"));
 	studentService.deleteById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
 	assertEquals(testListStudent, studentRepository.findAll());
-    }
-
-    @Test
-    @Transactional
-    void verifyUseMethodWhenUseCreateStudent() {
-	Student student = new Student("3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "Test", "Test", Status.NEW);
-	studentService.createStudent("Test", "Test");
-
-	assertEquals(student.getFirstName(), studentRepository.findAll().get(2).getFirstName());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenFirstNameIsLonger() throws ValidationException {
-	String expectedMessage = "First name or last name is has more 16 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register("3c01e6f1-762e-43b8-a6e1-7cf493cehgfd", 
-		new UserDto("JohnJohnJohnJohnF", "Doe", "testemail@ukr.net", "12345678")));
-	
-	assertEquals(expectedMessage, exception.getMessage());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenLastNameIsLonger() throws ValidationException {
-	String expectedMessage = "First name or last name is has more 16 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register("3c01e6f1-762e-43b8-a6e1-7cf493cehgfd", 
-		new UserDto("John", "DoeDOEDoeDOEDoeDOE", "testemail@ukr.net", "12345678")));
-	
-	assertEquals(expectedMessage, exception.getMessage());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenNotContainSpecialSymbol() throws ValidationException {
-	String expectedMessage = "Email is not correct!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register("3c01e6f1-762e-43b8-a6e1-7cf493cehgfd", 
-		new UserDto("John", "Doe", "testemailukr.net", "12345678")));
-	
-	assertEquals(expectedMessage, exception.getMessage());
-    }
-    
-    @Test
-    @Transactional
-    void shouldReturnValidationExceptionWhenDataContainSpecialCharacters() throws ValidationException {
-	String expectedMessage = "Data cannot contain special characters!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register("3c01e6f1-762e-43b8-a6e1-7cf493cehgfd", 
-		new UserDto("Joh@n", "!Doe", "testemail@ukr.net", "12345678")));
-	
-	assertEquals(expectedMessage, exception.getMessage());
     }
 }

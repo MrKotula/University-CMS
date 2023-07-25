@@ -2,6 +2,8 @@ CREATE SCHEMA IF NOT EXISTS schedule;
 
 CREATE TYPE status AS ENUM ('NEW', 'STUDENT', 'TEACHER');
 
+CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTRATED');
+
 CREATE TABLE schedule.groups
 (
     group_id character(36) NOT NULL,
@@ -17,7 +19,9 @@ CREATE TABLE IF NOT EXISTS schedule.students
     last_name character varying(50) NOT NULL,
     email character varying(36),
     password character varying(70),
+    password_check character varying(70),
     status status,
+    registration_status registrationStatus,
     CONSTRAINT user_id_pkey PRIMARY KEY (user_id),
     CONSTRAINT group_id FOREIGN KEY (group_id)
         REFERENCES schedule.groups (group_id)

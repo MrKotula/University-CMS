@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
-import ua.foxminded.university.validator.ValidatorGroup;
+import ua.foxminded.university.validator.GroupValidator;
 
 @ValidationService
 @NoArgsConstructor
 @Log4j2
-public class ValidatorGroupImpl implements ValidatorGroup {
+public class GroupValidatorImpl implements GroupValidator {
     private static final Pattern SPECIAL_GROUP_PATTERN = Pattern.compile("^[A-Z]{2}-\\d{2}$");
     
     @Override

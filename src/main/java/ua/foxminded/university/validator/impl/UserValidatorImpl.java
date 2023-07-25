@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
-import ua.foxminded.university.validator.ValidatorUser;
+import ua.foxminded.university.validator.UserValidator;
 
 @ValidationService
 @NoArgsConstructor
 @Log4j2
-public class ValidatorUserImpl implements ValidatorUser {
+public class UserValidatorImpl implements UserValidator {
     private static final int MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME = 16;
     private static final Pattern SPECIAL = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
 
@@ -45,5 +45,12 @@ public class ValidatorUserImpl implements ValidatorUser {
 	}
 
 	return matchFound;
+    }
+    
+    @Override
+    public void validatePassword(String password, String passwordCheck) throws ValidationException {
+	if (!password.equals(passwordCheck)) {
+	    throw new ValidationException("Passwords does not match!");
+	}
     }
 }

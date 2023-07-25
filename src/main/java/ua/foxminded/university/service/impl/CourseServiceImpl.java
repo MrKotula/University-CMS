@@ -7,32 +7,32 @@ import ua.foxminded.university.dao.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.exceptions.ValidationException;
 import ua.foxminded.university.service.CourseService;
-import ua.foxminded.university.validator.ValidatorCourse;
+import ua.foxminded.university.validator.CourseValidator;
 
 @Service
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
-    private final ValidatorCourse validatorCourse;
+    private final CourseValidator courseValidator;
     private final CourseRepository courseRepository;
     
     @Override
     public void register(String courseName, String courseDescription) throws ValidationException {
-	validatorCourse.validateCourseName(courseName);
-	validatorCourse.validateCourseDescription(courseDescription);
+	courseValidator.validateCourseName(courseName);
+	courseValidator.validateCourseDescription(courseDescription);
 
 	courseRepository.save(new Course(courseName, courseDescription));
     }
     
     @Override
     public void updateCourseName(Course course) throws ValidationException {
-	validatorCourse.validateCourseName(course.getCourseName());
+	courseValidator.validateCourseName(course.getCourseName());
 	
 	courseRepository.save(course);
     }
     
     @Override
     public void updateCourseDescription(Course course) throws ValidationException {
-	validatorCourse.validateCourseDescription(course.getCourseDescription());
+	courseValidator.validateCourseDescription(course.getCourseDescription());
 	
 	courseRepository.save(course);
     }
