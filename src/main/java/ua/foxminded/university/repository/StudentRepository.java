@@ -1,4 +1,4 @@
-package ua.foxminded.university.dao.repository;
+package ua.foxminded.university.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Student;
-import ua.foxminded.university.enums.Status;
+import ua.foxminded.university.entity.enums.Status;
 
 @Repository
 @Transactional
@@ -26,10 +26,10 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     void changeGroup(@Param("groupId") String groupId, @Param("userId") String userId);
     
     @Modifying
-    @Query(value = "insert into StudentCourseRelation(userId, courseId) VALUES (:userId, :courseId)")
+    @Query(value = "INSERT INTO schedule.students_courses(user_id, course_id) VALUES (:userId, :courseId)", nativeQuery = true)
     void addStudentCourse(@Param("userId") String userId, @Param("courseId") String courseId);
     
     @Modifying
-    @Query(value = "delete from StudentCourseRelation c where c.userId = :userId and c.courseId = :courseId")
+    @Query(value = "DELETE FROM schedule.students_courses WHERE user_id = :userId AND course_id = :courseId", nativeQuery = true)
     void removeStudentFromCourse(@Param("userId") String userId, @Param("courseId") String courseId);  
 }
