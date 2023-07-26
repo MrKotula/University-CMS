@@ -14,8 +14,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
 
 @Data
 @EqualsAndHashCode(of= {"userId", "firstName", "lastName", "email"})

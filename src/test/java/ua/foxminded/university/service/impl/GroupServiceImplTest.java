@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.dao.repository.GroupRepository;
+import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.entity.Group;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.GroupService;
 
 @SpringBootTest

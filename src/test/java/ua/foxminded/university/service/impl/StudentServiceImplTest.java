@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.dao.repository.StudentRepository;
-import ua.foxminded.university.dto.UserDto;
+import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.repository.StudentRepository;
 import ua.foxminded.university.entity.Student;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentService;
 
 @SpringBootTest
@@ -67,7 +67,7 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodRegister() throws ValidationException {
-	studentService.register(new UserDto("John", "Doe", "testemail@ukr.net", "12345678", "12345678", Status.STUDENT, RegistrationStatus.NEW));
+	studentService.register(new UserRegistrationRequest("John", "Doe", "testemail@ukr.net", "12345678", "12345678", Status.STUDENT, RegistrationStatus.NEW));
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
     }
@@ -75,8 +75,8 @@ class StudentServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodRegisterWithStudentAttribute() throws ValidationException {
-	UserDto userDto = new UserDto("John", "Dou", "test@email", "pass", "pass", Status.STUDENT, RegistrationStatus.NEW);
-	studentService.register(userDto);
+	UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest("John", "Dou", "test@email", "pass", "pass", Status.STUDENT, RegistrationStatus.NEW);
+	studentService.register(userRegistrationRequest);
 
 	assertEquals(testStudent.getFirstName(), studentRepository.findAll().get(2).getFirstName());
     }

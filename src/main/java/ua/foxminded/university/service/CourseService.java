@@ -2,7 +2,7 @@ package ua.foxminded.university.service;
 
 import java.util.List;
 import ua.foxminded.university.entity.Course;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface CourseService {
     void register(String courseName, String courseDescription) throws ValidationException;

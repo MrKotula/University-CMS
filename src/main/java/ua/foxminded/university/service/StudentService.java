@@ -1,13 +1,13 @@
 package ua.foxminded.university.service;
 
 import java.util.List;
-import ua.foxminded.university.dto.UserDto;
+import ua.foxminded.university.registration.UserRegistrationRequest;
 import ua.foxminded.university.entity.Student;
-import ua.foxminded.university.enums.Status;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface StudentService {   
-    void register(UserDto userDto) throws ValidationException;
+    void register(UserRegistrationRequest userRegistrationRequest) throws ValidationException;
     
     void updateEmail(Student student) throws ValidationException;
     

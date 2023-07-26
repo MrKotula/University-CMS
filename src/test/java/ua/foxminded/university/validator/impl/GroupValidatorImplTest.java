@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.GroupService;
 
 @SpringBootTest

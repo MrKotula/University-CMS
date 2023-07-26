@@ -1,6 +1,6 @@
-package ua.foxminded.university.exceptions;
+package ua.foxminded.university.validator.exception;
 
-public class ValidationException extends Exception {
+public class ValidationException extends RuntimeException {
     public ValidationException() {
 	super();
     }

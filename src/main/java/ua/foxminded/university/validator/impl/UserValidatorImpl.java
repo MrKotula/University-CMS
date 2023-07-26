@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.UserValidator;
 

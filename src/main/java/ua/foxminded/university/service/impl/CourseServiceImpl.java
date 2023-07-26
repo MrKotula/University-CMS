@@ -3,9 +3,9 @@ package ua.foxminded.university.service.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
-import ua.foxminded.university.dao.repository.CourseRepository;
+import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.validator.CourseValidator;
 

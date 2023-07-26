@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.dao.repository.StudentRepository;
-import ua.foxminded.university.dao.repository.TeacherRepository;
-import ua.foxminded.university.dao.repository.UserRepository;
-import ua.foxminded.university.dto.UserDto;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.repository.StudentRepository;
+import ua.foxminded.university.repository.TeacherRepository;
+import ua.foxminded.university.repository.UserRepository;
+import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.UserService;
 
 @SpringBootTest
@@ -40,9 +40,9 @@ class UserServiceImplTest {
     @Autowired
     TeacherRepository teacherRepository;
 
-    UserDto testStudent = new UserDto("TestStudent", "Doe", "rage@com", "1234", "1234", Status.STUDENT, RegistrationStatus.NEW);
+    UserRegistrationRequest testStudent = new UserRegistrationRequest("TestStudent", "Doe", "rage@com", "1234", "1234", Status.STUDENT, RegistrationStatus.NEW);
     
-    UserDto testTeacher = new UserDto("TestTeacher", "Doe", "rage@com", "1234", "1234", Status.TEACHER, RegistrationStatus.NEW);
+    UserRegistrationRequest testTeacher = new UserRegistrationRequest("TestTeacher", "Doe", "rage@com", "1234", "1234", Status.TEACHER, RegistrationStatus.NEW);
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")

@@ -1,4 +1,4 @@
-package ua.foxminded.university.enums;
+package ua.foxminded.university.entity.enums;
 
 public enum RegistrationStatus {
     NEW("New"), REGISTRATED("Student");

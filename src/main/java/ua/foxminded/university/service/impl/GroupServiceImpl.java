@@ -3,9 +3,9 @@ package ua.foxminded.university.service.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
-import ua.foxminded.university.dao.repository.GroupRepository;
+import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.entity.Group;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.validator.GroupValidator;
 

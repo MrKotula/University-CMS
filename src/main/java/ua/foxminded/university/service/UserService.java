@@ -1,8 +1,8 @@
 package ua.foxminded.university.service;
 
-import ua.foxminded.university.dto.UserDto;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface UserService {
-    void register(UserDto userDto) throws ValidationException; 
+    void register(UserRegistrationRequest userRegistrationRequest) throws ValidationException;
 }

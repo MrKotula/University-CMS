@@ -1,4 +1,4 @@
-package ua.foxminded.university.dao.repository;
+package ua.foxminded.university.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

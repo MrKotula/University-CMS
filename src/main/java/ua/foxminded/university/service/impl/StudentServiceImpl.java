@@ -4,12 +4,12 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
-import ua.foxminded.university.dao.repository.StudentRepository;
-import ua.foxminded.university.dto.UserDto;
+import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.repository.StudentRepository;
 import ua.foxminded.university.entity.Student;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentService;
 import ua.foxminded.university.validator.UserValidator;
 
@@ -42,12 +42,12 @@ public class StudentServiceImpl implements StudentService {
     }
     
     @Override
-    public void register(UserDto userDto) throws ValidationException {
-	userValidator.validateData(userDto.getEmail(), userDto.getFirstName(), userDto.getLastName());
-	userValidator.validatePassword(userDto.getPassword(), userDto.getPasswordCheck());
+    public void register(UserRegistrationRequest userRegistrationRequest) throws ValidationException {
+	userValidator.validateData(userRegistrationRequest.getEmail(), userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName());
+	userValidator.validatePassword(userRegistrationRequest.getPassword(), userRegistrationRequest.getPasswordCheck());
 	
-	Student newStudent = new Student(userDto.getFirstName(), userDto.getLastName(), userDto.getEmail(),
-		passwordEncoder.encode(userDto.getPassword()), passwordEncoder.encode(userDto.getPasswordCheck()),
+	Student newStudent = new Student(userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName(), userRegistrationRequest.getEmail(),
+		passwordEncoder.encode(userRegistrationRequest.getPassword()), passwordEncoder.encode(userRegistrationRequest.getPasswordCheck()),
 		Status.NEW, RegistrationStatus.NEW);
 
 	studentRepository.save(newStudent);

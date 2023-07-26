@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ua.foxminded.university.dto.UserDto;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
-import ua.foxminded.university.exceptions.ValidationException;
+import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentService;
 
 @SpringBootTest
@@ -20,7 +20,7 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenFirstNameIsLonger() throws ValidationException {
 	String expectedMessage = "First name or last name is has more 16 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserDto("JohnJohnJohnJohnF", "Doe", "testemail@ukr.net",
+	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserRegistrationRequest("JohnJohnJohnJohnF", "Doe", "testemail@ukr.net",
 		"12345678", "12345678", Status.NEW, RegistrationStatus.NEW)));
 	
 	assertEquals(expectedMessage, exception.getMessage());
@@ -29,7 +29,7 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenLastNameIsLonger() throws ValidationException {
 	String expectedMessage = "First name or last name is has more 16 symbols!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserDto("John", "DoeDOEDoeDOEDoeDOE", "testemail@ukr.net",
+	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserRegistrationRequest("John", "DoeDOEDoeDOEDoeDOE", "testemail@ukr.net",
 		"12345678", "12345678", Status.NEW, RegistrationStatus.NEW)));
 	
 	assertEquals(expectedMessage, exception.getMessage());
@@ -38,7 +38,7 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenNotContainSpecialSymbol() throws ValidationException {
 	String expectedMessage = "Email is not correct!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserDto("John", "Doe", "testemailukr.net", "12345678",
+	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserRegistrationRequest("John", "Doe", "testemailukr.net", "12345678",
 		"12345678", Status.NEW, RegistrationStatus.NEW)));
 	
 	assertEquals(expectedMessage, exception.getMessage());
@@ -47,7 +47,7 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenDataContainSpecialCharacters() throws ValidationException {
 	String expectedMessage = "Data cannot contain special characters!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserDto("Joh@n", "!Doe", "testemail@ukr.net", "12345678",
+	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserRegistrationRequest("Joh@n", "!Doe", "testemail@ukr.net", "12345678",
 		"12345678", Status.NEW, RegistrationStatus.NEW)));
 	
 	assertEquals(expectedMessage, exception.getMessage());
@@ -56,7 +56,7 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenPasswordDoesNotMatch() throws ValidationException {
 	String expectedMessage = "Passwords does not match!";
-	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserDto("John", "Doe", "testemail@ukr.net", "12345678",
+	Exception exception = assertThrows(ValidationException.class, () -> studentService.register(new UserRegistrationRequest("John", "Doe", "testemail@ukr.net", "12345678",
 		"123456", Status.NEW, RegistrationStatus.NEW)));
 	
 	assertEquals(expectedMessage, exception.getMessage());
