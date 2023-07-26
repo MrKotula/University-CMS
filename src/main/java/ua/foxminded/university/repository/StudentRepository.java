@@ -22,7 +22,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     void updateStatus(@Param("status") Status status, @Param("userId") String userId);
     
     @Modifying
-    @Query(value = "update Student c SET c.groupId =:groupId, c.status =STUDENT, c.registrationStatus =REGISTRATED WHERE userId =:userId")
+    @Query(value = "update Student c SET c.groupId =:groupId, c.status =STUDENT, c.registrationStatus =REGISTERED WHERE userId =:userId")
     void changeGroup(@Param("groupId") String groupId, @Param("userId") String userId);
     
     @Modifying
