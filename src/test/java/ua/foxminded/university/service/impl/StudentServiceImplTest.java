@@ -38,7 +38,6 @@ class StudentServiceImplTest {
     StudentRepository studentRepository;
     
     Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null, Status.STUDENT, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
-    Student testStudentSecond = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null, Status.NEW, RegistrationStatus.NEW, null);
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -113,7 +112,7 @@ class StudentServiceImplTest {
     @Transactional
     void verifyUseMethodUChangeGroup() {
 	Student testStudent = new Student("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, "12345678", "12345678",
-		Status.STUDENT, RegistrationStatus.REGISTRATED, "3c01e6f1-762e-43b8-a6e1-7cf493ce5325");
+		Status.STUDENT, RegistrationStatus.REGISTERED, "3c01e6f1-762e-43b8-a6e1-7cf493ce5325");
 	studentService.changeGroup("3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
 	assertEquals(Optional.of(testStudent), studentRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
