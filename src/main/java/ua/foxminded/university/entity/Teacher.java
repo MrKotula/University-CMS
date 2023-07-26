@@ -6,18 +6,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.foxminded.university.enums.RegistrationStatus;
-import ua.foxminded.university.enums.Status;
+import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.entity.enums.Status;
 
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Entity
-@Table(name="teachers", schema = "schedule")
+@Table(name = "teachers", schema = "schedule")
 public class Teacher extends User {
-    
+
     public Teacher(String firstName, String lastName, String email, String password, String passwordCheck, Status status, RegistrationStatus registrationStatus) {
-	super(firstName, lastName, email, password, passwordCheck, status, registrationStatus);	
+        super(firstName, lastName, email, password, passwordCheck, status, registrationStatus);
     }
 }
