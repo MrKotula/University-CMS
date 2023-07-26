@@ -39,10 +39,8 @@ CREATE TABLE IF NOT EXISTS schedule.courses
 
 CREATE TABLE IF NOT EXISTS schedule.students_courses
 (
-    relation_id character(36) NOT NULL,
     user_id character(36) NOT NULL,
     course_id character(36) NOT NULL,
-    CONSTRAINT students_courses_pkey PRIMARY KEY (relation_id),
     CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES schedule.courses (course_id)
     ON UPDATE NO ACTION
     ON DELETE CASCADE,
