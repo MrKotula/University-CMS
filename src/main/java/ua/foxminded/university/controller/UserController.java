@@ -13,20 +13,20 @@ import ua.foxminded.university.service.UserService;
 @Controller
 @AllArgsConstructor
 public class UserController {
-    
+
     private final UserService userService;
-    
+
     @GetMapping("/registration")
     public String registration(@ModelAttribute UserRegistrationRequest userRegistrationRequest, Model model) {
-	model.addAttribute("userDto", userRegistrationRequest);
+        model.addAttribute("userDto", userRegistrationRequest);
 
-	return "registration";
+        return "registration";
     }
-    
+
     @PostMapping("/registration")
     public String registration(UserRegistrationRequest userRegistrationRequest) throws ValidationException {
-	userService.register(userRegistrationRequest);
+        userService.register(userRegistrationRequest);
 
-	return "redirect:/";
+        return "redirect:/";
     }
 }

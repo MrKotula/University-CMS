@@ -2,6 +2,7 @@ package ua.foxminded.university.validator.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.validator.exception.ValidationException;
@@ -17,40 +18,40 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public void validateData(String email, String firstName, String lastName) throws ValidationException {
-	validateEmail(email);
-	validationOnSpecialCharacters(firstName);
-	validationOnSpecialCharacters(lastName);
+        validateEmail(email);
+        validationOnSpecialCharacters(firstName);
+        validationOnSpecialCharacters(lastName);
 
-	if (firstName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME || lastName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME) {
-	    log.info("First name or last name is has more 16 symbols!");
-	    throw new ValidationException("First name or last name is has more 16 symbols!");
-	}
+        if (firstName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME || lastName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME) {
+            log.info("First name or last name is has more 16 symbols!");
+            throw new ValidationException("First name or last name is has more 16 symbols!");
+        }
     }
 
     @Override
     public void validateEmail(String email) throws ValidationException {
-	if (!email.contains("@")) {
-	    log.info("Email is not correct!");
-	    throw new ValidationException("Email is not correct!");
-	}
+        if (!email.contains("@")) {
+            log.info("Email is not correct!");
+            throw new ValidationException("Email is not correct!");
+        }
     }
 
     private boolean validationOnSpecialCharacters(String text) throws ValidationException {
-	Matcher hasSpecial = SPECIAL.matcher(text);
-	boolean matchFound = hasSpecial.find();
-	
-	if (matchFound) {
-	    log.info("Data cannot contain special characters!");
-	    throw new ValidationException("Data cannot contain special characters!");
-	}
+        Matcher hasSpecial = SPECIAL.matcher(text);
+        boolean matchFound = hasSpecial.find();
 
-	return matchFound;
+        if (matchFound) {
+            log.info("Data cannot contain special characters!");
+            throw new ValidationException("Data cannot contain special characters!");
+        }
+
+        return matchFound;
     }
-    
+
     @Override
     public void validatePassword(String password, String passwordCheck) throws ValidationException {
-	if (!password.equals(passwordCheck)) {
-	    throw new ValidationException("Passwords does not match!");
-	}
+        if (!password.equals(passwordCheck)) {
+            throw new ValidationException("Passwords does not match!");
+        }
     }
 }

@@ -6,10 +6,10 @@ public enum Status {
     private final String description;
 
     Status(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     public String getStatus() {
-	return description.toUpperCase();
+        return description.toUpperCase();
     }
 }

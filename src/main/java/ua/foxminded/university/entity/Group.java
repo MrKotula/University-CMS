@@ -17,25 +17,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="groups", schema = "schedule")
+@Table(name = "groups", schema = "schedule")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "group_id")
     private String groupId;
-    
+
     @Column(name = "group_name")
     private String groupName;
-    
+
     @ColumnDefault(value = "0")
     private int count;
-    
+
     public Group(String groupId, String groupName) {
-	this.groupId = groupId;
-	this.groupName = groupName;
+        this.groupId = groupId;
+        this.groupName = groupName;
     }
-    
+
     public Group(String groupName) {
-	this.groupName = groupName;
+        this.groupName = groupName;
     }
 }

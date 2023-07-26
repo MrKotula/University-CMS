@@ -16,21 +16,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="courses", schema = "schedule")
+@Table(name = "courses", schema = "schedule")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="course_id")
+    @Column(name = "course_id")
     private String courseId;
-    
-    @Column(name="course_name")
+
+    @Column(name = "course_name")
     private String courseName;
-    
-    @Column(name="course_description")
+
+    @Column(name = "course_description")
     private String courseDescription;
 
     public Course(String courseName, String courseDescription) {
-	this.courseName = courseName;
-	this.courseDescription = courseDescription;
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
     }
 }

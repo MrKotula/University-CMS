@@ -8,10 +8,10 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class MainController {
-    
+
     @GetMapping("/")
     public String index(Model model) {
-	model.addAttribute("title", "Main page");
-	return "index";
+        model.addAttribute("title", "Main page");
+        return "index";
     }
 }

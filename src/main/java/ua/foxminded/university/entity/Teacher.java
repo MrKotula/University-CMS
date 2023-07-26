@@ -11,13 +11,13 @@ import ua.foxminded.university.entity.enums.Status;
 
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Entity
-@Table(name="teachers", schema = "schedule")
+@Table(name = "teachers", schema = "schedule")
 public class Teacher extends User {
-    
+
     public Teacher(String firstName, String lastName, String email, String password, String passwordCheck, Status status, RegistrationStatus registrationStatus) {
-	super(firstName, lastName, email, password, passwordCheck, status, registrationStatus);	
+        super(firstName, lastName, email, password, passwordCheck, status, registrationStatus);
     }
 }

@@ -16,28 +16,29 @@ import ua.foxminded.university.validator.UserValidator;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    
+
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Override
     public void register(UserRegistrationRequest userRegistrationRequest) throws ValidationException {
-	userValidator.validateData(userRegistrationRequest.getEmail(), userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName());
-	userValidator.validatePassword(userRegistrationRequest.getPassword(), userRegistrationRequest.getPasswordCheck());
-	
+        userValidator.validateData(userRegistrationRequest.getEmail(), userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName());
+        userValidator.validatePassword(userRegistrationRequest.getPassword(), userRegistrationRequest.getPasswordCheck());
 
-	if (userRegistrationRequest.getStatus().equals(Status.TEACHER)) {
-	    Teacher newTeacher = new Teacher(userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName(), userRegistrationRequest.getEmail(),
-		    passwordEncoder.encode(userRegistrationRequest.getPassword()), passwordEncoder.encode(userRegistrationRequest.getPasswordCheck()),
-		    Status.NEW, RegistrationStatus.NEW);
-	    	userRepository.save(newTeacher);
 
-	} if (userRegistrationRequest.getStatus().equals(Status.STUDENT)) {
-	    Student newStudent = new Student(userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName(), userRegistrationRequest.getEmail(),
-		    passwordEncoder.encode(userRegistrationRequest.getPassword()), passwordEncoder.encode(userRegistrationRequest.getPasswordCheck()),
-		    Status.NEW, RegistrationStatus.NEW);
-		userRepository.save(newStudent);
-	}
+        if (userRegistrationRequest.getStatus().equals(Status.TEACHER)) {
+            Teacher newTeacher = new Teacher(userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName(), userRegistrationRequest.getEmail(),
+                    passwordEncoder.encode(userRegistrationRequest.getPassword()), passwordEncoder.encode(userRegistrationRequest.getPasswordCheck()),
+                    Status.NEW, RegistrationStatus.NEW);
+            userRepository.save(newTeacher);
+
+        }
+        if (userRegistrationRequest.getStatus().equals(Status.STUDENT)) {
+            Student newStudent = new Student(userRegistrationRequest.getFirstName(), userRegistrationRequest.getLastName(), userRegistrationRequest.getEmail(),
+                    passwordEncoder.encode(userRegistrationRequest.getPassword()), passwordEncoder.encode(userRegistrationRequest.getPasswordCheck()),
+                    Status.NEW, RegistrationStatus.NEW);
+            userRepository.save(newStudent);
+        }
     }
 }
