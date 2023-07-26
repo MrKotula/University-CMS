@@ -3,13 +3,13 @@ package ua.foxminded.university.entity.enums;
 public enum Status {
     NEW("New"), STUDENT("Student"), TEACHER("Teacher");
 
-    private String strStatus;
+    private final String description;
 
-    Status(String strStatus) {
-	this.strStatus = strStatus;
+    Status(String description) {
+	this.description = description;
     }
 
     public String getStatus() {
-	return strStatus.toUpperCase();
+	return description.toUpperCase();
     }
 }

@@ -1,15 +1,15 @@
 package ua.foxminded.university.entity.enums;
 
 public enum RegistrationStatus {
-    NEW("New"), REGISTRATED("Student");
+    NEW("New"), REGISTERED("Registered");
 
-    private String strStatus;
+    private final String description;
 
-    private RegistrationStatus(String strStatus) {
-	this.strStatus = strStatus;
+    private RegistrationStatus(String description) {
+	this.description = description;
     }
 
     public String getRegistrationStatus() {
-	return strStatus.toUpperCase();
+	return description.toUpperCase();
     }
 }
