@@ -1,11 +1,11 @@
 package ua.foxminded.university.entity.enums;
 
-public enum Status {
-    NEW("New"), STUDENT("Student"), TEACHER("Teacher");
+public enum RoleModel {
+    ADMIN("Admin"), MODERATOR("Moderator"), STUDENT("Student"), TEACHER("Teacher"), USER("User");
 
     private final String description;
 
-    Status(String description) {
+    private RoleModel(String description) {
         this.description = description;
     }
 

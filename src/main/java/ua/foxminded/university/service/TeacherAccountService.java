@@ -1,5 +1,5 @@
 package ua.foxminded.university.service;
 
-public interface TeacherService {
+public interface TeacherAccountService {
 
 }

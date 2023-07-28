@@ -1,21 +1,24 @@
 package ua.foxminded.university.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.foxminded.university.entity.enums.RegistrationStatus;
-import ua.foxminded.university.entity.enums.Status;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email"})
@@ -46,22 +49,36 @@ public abstract class User {
     @ToString.Exclude
     protected String passwordCheck;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
+    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "users_roles")
+    @JoinTable(
+            name = "users_roles", schema = "schedule",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    protected Set<Role> roles = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "registration_status")
-    private RegistrationStatus registrationStatus;
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 
-    protected User(String firstName, String lastName, String email, String password, String passwordCheck, Status status, RegistrationStatus registrationStatus) {
+    protected User(String firstName, String lastName, String email, String password, String passwordCheck, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.passwordCheck = passwordCheck;
-        this.status = status;
-        this.registrationStatus = registrationStatus;
+        this.roles = roles;
+    }
+
+
+    protected User(String userId, String firstName, String lastName, String email, String password, String passwordCheck) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.passwordCheck = passwordCheck;
     }
 
     protected User(String firstName, String lastName) {

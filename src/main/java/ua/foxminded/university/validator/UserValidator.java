@@ -8,4 +8,6 @@ public interface UserValidator {
     void validateEmail(String email) throws ValidationException;
     
     void validatePassword(String password, String passwordCheck) throws ValidationException;
+
+    void validateLogin(String email) throws ValidationException;
 }

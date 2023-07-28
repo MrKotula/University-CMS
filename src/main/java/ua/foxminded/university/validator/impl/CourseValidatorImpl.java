@@ -2,7 +2,6 @@ package ua.foxminded.university.validator.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.validator.exception.ValidationException;
@@ -37,7 +36,7 @@ public class CourseValidatorImpl implements CourseValidator {
         }
     }
 
-    private boolean validationOnSpecialCharacters(String text) throws ValidationException {
+    private void validationOnSpecialCharacters(String text) throws ValidationException {
         Matcher hasSpecial = SPECIAL.matcher(text);
         boolean matchFound = hasSpecial.find();
 
@@ -45,7 +44,5 @@ public class CourseValidatorImpl implements CourseValidator {
             log.info("Data cannot contain special characters!");
             throw new ValidationException("Data cannot contain special characters!");
         }
-
-        return matchFound;
     }
 }
