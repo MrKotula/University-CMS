@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -28,6 +29,7 @@ public class UserAccount extends User {
         this.registrationStatus = registrationStatus;
     }
 
+    @Builder(builderMethodName = "userAccountBuilder")
     public UserAccount(String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles){
         super(firstName, lastName, email, password, passwordCheck, roles);
         this.registrationStatus = registrationStatus;

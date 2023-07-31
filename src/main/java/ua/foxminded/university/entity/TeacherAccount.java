@@ -2,6 +2,7 @@ package ua.foxminded.university.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Table(name = "teachers", schema = "schedule")
 public class TeacherAccount extends UserAccount {
 
+    @Builder(builderMethodName = "teacherBuilder")
     public TeacherAccount(String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
         super(firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
     }

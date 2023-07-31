@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,8 @@ public class StudentAccount extends UserAccount {
         this.groupId = groupId;
     }
 
+
+    @Builder(builderMethodName = "studentBuilder")
     public StudentAccount(String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
         super(firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
     }
