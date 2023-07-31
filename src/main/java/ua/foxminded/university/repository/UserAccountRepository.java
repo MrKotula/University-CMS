@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.university.entity.UserAccount;
+import java.util.Optional;
 
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, String> {
     @Query("select u from UserAccount u where u.email = :email")
-    UserAccount getUserByEmail(@Param("email") String email);
+    Optional<UserAccount> getUserByEmail(@Param("email") String email);
 }
