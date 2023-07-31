@@ -70,4 +70,12 @@ class UserValidatorImplTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
+
+    @Test
+    void shouldReturnValidationExceptionWhenUserIdIsNotExists() throws ValidationException {
+        String expectedMessage = "This userId is not exists!";
+        Exception exception = assertThrows(ValidationException.class, () -> studentAccountService.addStudentCourse("sad", "1d95bc79-a549-4d2c-aeb5-3f929aee0096"));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 }

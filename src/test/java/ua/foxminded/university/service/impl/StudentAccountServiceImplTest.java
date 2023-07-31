@@ -1,7 +1,6 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.util.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,9 +18,13 @@ import ua.foxminded.university.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
-import ua.foxminded.university.entity.enums.Status;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentAccountService;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @ContextConfiguration(initializers = {StudentAccountServiceImplTest.Initializer.class})
@@ -93,8 +96,8 @@ class StudentAccountServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUChangeGroup() {
-        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, "12345678", "12345678",
-                RegistrationStatus.REGISTERED, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce5325");
+        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", "12345678", "12345678",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
         studentAccountService.changeGroup("3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
         assertEquals(Optional.of(testStudentAccount), studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
