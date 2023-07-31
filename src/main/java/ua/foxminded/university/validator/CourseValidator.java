@@ -6,4 +6,6 @@ public interface CourseValidator {
     void validateCourseName(String courseName) throws ValidationException;
 
     void validateCourseDescription(String courseDescription) throws ValidationException;
+
+    void validateCourseId(String courseId) throws ValidationException;
 }
