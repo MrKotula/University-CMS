@@ -20,5 +20,5 @@ public interface StudentAccountService {
 
     void removeStudentFromCourse(String studentId, String courseId);
 
-    void deleteById(String id);
+    void deleteById(String studentId);
 }
