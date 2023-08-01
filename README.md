@@ -1,4 +1,4 @@
-# university
+# University-CMS
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin http://git.foxminded.ua/foxstudent103483/university.git
+git remote add origin https://git.foxminded.ua/foxstudent103483/university-cms.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](http://git.foxminded.ua/foxstudent103483/university/-/settings/integrations)
+- [ ] [Set up project integrations](https://git.foxminded.ua/foxstudent103483/university-cms/-/settings/integrations)
 
 ## Collaborate with your team
 

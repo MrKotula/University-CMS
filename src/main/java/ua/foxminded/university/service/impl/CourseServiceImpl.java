@@ -1,7 +1,6 @@
 package ua.foxminded.university.service.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.repository.CourseRepository;
