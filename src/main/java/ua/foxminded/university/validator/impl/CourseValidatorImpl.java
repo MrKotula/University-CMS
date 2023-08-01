@@ -2,20 +2,22 @@ package ua.foxminded.university.validator.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.CourseValidator;
 
 @ValidationService
-@NoArgsConstructor
+@AllArgsConstructor
 @Log4j2
 public class CourseValidatorImpl implements CourseValidator {
     private static final int MAX_LENGTH_OF_COURSE_NAME = 24;
     private static final int MAX_LENGTH_OF_COURSE_DESCRIPTION = 36;
     private static final Pattern SPECIAL = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+
+    private final CourseRepository courseRepository;
 
     @Override
     public void validateCourseName(String courseName) throws ValidationException {
@@ -37,7 +39,7 @@ public class CourseValidatorImpl implements CourseValidator {
         }
     }
 
-    private boolean validationOnSpecialCharacters(String text) throws ValidationException {
+    private void validationOnSpecialCharacters(String text) throws ValidationException {
         Matcher hasSpecial = SPECIAL.matcher(text);
         boolean matchFound = hasSpecial.find();
 
@@ -45,7 +47,13 @@ public class CourseValidatorImpl implements CourseValidator {
             log.info("Data cannot contain special characters!");
             throw new ValidationException("Data cannot contain special characters!");
         }
+    }
 
-        return matchFound;
+    @Override
+    public void validateCourseId(String courseId) throws ValidationException {
+        if (courseRepository.findById(courseId).isEmpty()) {
+            log.info("This courseId is not exists!");
+            throw new ValidationException("This courseId is not exists!");
+        }
     }
 }

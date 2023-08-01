@@ -9,7 +9,7 @@ public enum RegistrationStatus {
         this.description = description;
     }
 
-    public String getRegistrationStatus() {
+    public String getDescription() {
         return description.toUpperCase();
     }
 }

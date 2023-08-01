@@ -1,7 +1,6 @@
 package ua.foxminded.university.service;
 
 import java.util.List;
-
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.validator.exception.ValidationException;
 

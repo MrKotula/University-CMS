@@ -1,7 +1,6 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,35 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.repository.StudentRepository;
-import ua.foxminded.university.repository.TeacherRepository;
-import ua.foxminded.university.repository.UserRepository;
 import ua.foxminded.university.registration.UserRegistrationRequest;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
-import ua.foxminded.university.entity.enums.Status;
+import ua.foxminded.university.repository.UserAccountRepository;
+import ua.foxminded.university.service.UserAccountService;
 import ua.foxminded.university.validator.exception.ValidationException;
-import ua.foxminded.university.service.UserService;
+import java.util.HashSet;
 
 @SpringBootTest
-@ContextConfiguration(initializers = {UserServiceImplTest.Initializer.class})
+@ContextConfiguration(initializers = {UserAccountServiceImplTest.Initializer.class})
 @Testcontainers
-class UserServiceImplTest {
+class UserAccountServiceImplTest {
 
     @Autowired
-    UserService userService;
+    UserAccountService userAccountService;
 
     @Autowired
-    UserRepository userRepository;
+    UserAccountRepository userAccountRepository;
 
-    @Autowired
-    StudentRepository studentRepository;
-
-    @Autowired
-    TeacherRepository teacherRepository;
-
-    UserRegistrationRequest testStudent = new UserRegistrationRequest("TestStudent", "Doe", "rage@com", "1234", "1234", Status.STUDENT, RegistrationStatus.NEW);
-
-    UserRegistrationRequest testTeacher = new UserRegistrationRequest("TestTeacher", "Doe", "rage@com", "1234", "1234", Status.TEACHER, RegistrationStatus.NEW);
+    UserRegistrationRequest testStudent = new UserRegistrationRequest("TestStudent", "Doe", "rage@com", "1234",
+            "1234", RegistrationStatus.NEW, new HashSet<>());
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -71,19 +61,9 @@ class UserServiceImplTest {
 
     @Test
     @Transactional
-    void verifyUseMethodRegisterForStudent() throws ValidationException {
-        userService.register(testStudent);
+    void verifyUseMethodRegister() throws ValidationException {
+        userAccountService.register(testStudent);
 
-        assertEquals(testStudent.getFirstName(), userRepository.findAll().get(2).getFirstName());
-        assertEquals(testStudent.getFirstName(), studentRepository.findAll().get(2).getFirstName());
-    }
-
-    @Test
-    @Transactional
-    void verifyUseMethodRegisterForTeacher() throws ValidationException {
-        userService.register(testTeacher);
-
-        assertEquals(testTeacher.getFirstName(), userRepository.findAll().get(2).getFirstName());
-        assertEquals(testTeacher.getFirstName(), teacherRepository.findAll().get(0).getFirstName());
+        assertEquals(testStudent.getFirstName(), userAccountRepository.findAll().get(2).getFirstName());
     }
 }
