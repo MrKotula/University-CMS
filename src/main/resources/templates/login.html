@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorization</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<body>
+<div th:replace="~{layouts/header :: header}"></div><br><br><br>
+<main class="container">
+    <h1>Log in to your account</h1>
+    <form method="post" th:action="@{/login}">
+        <input type="text" id="username" name="username" class="form-control" placeholder="input your email"><br>
+        <input type="password" id="password" name="password" class="form-control" placeholder="input your password"><br>
+            <div th:if="${param.error}" style="color: red">
+            Invalid username or password!</div>
+        <button type="submit">Log In</button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}" ></div>
+</body>
+</html>
