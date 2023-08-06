@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminController {
     @GetMapping("/admin")
-    public String login(Model model) {
+    public String admin(Model model) {
         model.addAttribute("title", "Admin panel");
         return "admin";
     }
