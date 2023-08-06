@@ -162,6 +162,7 @@
                         <exclude>ua/foxminded/university/config/SpringConfig.class</exclude>
                         <exclude>ua/foxminded/university/registration/UserRegistrationRequest.class</exclude>
                         <exclude>ua/foxminded/university/entity/enums/*</exclude>
+                        <exclude>ua/foxminded/university/registration/MyUserDetails.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
