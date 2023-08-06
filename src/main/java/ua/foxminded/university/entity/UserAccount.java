@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -33,5 +34,9 @@ public class UserAccount extends User {
     public UserAccount(String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles){
         super(firstName, lastName, email, password, passwordCheck, roles);
         this.registrationStatus = registrationStatus;
+    }
+
+    public UserAccount(String firstName, String lastName, String email, String password, String passwordCheck){
+        super(firstName, lastName, email, password, passwordCheck, new HashSet<>());
     }
 }
