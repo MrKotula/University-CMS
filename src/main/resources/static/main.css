@@ -2,6 +2,99 @@
 
 * {
 	font-family: 'Montserrat', sans-serif;
+	background: #e6e6ff;
+}
+
+header .logo {
+    float: left;
+    margin-left: 10px;
+    top: 10px;
+    color: #222;
+    font-weight: 600;
+    font-size: 35px;
+    text-decoration: none;
+}
+
+header nav a {
+    float: right;
+    margin-left: 15px;
+    width: 90px;
+    height: 20px;
+    color: black;
+    border-radius: 30px;
+    padding: 10px 10px;
+    font-size: 15px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    text-decoration: none;
+}
+
+header nav a:hover {
+     webkit-transform: scale(1.2);
+     ms-transform: scale(1.2);
+     transform: scale(1.2);
+     color: #33adff;
+}
+
+.myAccountBtn {
+    background: deepskyblue;
+    color: #222222;
+}
+
+.myAccountBtn:hover {
+    color: white;
+}
+
+.adminPanel {
+    color: red;
+}
+
+.adminAccount {
+    background: green;
+}
+
+.logOutBtn {
+    float: right;
+    margin-left: 15px;
+    margin-right: 10px;
+    margin-top: 2px;
+    width: 100px;
+    height: 40px;
+    color: black;
+    border-radius: 30px;
+    padding: 10px 10px;
+    font-size: 15px;
+    background: red;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    text-decoration: none;
+}
+
+.logOutBtn:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    color: #33adff;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.logOut {
+    background: red;
 }
 
 form input {
@@ -11,15 +104,23 @@ form input {
     border: 1px solid silver;
     font-family: 'Montserrat', sans-serif;
     display: block;
-    margin-top: 10px;
     resize: none;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
 
-h1 {
+registration h1 {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 	font-family: 'Montserrat', sans-serif;
 }
 
 form button {
+    margin: 10px;
     margin-top: 20px 15px;
     padding: 10px 25px;
     border: 0;
@@ -32,4 +133,17 @@ form button {
 
 form button:hover {
     background: #934434;
+}
+
+.container {
+    display: block;
+    text-align: center;
+}
+
+footer {
+    float: left;
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    text-align: center;
 }

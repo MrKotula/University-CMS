@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS schedule;
 
-CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTRATED');
+CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTERED');
 
 CREATE TYPE roleModel AS ENUM ('ADMIN', 'MODERATOR', 'STUDENT', 'TEACHER', 'USER');
 
@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS schedule.students
 (
     user_id character(36) NOT NULL,
     group_id character(36),
+    student_card character(36),
     first_name character varying(50) NOT NULL,
     last_name character varying(50) NOT NULL,
     email character varying(36),

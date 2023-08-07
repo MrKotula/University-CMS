@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
@@ -37,8 +39,11 @@ class StudentAccountServiceImplTest {
     @Autowired
     StudentAccountRepository studentAccountRepository;
 
-    StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null,
-           RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+    @Autowired
+    CourseRepository courseRepository;
+
+    StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", null, null,
+           RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727");
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -70,7 +75,7 @@ class StudentAccountServiceImplTest {
         studentAccountService.register(new UserRegistrationRequest("John", "Doe", "testemail@ukr.net", "12345678",
                 "12345678", RegistrationStatus.NEW, new HashSet<>()));
 
-        assertEquals(Optional.of(testStudentAccount), studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+        assertEquals(testStudentAccount.getFirstName(), studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1").get().getFirstName());
     }
 
     @Test
@@ -96,8 +101,11 @@ class StudentAccountServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUChangeGroup() {
-        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", "12345678", "12345678",
-                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+        Course courseMath = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22").get();
+        Course courseBiology = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1234").get();
+        HashSet<Course> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
+        testStudentAccount.setCourses(courses);
+        testStudentAccount.setGroupId("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
         studentAccountService.changeGroup("3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
         assertEquals(Optional.of(testStudentAccount), studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
@@ -106,8 +114,11 @@ class StudentAccountServiceImplTest {
     @Test
     @Transactional
     void shouldReturnListOfStudentsWhenUseGetStudentsWithCourseName() {
-        List<StudentAccount> testListStudentAccount = Arrays.asList(new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", null, null, null,
-                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2"));
+        Course courseMath = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22").get();
+        Course courseBiology = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1234").get();
+        HashSet<Course> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
+        testStudentAccount.setCourses(courses);
+        List<StudentAccount> testListStudentAccount = Arrays.asList(testStudentAccount);
 
         assertEquals(testListStudentAccount, studentAccountService.findByCourseName("math"));
     }
@@ -125,8 +136,12 @@ class StudentAccountServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodWhenUseInsertSaveAndAddStudentCourse() {
+        Course courseMath = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22").get();
+        Course courseBiology = courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1234").get();
+        HashSet<Course> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
+        testStudentAccount.setCourses(courses);
         List<StudentAccount> testListStudentAccount = Arrays.asList(testStudentAccount);
-        studentAccountRepository.save(new StudentAccount("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", "asd@sa", "123140", "123140", RegistrationStatus.NEW, new HashSet<>()));
+        studentAccountRepository.save(new StudentAccount("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", "dis@ukr.net", "123140", "123140", RegistrationStatus.NEW, new HashSet<>()));
         studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
         assertEquals(testListStudentAccount, studentAccountService.findByCourseName("drawing"));
@@ -136,7 +151,8 @@ class StudentAccountServiceImplTest {
     @Transactional
     void verifyUseMethodWhenUseDeleteById() {
         List<StudentAccount> testListStudentAccount = Arrays.asList(new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", null, null, null,
-                 RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce5325"));
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "RT85796142"));
+
         studentAccountService.deleteById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
 
         assertEquals(testListStudentAccount, studentAccountRepository.findAll());

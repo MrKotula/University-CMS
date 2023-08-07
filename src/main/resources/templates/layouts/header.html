@@ -1,0 +1,24 @@
+<header class="container" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header">
+    <a class="logo" href="/">University</a><br>
+    <nav>
+        <a href="/">Main page</a>
+        <a href="/about">About us</a>
+        <span class="auth">
+            <a href="/login">Log In</a>
+            <a href="/registration">Sign Up</a>
+    </span><br><br><br>
+
+        <span sec:authorize="isAuthenticated()">
+            <form method="post" th:action="@{/logout}">
+                <button class="logOutBtn" type="submit">Log Out</button>
+                <a class="myAccountBtn" href="/user">My account</a>
+            </form>
+                <span sec:authorize="hasAuthority('ADMIN')">
+                    <form method="post" th:action="@{/logout}">
+                    <a class="adminAccount" href="/admin">Admin</a>
+                    </form>
+                </span>
+        </span>
+    </nav>
+</header>

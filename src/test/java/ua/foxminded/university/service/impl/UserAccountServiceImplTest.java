@@ -64,6 +64,6 @@ class UserAccountServiceImplTest {
     void verifyUseMethodRegister() throws ValidationException {
         userAccountService.register(testStudent);
 
-        assertEquals(testStudent.getFirstName(), userAccountRepository.findAll().get(2).getFirstName());
+        assertEquals(testStudent.getFirstName(), userAccountRepository.findAll().get(3).getFirstName());
     }
 }

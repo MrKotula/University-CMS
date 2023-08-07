@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/registration")
     public String registration(@ModelAttribute UserRegistrationRequest userRegistrationRequest, Model model) {
-        model.addAttribute("userDto", userRegistrationRequest);
+        model.addAttribute("userRegRequest", userRegistrationRequest);
 
         return "registration";
     }
@@ -30,6 +30,6 @@ public class UserController {
         userAccountService.register(userRegistrationRequest);
         log.warn("Created new UserAccount! " + userRegistrationRequest.toString());
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
