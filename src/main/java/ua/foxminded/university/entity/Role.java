@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ua.foxminded.university.entity.enums.RoleModel;
 
 @Entity
@@ -23,6 +24,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "role_id")
+    @ToString.Exclude
     private String roleId;
 
     @Enumerated(EnumType.STRING)
@@ -31,5 +33,10 @@ public class Role {
 
     public Role(RoleModel role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return role.toString();
     }
 }

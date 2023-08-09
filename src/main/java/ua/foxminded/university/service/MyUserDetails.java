@@ -1,4 +1,4 @@
-package ua.foxminded.university.registration;
+package ua.foxminded.university.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

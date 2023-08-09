@@ -3,15 +3,14 @@ package ua.foxminded.university.validator.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.updateData.UserAccountUpdateRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.UserAccountRepository;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.UserValidator;
 
 @ValidationService
-@Log4j2
 @AllArgsConstructor
 public class UserValidatorImpl implements UserValidator {
     private static final int MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME = 16;
@@ -22,7 +21,6 @@ public class UserValidatorImpl implements UserValidator {
     @Override
     public void validateUserId(String userId) throws ValidationException {
         if (userAccountRepository.findById(userId).isEmpty()) {
-            log.info("This userId is not exists!");
             throw new ValidationException("This userId is not exists!");
         }
     }
@@ -35,9 +33,15 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     @Override
+    public void validate(UserAccountUpdateRequest userAccountUpdateRequest) throws ValidationException {
+        validateLogin(userAccountUpdateRequest.getEmail().trim());
+        validateData(userAccountUpdateRequest.getFirstName().trim(), userAccountUpdateRequest.getLastName().trim());
+        validatePassword(userAccountUpdateRequest.getPassword().trim(), userAccountUpdateRequest.getPasswordCheck().trim());
+    }
+
+    @Override
     public void validateEmail(String email) throws ValidationException {
         if (!email.contains("@")) {
-            log.info("Email is not correct!");
             throw new ValidationException("Email is not correct!");
         }
     }
@@ -48,7 +52,15 @@ public class UserValidatorImpl implements UserValidator {
         validationOnSpecialCharacters(lastName);
 
         if (firstName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME || lastName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME) {
-            log.info("First name or last name is has more 16 symbols!");
+            throw new ValidationException("First name or last name is has more 16 symbols!");
+        }
+    }
+
+    private void validateData(String firstName, String lastName) throws ValidationException {
+        validationOnSpecialCharacters(firstName);
+        validationOnSpecialCharacters(lastName);
+
+        if (firstName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME || lastName.length() > MAX_LENGTH_OF_FIRSTNAME_OR_LASTNAME) {
             throw new ValidationException("First name or last name is has more 16 symbols!");
         }
     }
@@ -58,7 +70,6 @@ public class UserValidatorImpl implements UserValidator {
         boolean matchFound = hasSpecial.find();
 
         if (matchFound) {
-            log.info("Data cannot contain special characters!");
             throw new ValidationException("Data cannot contain special characters!");
         }
     }

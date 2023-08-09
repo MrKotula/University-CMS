@@ -1,22 +1,30 @@
 <header class="container" xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header">
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header"
+        xmlns:spring="http://www.w3.org/1999/XSL/Transform">
     <a class="logo" href="/">University</a><br>
+    <h1><spring:message code="greeting" text="default"/></h1>
+    <span th:text="#{lang.change}"></span>:
+    <select id="locales">
+        <option value=""></option>
+        <option value="en" th:text="#{lang.eng}"></option>
+        <option value="ua" th:text="#{lang.ua}"></option>
+    </select>
     <nav>
-        <a href="/">Main page</a>
-        <a href="/about">About us</a>
+        <a href="/" th:text="#{mainPageBtn}"></a>
+        <a href="/about" th:text="#{aboutUsBtn}"></a>
         <span class="auth">
-            <a href="/login">Log In</a>
-            <a href="/registration">Sign Up</a>
+            <a href="/login" th:text="#{logInBtn}"></a>
+            <a href="/registration" th:text="#{signUpBtn}">Sign Up</a>
     </span><br><br><br>
 
         <span sec:authorize="isAuthenticated()">
             <form method="post" th:action="@{/logout}">
-                <button class="logOutBtn" type="submit">Log Out</button>
-                <a class="myAccountBtn" href="/user">My account</a>
+                <button class="logOutBtn" type="submit" th:text="#{logOutBtn}"></button>
+                <a class="myAccountBtn" href="/user" th:text="#{myAccountBtn}"></a>
             </form>
                 <span sec:authorize="hasAuthority('ADMIN')">
                     <form method="post" th:action="@{/logout}">
-                    <a class="adminAccount" href="/admin">Admin</a>
+                    <a class="adminAccount" href="/admin" th:text="#{adminBtn}"></a>
                     </form>
                 </span>
         </span>

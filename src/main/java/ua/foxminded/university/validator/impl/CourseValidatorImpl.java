@@ -3,7 +3,6 @@ package ua.foxminded.university.validator.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.ValidationService;
@@ -11,7 +10,6 @@ import ua.foxminded.university.validator.CourseValidator;
 
 @ValidationService
 @AllArgsConstructor
-@Log4j2
 public class CourseValidatorImpl implements CourseValidator {
     private static final int MAX_LENGTH_OF_COURSE_NAME = 24;
     private static final int MAX_LENGTH_OF_COURSE_DESCRIPTION = 36;
@@ -24,7 +22,6 @@ public class CourseValidatorImpl implements CourseValidator {
         validationOnSpecialCharacters(courseName);
 
         if (courseName.length() > MAX_LENGTH_OF_COURSE_NAME) {
-            log.info("Course name is has more 24 symbols!");
             throw new ValidationException("Course name is has more 24 symbols!");
         }
     }
@@ -34,7 +31,6 @@ public class CourseValidatorImpl implements CourseValidator {
         validationOnSpecialCharacters(courseDescription);
 
         if (courseDescription.length() > MAX_LENGTH_OF_COURSE_DESCRIPTION) {
-            log.info("Course description is has more 36 symbols!");
             throw new ValidationException("Course description is has more 36 symbols!");
         }
     }
@@ -44,7 +40,6 @@ public class CourseValidatorImpl implements CourseValidator {
         boolean matchFound = hasSpecial.find();
 
         if (matchFound) {
-            log.info("Data cannot contain special characters!");
             throw new ValidationException("Data cannot contain special characters!");
         }
     }
@@ -52,7 +47,6 @@ public class CourseValidatorImpl implements CourseValidator {
     @Override
     public void validateCourseId(String courseId) throws ValidationException {
         if (courseRepository.findById(courseId).isEmpty()) {
-            log.info("This courseId is not exists!");
             throw new ValidationException("This courseId is not exists!");
         }
     }

@@ -1,4 +1,4 @@
-package ua.foxminded.university.registration;
+package ua.foxminded.university.service.dto.updateData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,30 +11,36 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegistrationRequest {
+public class UserAccountUpdateRequest {
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;
+
     @ToString.Exclude
     private String password;
     @ToString.Exclude
     private String passwordCheck;
 
-    @ToString.Exclude
+    private Set<Role> roles;
     private RegistrationStatus registrationStatus;
 
-    @ToString.Exclude
-    private Set<Role> roles;
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
-
-    public UserRegistrationRequest(String firstName, String lastName, String email, String password, String passwordCheck) {
+    public UserAccountUpdateRequest(String userId, String firstName, String lastName, String email, String password, String passwordCheck) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.passwordCheck = passwordCheck;
+    }
+
+    public UserAccountUpdateRequest(String userId, String email, Set<Role> roles) {
+        this.userId = userId;
+        this.email = email;
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

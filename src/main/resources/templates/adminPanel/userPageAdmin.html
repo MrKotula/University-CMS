@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>User page for Admin</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="adminPanel">Admin panel</h1>
+    <form style="float: left;" class="formInfo" method="POST" th:action="@{/admin/user/userId}" th:object="${userAccount}">
+        <h3 class="infoAboutUser">Info about user <span style="color: red" th:text="${userAccount.email}"></span></h3>
+        <h3>UserId: <span style="color: yellowgreen" th:text="${userAccount.userId}"></span></h3>
+        <h3>First name: <span style="color: yellowgreen" th:text="${userAccount.firstName}"></span></h3>
+        <h3>Last name: <span style="color: yellowgreen" th:text="${userAccount.lastName}"></span></h3>
+        <h3>Email: <span style="color: yellowgreen" th:text="${userAccount.email}"></span></h3>
+        <h3>Roles: <span style="color: yellowgreen" th:text="${userAccount.roles}"></span></h3>
+        <a class="btnEditRolesAdmin" th:href="@{/admin/user/editRole/{userId}(userId=${userAccount.userId})}">Edit roles</a>
+        <h3>Registered status: <span style="color: yellowgreen" th:text="${userAccount.registrationStatus}"></span></h3>
+        <a class="btnEditInfo" th:href="@{/admin/user/editData/{userId}(userId=${userAccount.userId})}">Edit data</a>
+    </form>
+
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/admin/user/userId}" th:object="${courses}">
+        <h2 style="color:darkgreen">The student is studying at next courses:</h2>
+        <ul th:each="course : ${courses}">
+            <li> <h3>Course: <span style="color: yellowgreen" th:text="${course.courseName}"></span></h3></li>
+        </ul>
+    </form>
+
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

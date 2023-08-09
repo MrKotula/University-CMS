@@ -12,12 +12,12 @@ import ua.foxminded.university.entity.StudentAccount;
 @Repository
 @Transactional
 public interface StudentAccountRepository extends JpaRepository<StudentAccount, String> {
-    @Query(value = "SELECT * FROM schedule.students WHERE user_id IN (SELECT user_id FROM schedule.students_courses "
+    @Query(value = "SELECT * FROM schedule.users WHERE user_id IN (SELECT user_id FROM schedule.students_courses "
             + "WHERE course_id IN (SELECT course_id FROM schedule.courses WHERE course_name =:courseName))", nativeQuery = true)
     List<StudentAccount> findByCourseName(@Param("courseName") String courseName);
 
     @Modifying
-    @Query(value = "update StudentAccount c SET c.groupId =:groupId, c.registrationStatus =REGISTERED WHERE userId =:userId")
+    @Query(value = "update StudentAccount c SET c.groupId =:groupId, c.registrationStatus ='REGISTERED' WHERE c.userId =:userId")
     void changeGroup(@Param("groupId") String groupId, @Param("userId") String userId);
 
     @Modifying

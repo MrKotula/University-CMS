@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit data user for Admin</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1>Edit your data</h1>
+    <form class="editInfoAdmin" method="POST" th:action="@{'/admin/user/editData/' + ${userId}}" th:object="${userUpdateRequest}">
+        <h3>UserId: <span style="color: yellowgreen" th:text="${userUpdateRequest.userId}"></span></h3>
+        <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>
+        <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" placeholder="input your first name"><br>
+        <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" placeholder="input your last name"><br>
+        <input th:value="*{email}" type="text" class="form-control" id="email" name="email" placeholder="input your email"><br>
+        <input th:value="*{password}" type="password" class="form-control" id="password" name="password" placeholder="input your password"><br>
+        <input th:value="*{passwordCheck}" type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="input your password check"><br>
+        <button type="submit">Change data</button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

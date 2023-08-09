@@ -1,7 +1,7 @@
 package ua.foxminded.university.entity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,11 +15,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Entity
-@Table(name = "teachers", schema = "schedule")
+@DiscriminatorValue("US_TA")
 public class TeacherAccount extends UserAccount {
 
     @Builder(builderMethodName = "teacherBuilder")
-    public TeacherAccount(String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
-        super(firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+    public TeacherAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
     }
 }

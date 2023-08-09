@@ -2,6 +2,7 @@ package ua.foxminded.university.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,13 +22,16 @@ import lombok.ToString;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @Data
 @EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email"})
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(schema = "schedule", name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "User_TYPE")
 public abstract class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id")
@@ -70,7 +75,6 @@ public abstract class User {
         this.passwordCheck = passwordCheck;
         this.roles = roles;
     }
-
 
     protected User(String userId, String firstName, String lastName, String email, String password, String passwordCheck) {
         this.userId = userId;

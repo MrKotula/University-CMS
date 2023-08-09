@@ -1,6 +1,6 @@
 package ua.foxminded.university.validator;
 
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface StudentValidator {

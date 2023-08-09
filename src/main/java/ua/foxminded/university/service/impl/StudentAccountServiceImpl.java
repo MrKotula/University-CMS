@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
@@ -46,12 +46,6 @@ public class StudentAccountServiceImpl implements StudentAccountService {
         studentValidator.validateStudentId(studentId);
         studentValidator.validateCourseId(courseId);
         studentAccountRepository.removeStudentFromCourse(studentId, courseId);
-    }
-
-    @Override
-    public void deleteById(String studentId) {
-        studentValidator.validateStudentId(studentId);
-        studentAccountRepository.deleteById(studentId);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.entity.Course;
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
@@ -120,7 +120,7 @@ class StudentAccountServiceImplTest {
         testStudentAccount.setCourses(courses);
         List<StudentAccount> testListStudentAccount = Arrays.asList(testStudentAccount);
 
-        assertEquals(testListStudentAccount, studentAccountService.findByCourseName("math"));
+        assertEquals(testListStudentAccount, studentAccountService.findByCourseName("Mathematics"));
     }
 
     @Test
@@ -130,7 +130,7 @@ class StudentAccountServiceImplTest {
         studentAccountService.removeStudentFromCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1",
                 "1d95bc79-a549-4d2c-aeb5-3f929aee0f22");
 
-        assertEquals(emptyList, studentAccountService.findByCourseName("math"));
+        assertEquals(emptyList, studentAccountService.findByCourseName("Mathematics"));
     }
 
     @Test
@@ -144,17 +144,6 @@ class StudentAccountServiceImplTest {
         studentAccountRepository.save(new StudentAccount("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "John", "Doe", "dis@ukr.net", "123140", "123140", RegistrationStatus.NEW, new HashSet<>()));
         studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
-        assertEquals(testListStudentAccount, studentAccountService.findByCourseName("drawing"));
-    }
-
-    @Test
-    @Transactional
-    void verifyUseMethodWhenUseDeleteById() {
-        List<StudentAccount> testListStudentAccount = Arrays.asList(new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", null, null, null,
-                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "RT85796142"));
-
-        studentAccountService.deleteById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
-
-        assertEquals(testListStudentAccount, studentAccountRepository.findAll());
+        assertEquals(testListStudentAccount, studentAccountService.findByCourseName("Drawing"));
     }
 }

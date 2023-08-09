@@ -10,7 +10,7 @@ import ua.foxminded.university.entity.Group;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, String> {
     @Query(value = "SELECT groups.group_id, groups.group_name, COUNT(user_id) FROM schedule.groups "
-            + "LEFT JOIN schedule.students ON groups.group_id = students.group_id GROUP BY groups.group_id, groups.group_name "
+            + "LEFT JOIN schedule.users ON groups.group_id = users.group_id GROUP BY groups.group_id, groups.group_name "
             + "HAVING COUNT(user_id) <=:studentCount ORDER BY groups.group_id", nativeQuery = true)
     List<Group> getGroupsWithLessEqualsStudentCount(@Param("studentCount") int studentCount);
 }

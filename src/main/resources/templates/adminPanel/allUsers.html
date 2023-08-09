@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="adminPanel">Admin panel</h1>
+    <h2>List all users</h2>
+    <form style="float: left;" class="formAllUsersInfo" method="POST" th:action="@{/admin/allUsers}" th:object="${users}">
+        <ul th:each="user : ${users}">
+            <li style="float: left;"> <h4>User: UserId: <span style="color: olivedrab" th:text="${user.userId}"></span></h4>
+                <h4>Email: <span style="color: olivedrab" th:text="${user.email}"></span></h4>
+                <h4>User roles: <span style="color: olivedrab" th:text="${user.roles}"></span></h4>
+                <h4>Status: <span style="color: olivedrab" th:text="${user.registrationStatus}"></span></h4>
+                <a class="btnInfoAboutUser" th:href="@{/admin/user/{userId}(userId=${user.userId})}">User info</a>
+            </li>
+        </ul>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

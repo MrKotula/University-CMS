@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != ''){
+                window.location.replace('/about?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel">Welcome to admin panel</h1>
     <h2 th:inline="text">Hello, <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2>
+    <a class="btnAllUsers" th:href="@{/admin/users/all}">List all users</a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>
