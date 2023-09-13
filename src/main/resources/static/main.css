@@ -87,6 +87,10 @@ header nav a:hover {
     left: 10px;
 }
 
+.courseLinkInfo {
+    text-decoration: none;
+}
+
 h2 {
     display: inline-block;
     margin-left: 10px;
@@ -206,6 +210,10 @@ form button:hover {
     transform: scale(1.2);
     transition: background 500ms ease;
     background: darkgreen;
+}
+
+.langBox {
+    float: right;
 }
 
 footer {
