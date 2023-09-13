@@ -46,4 +46,9 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getCoursesMissingByStudentId(String userId) {
         return courseRepository.getCoursesMissingByStudentId(userId);
     }
+
+    @Override
+    public List<Course> findAllCourses() {
+        return courseRepository.findAll();
+    }
 }

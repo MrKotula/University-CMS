@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300;1,500&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    background: #e6e6ff;
+}
+
+.adminPanel {
+    color: red;
+}
+
+.formAllUsersInfo span {
+    background: darkgrey;
+}
+
+.formAllUsersInfo h4 {
+    background: darkgrey;
+    display: inline;
+    float: left;
+    margin-left: 15px;
+    margin-top: 3px;
+}
+
+.formAllUsersInfo li {
+    background: darkgrey;
+    width: 1800px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 10px;
+}
+
+.btnInfoAboutUser {
+    margin-right: 55px;
+    float: right;
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: cornflowerblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+}
+
+.btnInfoAboutUser:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    color: snow;
+    transition: all 0.3s ease;
+}
+
+.infoAboutUser {
+    color: darkgreen;
+    font-size: 35px;
+}
+
+.btnEditRolesAdmin {
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: red;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+}
+
+.btnEditRolesAdmin:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    transition: background 500ms ease;
+    background: darkgreen;
+}
+
+.btnAllUsers {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllUsers:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}
+
+.checkbox {
+    width: 100px;
+    height: 15px;
+    margin-left: 170px;
+    vertical-align: middle;
+    position: relative;
+    top: 20px;
+}
+
+

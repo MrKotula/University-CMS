@@ -5,9 +5,21 @@
     <title>About</title>
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != ''){
+                window.location.replace('/about?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
 <header th:replace="~{layouts/header :: header}"></header>
-<h1><span th:text="${title}"></span></h1>
+<h1 th:text="#{greetingAboutUs}"></h1>
 <footer th:replace="~{layouts/footer :: footer}" ></footer>
 </body>
 </html>

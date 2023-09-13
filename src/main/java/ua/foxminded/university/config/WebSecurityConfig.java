@@ -26,7 +26,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                             requests.requestMatchers("/", "/about", "registration", "/login").permitAll();
                             requests.requestMatchers("main.css").permitAll();
-                            requests.requestMatchers("/user").hasAuthority("USER");
+                            requests.requestMatchers("/user").hasAnyAuthority("USER", "STUDENT");
                             requests.requestMatchers("/admin", "/admin/**").hasAuthority("ADMIN");
                             requests.anyRequest().authenticated();
                         }

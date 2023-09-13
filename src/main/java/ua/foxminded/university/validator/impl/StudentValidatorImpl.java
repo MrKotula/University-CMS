@@ -1,8 +1,7 @@
 package ua.foxminded.university.validator.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.validator.CourseValidator;
 import ua.foxminded.university.validator.GroupValidator;
 import ua.foxminded.university.validator.StudentValidator;
@@ -11,7 +10,6 @@ import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @ValidationService
-@Log4j2
 @AllArgsConstructor
 public class StudentValidatorImpl implements StudentValidator {
     private final UserValidator userValidator;

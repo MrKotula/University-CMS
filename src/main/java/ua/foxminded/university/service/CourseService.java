@@ -14,4 +14,6 @@ public interface CourseService {
     List<Course> findByStudentId(String userId);
 
     List<Course> getCoursesMissingByStudentId(String userId);
+
+    List<Course> findAllCourses();
 }
