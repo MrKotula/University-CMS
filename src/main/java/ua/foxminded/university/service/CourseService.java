@@ -2,6 +2,7 @@ package ua.foxminded.university.service;
 
 import java.util.List;
 import ua.foxminded.university.entity.Course;
+import ua.foxminded.university.service.dto.updateData.CourseUpdateRequest;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface CourseService {
@@ -16,4 +17,6 @@ public interface CourseService {
     List<Course> getCoursesMissingByStudentId(String userId);
 
     List<Course> findAllCourses();
+
+    CourseUpdateRequest getCourseById(String email);
 }
