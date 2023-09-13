@@ -56,7 +56,8 @@
     <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/user}" th:object="${courses}">
         <h2 style="color:darkgreen" th:text="#{infoCourses}"></h2>
         <ul th:each="course : ${courses}">
-            <li><h3><span style="color: yellowgreen" th:text="${course.courseName}"></span></h3></li>
+            <li><h3><a class="courseLinkInfo" style="color: yellowgreen" th:text="${course.courseName}"
+                       th:href="@{/course/info/{userId}(userId=${course.courseId})}"></a></h3></li>
         </ul>
     </form>
 </main>
