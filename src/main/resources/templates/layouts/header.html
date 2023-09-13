@@ -2,13 +2,18 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header"
         xmlns:spring="http://www.w3.org/1999/XSL/Transform">
     <a class="logo" href="/">University</a><br>
-    <h1><spring:message code="greeting" text="default"/></h1>
-    <span th:text="#{lang.change}"></span>:
-    <select id="locales">
-        <option value=""></option>
-        <option value="en" th:text="#{lang.eng}"></option>
-        <option value="ua" th:text="#{lang.ua}"></option>
-    </select>
+    <h1>
+        <spring:message code="greeting" text="default"/>
+    </h1>
+    <div class="langBox">
+        <span th:text="#{lang.change}"></span>:
+        <select id="locales">
+            <option value=""></option>
+            <option value="en" th:text="#{lang.eng}"></option>
+            <option value="ua" th:text="#{lang.ua}"></option>
+        </select>
+    </div>
+    <br><br>
     <nav>
         <a href="/" th:text="#{mainPageBtn}"></a>
         <a href="/about" th:text="#{aboutUsBtn}"></a>
