@@ -11,7 +11,7 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel">Admin panel</h1>
-    <form style="float: left;" class="formInfo" method="POST" th:action="@{'/admin/user/editRole/' + ${userId}}" th:object="${updateUserAccountRequest}">
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{'/admin/user/editRole/' + ${userId}}" th:object="${updateUserAccountRequest}">
         <h3 class="infoAboutUser">Info about user <span style="color: red" th:text="${updateUserAccountRequest.email}"></span></h3>
         <h3>UserId: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.userId}"></span></h3>
         <h3>Roles: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.roles}"></span></h3>
