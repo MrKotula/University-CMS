@@ -57,6 +57,6 @@ public class CourseServiceImpl implements CourseService {
     public CourseUpdateRequest getCourseById(String courseId) {
         Course course = courseRepository.findById(courseId).get();
 
-        return new CourseUpdateRequest(course.getCourseId(), course.getCourseName(), course.getCourseDescription());
+        return new CourseUpdateRequest(course.getCourseId(), course.getCourseName(), course.getCourseDescription(), course.getTeachers());
     }
 }
