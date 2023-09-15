@@ -15,7 +15,7 @@
         <h3 class="infoAboutUser">Info about user <span style="color: red" th:text="${updateUserAccountRequest.email}"></span></h3>
         <h3>UserId: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.userId}"></span></h3>
         <h3>Roles: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.roles}"></span></h3>
-        <label style="font-size: 22px">Choose are roles:</label><br>
+        <label style="font-size: 19px">Choose are roles:</label><br>
             <input class="checkbox" type="checkbox" name="roles"
                    th:each="role : ${listRoles}"
                    th:text="${role.role}"
