@@ -9,6 +9,28 @@
     color: red;
 }
 
+.formInfoAdmin h3 {
+    display: block;
+    width: 450px;
+    left: 10px;
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+.formInfoAdmin span {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 17px;
+}
+
+.formInfoAdmin {
+    display: block;
+    width: 600px;
+    padding-left: 15px;
+    left: 10px;
+    text-align: left;
+}
+
 .formAllUsersInfo span {
     background: darkgrey;
 }
