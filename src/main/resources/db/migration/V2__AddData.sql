@@ -33,16 +33,18 @@ VALUES ('US_SA', '33c99439-aaf0-4ebd-a07a-bd0c550d2311', '3c01e6f1-762e-43b8-a6e
         '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'NEW');
 
 INSERT INTO schedule.users (user_type, user_id, first_name, last_name, email, password,
-                            password_check, registration_status)
+                            password_check, registration_status, degrees, phone_number)
 VALUES ('US_TA', '33c99439-aaf0-4ebd-a07a-bd0c550d8799', 'Jin',
         'Tores', 'teacherMail@gmail.com', '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS',
-        '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED');
+        '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED',
+        'DOCTORAL', '067-768-874');
 
 INSERT INTO schedule.users (user_type, user_id, first_name, last_name, email, password,
-                            password_check, registration_status)
+                            password_check, registration_status, degrees, phone_number)
 VALUES ('US_TA', '33c99439-aaf0-4ebd-a07a-bd0c55asUr71', 'Nick',
         'Bills', 'accountMail@gmail.com', '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS',
-        '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED');
+        '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED',
+        'MASTER', '073-587-887');
 
 INSERT INTO schedule.users (user_type, user_id, first_name, last_name, email, password, password_check,
                             registration_status)
