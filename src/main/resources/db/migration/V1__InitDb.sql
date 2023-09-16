@@ -4,7 +4,7 @@ CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTERED');
 
 CREATE TYPE roleModel AS ENUM ('ADMIN', 'MODERATOR', 'STUDENT', 'TEACHER', 'USER');
 
-CREATE TYPE degree AS ENUM ('ASSOCIATE', 'BACHELOR', 'MASTER', 'DOCTORAL', 'PROFESSIONAL');
+CREATE TYPE degrees AS ENUM ('ASSOCIATE', 'BACHELOR', 'MASTER', 'DOCTORAL', 'PROFESSIONAL');
 
 CREATE TABLE schedule.groups
 (
@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS schedule.users
     registration_status registrationStatus,
     group_id character(36),
     student_card character(36),
+    degrees degrees,
+    phone_number character varying(36),
     CONSTRAINT user_id_pkey PRIMARY KEY (user_id),
     CONSTRAINT group_id FOREIGN KEY (group_id)
     REFERENCES schedule.groups (group_id)
