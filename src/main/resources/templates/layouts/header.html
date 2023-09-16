@@ -27,6 +27,11 @@
                     <a class="adminAccount" href="/admin" th:text="#{adminBtn}"></a>
                     </form>
                 </span>
+                <span sec:authorize="hasAuthority('TEACHER')">
+                    <form method="post" th:action="@{/logout}">
+                    <a class="teacherAccount" th:href="@{/teacher}" th:text="#{teacherBtn}"></a>
+                    </form>
+                </span>
         </span>
     </nav>
 </header>
