@@ -4,6 +4,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -26,7 +28,8 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("US_TA")
 public class TeacherAccount extends UserAccount {
-    @Column(name="degree")
+    @Column(name="degrees")
+    @Enumerated(EnumType.STRING)
     private Degree degree;
 
     @Column(name="phone_number")
