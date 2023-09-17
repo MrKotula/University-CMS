@@ -24,7 +24,89 @@
 }
 
 .formInfoTeacher h3 span {
+    background: transparent;
     display: inline-block;
     margin-left: -20px;
     font-size: 17px;
+}
+
+.formAllStudentsInfo {
+    display: inline;
+    width: 700px;
+}
+
+.formAllStudentsInfo ul {
+    margin-left: 50px;
+    float: left;
+    display: inline;
+    width: 730px;
+    height: 210px;
+    border-radius: 5px;
+    border: 1px solid darkgrey;
+}
+
+.formAllStudentsInfo li {
+    margin-top: 7px;
+    display: inline;
+    float: left;
+}
+
+.mainParamsTeacher {
+    text-align: left;
+    display: inline;
+    width: 700px;
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.mainParamsTeacher h3 span {
+    background: transparent;
+    text-align: left;
+    margin-left: 10px;
+    color: olivedrab;
+}
+
+.mainParamsTeacher h3 {
+    font-size: 17px;
+    display: inline;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.btnInfoAboutStudent {
+    margin-right: 5px;
+    margin-top: 5px;
+    float: right;
+    padding: 10px 15px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: cornflowerblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+}
+
+.btnAllStudents {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllStudents:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
 }
