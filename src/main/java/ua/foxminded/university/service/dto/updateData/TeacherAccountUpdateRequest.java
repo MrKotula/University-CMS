@@ -1,6 +1,7 @@
 package ua.foxminded.university.service.dto.updateData;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TeacherAccountUpdateRequest {
     private String userId;
     private String firstName;
