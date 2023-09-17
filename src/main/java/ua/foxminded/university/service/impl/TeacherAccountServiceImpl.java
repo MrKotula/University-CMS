@@ -20,9 +20,19 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
     public TeacherAccountUpdateRequest getTeacherByEmail(String email) {
         TeacherAccount teacherAccount = teacherAccountRepository.getTeacherByEmail(email);
 
-        return new TeacherAccountUpdateRequest(teacherAccount.getUserId(), teacherAccount.getFirstName(), teacherAccount.getLastName(),
-                teacherAccount.getEmail(), teacherAccount.getPassword(), teacherAccount.getPasswordCheck(), teacherAccount.getRoles(),
-                teacherAccount.getRegistrationStatus(), teacherAccount.getDegree(), teacherAccount.getPhoneNumber(), teacherAccount.getDiplomaStudents());
+        return TeacherAccountUpdateRequest.builder()
+                .userId(teacherAccount.getUserId())
+                .firstName(teacherAccount.getFirstName())
+                .lastName(teacherAccount.getLastName())
+                .email(teacherAccount.getEmail())
+                .password(teacherAccount.getPassword())
+                .passwordCheck(teacherAccount.getPasswordCheck())
+                .roles(teacherAccount.getRoles())
+                .registrationStatus(teacherAccount.getRegistrationStatus())
+                .degree(teacherAccount.getDegree())
+                .phoneNumber(teacherAccount.getPhoneNumber())
+                .diplomaStudents(teacherAccount.getDiplomaStudents())
+                .build();
     }
 
     @Override
