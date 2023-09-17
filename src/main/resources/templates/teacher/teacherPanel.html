@@ -38,6 +38,7 @@
             <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.diplomaStudents}"></span></h3>
         </div>
     </form>
+    <a class="btnAllStudents" th:href="@{/teacher/students/all}">List all Students</a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>
