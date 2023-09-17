@@ -4,4 +4,6 @@ import ua.foxminded.university.service.dto.updateData.TeacherAccountUpdateReques
 
 public interface TeacherAccountService {
     TeacherAccountUpdateRequest getTeacherByEmail(String email);
+
+    void addStudentToScienceSupervisor(String userId, String userIdStudent);
 }
