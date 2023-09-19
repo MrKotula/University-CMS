@@ -58,4 +58,9 @@ public class Course {
     public void addTeacher(TeacherAccount teacherAccount) {
         this.teachers.add(teacherAccount);
     }
+
+    @Override
+    public String toString() {
+        return courseName;
+    }
 }
