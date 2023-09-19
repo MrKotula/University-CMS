@@ -13,6 +13,7 @@ import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentAccountService;
@@ -46,6 +47,25 @@ public class StudentAccountServiceImpl implements StudentAccountService {
         studentValidator.validateStudentId(studentId);
         studentValidator.validateCourseId(courseId);
         studentAccountRepository.removeStudentFromCourse(studentId, courseId);
+    }
+
+    @Override
+    public StudentAccountResponse findUserById(String userId) {
+        StudentAccount studentAccount = studentAccountRepository.findById(userId).get();
+
+        return StudentAccountResponse.builder()
+                .userId(studentAccount.getUserId())
+                .firstName(studentAccount.getFirstName())
+                .lastName(studentAccount.getLastName())
+                .email(studentAccount.getEmail())
+                .password(studentAccount.getPassword())
+                .passwordCheck(studentAccount.getPasswordCheck())
+                .roles(studentAccount.getRoles())
+                .registrationStatus(studentAccount.getRegistrationStatus())
+                .groupId(studentAccount.getGroupId())
+                .studentCard(studentAccount.getStudentCard())
+                .courses(studentAccount.getCourses())
+                .build();
     }
 
     @Override
