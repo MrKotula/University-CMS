@@ -23,7 +23,7 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel">Welcome to admin panel</h1>
-    <h2 th:inline="text">Hello, <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2>
+    <h2 th:inline="text">Hello, <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
     <a class="btnAllUsers" th:href="@{/admin/users/all}">List all users</a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>

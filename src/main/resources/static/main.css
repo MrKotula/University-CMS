@@ -56,7 +56,7 @@ header nav a:hover {
 
 .formInfo span {
     display: inline-block;
-    margin-left: -70px;
+    margin-left: -90px;
     font-size: 17px;
 }
 
@@ -71,20 +71,28 @@ header nav a:hover {
 .mainParams {
     border-radius: 5px;
     border-color: darkgrey;
-    border: 1px solid silver;
+    border: 1px solid;
     margin-top: 10px;
     margin-bottom: 15px;
+}
+
+.mainParams h3 span {
+    color: yellowgreen;
 }
 
 .formCourseInfo {
     border-radius: 5px;
     border-color: darkgrey;
-    border: 1px solid silver;
+    border: 1px solid;
     display: block;
     width: 600px;
     margin-left: 20px;
     padding-left: 15px;
     left: 10px;
+}
+
+.courseLinkInfo {
+    text-decoration: none;
 }
 
 h2 {
@@ -104,6 +112,33 @@ h2 {
 
 .adminAccount {
     background: green;
+}
+
+.studentAccount {
+    float: right;
+    margin-left: 15px;
+    width: 140px;
+    height: 20px;
+    color: black;
+    border-radius: 30px;
+    padding: 10px 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    text-decoration: none;
+    background: yellow;
+    text-align: center;
+}
+
+.studentAccount:hover {
+    color: steelblue;
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .logOutBtn {
@@ -153,7 +188,6 @@ form input {
     font-family: 'Montserrat', sans-serif;
     display: block;
     resize: none;
-    display: flex;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -206,6 +240,10 @@ form button:hover {
     transform: scale(1.2);
     transition: background 500ms ease;
     background: darkgreen;
+}
+
+.langBox {
+    float: right;
 }
 
 footer {

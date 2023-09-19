@@ -32,6 +32,18 @@ values ('US_SA', '33c99439-aaf0-4ebd-a07a-bd0c550d2311', '3c01e6f1-762e-43b8-a6e
         'Does', 'dtestMail@gmail.com', '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS',
         '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'NEW');
 
+insert into schedule.users (user_type, user_id, first_name, last_name, email, password,
+                                password_check, registration_status)
+values ('US_TA', '33c99439-aaf0-4ebd-a07a-bd0c550d8799', 'Jin',
+    'Tores', 'teacherMail@gmail.com', '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS',
+    '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED');
+
+insert into schedule.users (user_type, user_id, first_name, last_name, email, password,
+                            password_check, registration_status)
+values ('US_TA', '33c99439-aaf0-4ebd-a07a-bd0c55asUr71', 'Nick',
+        'Bills', 'accountMail@gmail.com', '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS',
+        '$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS', 'REGISTERED');
+
 insert into schedule.users (user_type, user_id, first_name, last_name, email, password, password_check,
                             registration_status)
 values ('US_AC', '11111439-aaf0-4ebd-a07a-bd0c550d2333', 'Admin', 'Admin', 'admin@',
@@ -41,6 +53,9 @@ values ('US_AC', '11111439-aaf0-4ebd-a07a-bd0c550d2333', 'Admin', 'Admin', 'admi
 insert into schedule.students_courses (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c550db4e1', '1d95bc79-a549-4d2c-aeb5-3f929aee0f22');
 insert into schedule.students_courses (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c550db4e1', '1d95bc79-a549-4d2c-aeb5-3f929aee1234');
 insert into schedule.students_courses (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c550d2311', '1d95bc79-a549-4d2c-aeb5-3f929aee1234');
+
+insert into schedule.course_teachers (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c550d8799', '1d95bc79-a549-4d2c-aeb5-3f929aee0f22');
+insert into schedule.course_teachers (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c55asUr71', '1d95bc79-a549-4d2c-aeb5-3f929aee0f22');
 
 INSERT INTO schedule.roles (role_id, role) VALUES ('54RG9439-aaf0-4ebd-a07a-bd0c550db4e1', 'ADMIN');
 INSERT INTO schedule.roles (role_id, role) VALUES ('64TR9439-aaf0-4ebd-a07a-bd0c550db4e1', 'MODERATOR');
@@ -52,3 +67,7 @@ INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-
 INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c550d2311', '98LD9439-aaf0-4ebd-a07a-bd0c550db4e1');
 INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('11111439-aaf0-4ebd-a07a-bd0c550d2333', '54RG9439-aaf0-4ebd-a07a-bd0c550db4e1');
 INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('11111439-aaf0-4ebd-a07a-bd0c550d2333', 'LDG69439-aaf0-4ebd-a07a-bd0c550db4e1');
+INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c550d8799', 'PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1');
+INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c550d8799', 'LDG69439-aaf0-4ebd-a07a-bd0c550db4e1');
+INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c55asUr71', 'PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1');
+INSERT INTO schedule.users_roles (user_id, role_id) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c55asUr71', 'LDG69439-aaf0-4ebd-a07a-bd0c550db4e1');

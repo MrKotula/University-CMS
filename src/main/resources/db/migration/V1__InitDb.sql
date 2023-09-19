@@ -44,6 +44,14 @@ CREATE TABLE IF NOT EXISTS schedule.users
     ON DELETE SET NULL
     );
 
+CREATE TABLE IF NOT EXISTS schedule.course_teachers
+(
+    user_id character(36) NOT NULL,
+    course_id character(36) NOT NULL,
+    CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id),
+    CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES schedule.courses (course_id)
+);
+
 CREATE TABLE IF NOT EXISTS schedule.students_courses
 (
     user_id character(36) NOT NULL,
@@ -54,7 +62,7 @@ CREATE TABLE IF NOT EXISTS schedule.students_courses
     CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id)
     ON UPDATE NO ACTION
     ON DELETE CASCADE
-);
+    );
 
 CREATE TABLE schedule.users_roles (
   user_id character(36) NOT NULL,

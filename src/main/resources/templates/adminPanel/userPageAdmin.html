@@ -11,7 +11,7 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel">Admin panel</h1>
-    <form style="float: left;" class="formInfo" method="POST" th:action="@{/admin/user/userId}" th:object="${userAccount}">
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{/admin/user/userId}" th:object="${userAccount}">
         <h3 class="infoAboutUser">Info about user <span style="color: red" th:text="${userAccount.email}"></span></h3>
         <h3>UserId: <span style="color: yellowgreen" th:text="${userAccount.userId}"></span></h3>
         <h3>First name: <span style="color: yellowgreen" th:text="${userAccount.firstName}"></span></h3>
