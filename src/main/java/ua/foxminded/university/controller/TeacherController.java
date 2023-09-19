@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.TeacherAccountService;
-import ua.foxminded.university.service.dto.updateData.TeacherAccountUpdateRequest;
+import ua.foxminded.university.service.dto.response.TeacherAccountResponse;
 
 @Controller
 @AllArgsConstructor
@@ -43,7 +43,7 @@ public class TeacherController {
 
     @PostMapping("/teacher/user/{studentId}")
     public String viewUserData(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String studentId) {
-        TeacherAccountUpdateRequest teacherAccount = teacherAccountService.getTeacherByEmail(userDetails.getUsername());
+        TeacherAccountResponse teacherAccount = teacherAccountService.getTeacherByEmail(userDetails.getUsername());
 
         teacherAccountService.addStudentToScienceSupervisor(teacherAccount.getUserId(), studentId);
         log.warn("Added student to Supervisor by " + teacherAccount.getEmail());

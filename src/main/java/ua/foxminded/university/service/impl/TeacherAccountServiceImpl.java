@@ -7,7 +7,7 @@ import ua.foxminded.university.entity.TeacherAccount;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.repository.TeacherAccountRepository;
 import ua.foxminded.university.service.TeacherAccountService;
-import ua.foxminded.university.service.dto.updateData.TeacherAccountUpdateRequest;
+import ua.foxminded.university.service.dto.response.TeacherAccountResponse;
 import java.util.List;
 
 @Service
@@ -17,10 +17,10 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
     private final StudentAccountRepository studentAccountRepository;
 
     @Override
-    public TeacherAccountUpdateRequest getTeacherByEmail(String email) {
+    public TeacherAccountResponse getTeacherByEmail(String email) {
         TeacherAccount teacherAccount = teacherAccountRepository.getTeacherByEmail(email);
 
-        return TeacherAccountUpdateRequest.builder()
+        return TeacherAccountResponse.builder()
                 .userId(teacherAccount.getUserId())
                 .firstName(teacherAccount.getFirstName())
                 .lastName(teacherAccount.getLastName())
