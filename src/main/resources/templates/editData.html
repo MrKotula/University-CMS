@@ -5,20 +5,34 @@
     <title>Edit data</title>
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1>Edit your data</h1>
+    <h1 th:text="#{infoEditYourData}"></h1>
     <form class="editInfo" method="POST" th:action="@{'/user/editData/' + ${userId}}" th:object="${userUpdateRequest}">
-        <h3>Your userId: <span style="color: yellowgreen" th:text="${userUpdateRequest.userId}"></span></h3>
+        <h3 th:text="#{paramUserId}"></h3>
+        <h3><span style="color: yellowgreen" th:text="${userUpdateRequest.userId}"></span></h3>
         <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>
-        <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" placeholder="input your first name"><br>
-        <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" placeholder="input your last name"><br>
-        <input th:value="*{email}" type="text" class="form-control" id="email" name="email" placeholder="input your email"><br>
-        <input th:value="*{password}" type="password" class="form-control" id="password" name="password" placeholder="input your password"><br>
-        <input th:value="*{passwordCheck}" type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="input your password check"><br>
-        <button type="submit">Change my data</button>
+        <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" th:placeholder="#{inputFirstName}"><br>
+        <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" th:placeholder="#{inputLastName}"><br>
+        <input th:value="*{email}" type="text" class="form-control" id="email" name="email" th:placeholder="#{inputEmail}"><br>
+        <input th:value="*{password}" type="password" class="form-control" id="password" name="password" th:placeholder="#{inputPassword}"><br>
+        <input th:value="*{passwordCheck}" type="password" class="form-control" id="passwordCheck" name="passwordCheck" th:placeholder="#{inputPasswordCheck}"><br>
+        <button type="submit" th:text="#{editMyDataBtn}"></button>
     </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>

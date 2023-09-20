@@ -6,24 +6,48 @@
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="adminPanel">Admin panel</h1>
+    <h1 class="adminPanel" th:text="#{infoAdminPanel}"></h1>
     <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{'/admin/user/editRole/' + ${userId}}" th:object="${updateUserAccountRequest}">
-        <h3 class="infoAboutUser">Info about user <span style="color: red" th:text="${updateUserAccountRequest.email}"></span></h3>
-        <h3>UserId: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.userId}"></span></h3>
-        <h3>Roles: <span style="color: yellowgreen" th:text="${updateUserAccountRequest.roles}"></span></h3>
-        <label style="font-size: 19px">Choose are roles:</label><br>
+        <div class="mainParamsAdmin">
+            <h3 class="infoAboutUser" th:text="#{infoAboutUser}"></h3>
+            <h3><span style="color: red" th:text="${updateUserAccountRequest.email}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramUserIdAdm}">UserId: <span style="color: yellowgreen"
+                                                          th:text="${userAccount.userId}"></span></h3>
+            <h3><span style="color: yellowgreen" th:text="${updateUserAccountRequest.userId}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramRoles}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${updateUserAccountRequest.roles}"></span></h3>
+        </div>
+        <div class="chooseRoles">
+            <label style="font-size: 25px" th:text="#{infoChooseRoles}"></label><br>
             <input class="checkbox" type="checkbox" name="roles"
                    th:each="role : ${listRoles}"
                    th:text="${role.role}"
                    th:value="${role.role}"
             /><br>
-        <button type="submit">Edit roles</button>
+            <button type="submit" th:text="#{editRolesBtn}"></button>
+        </div>
     </form>
-
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>
