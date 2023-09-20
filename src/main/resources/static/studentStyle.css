@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300;1,500&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    background: #e6e6ff;
+}
+
+.formInfoStudent {
+    border-radius: 5px;
+    display: block;
+    width: 600px;
+    margin-left: 20px;
+    padding-left: 15px;
+    left: 10px;
+    text-align: left;
+}
+.formInfoStudent h3 {
+    display: inline-block;
+    width: 200px;
+    left: 10px;
+    margin-left: 10px;
+    font-size: 17px;
+}
+.formInfoStudent h3 span {
+    background: transparent;
+    display: inline-block;
+    margin-left: -20px;
+    font-size: 17px;
+}
+
+.mainParamsStudent {
+    border-radius: 5px;
+    border-color: darkgrey;
+    border: 1px solid;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.mainParamsStudent h3 span {
+    width: 600px;
+    color: yellowgreen;
+}

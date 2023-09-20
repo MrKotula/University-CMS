@@ -3,7 +3,7 @@ package ua.foxminded.university.service;
 import java.util.List;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.entity.StudentAccount;
-import ua.foxminded.university.service.dto.updateData.StudentAccountUpdateRequest;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface StudentAccountService {
@@ -21,7 +21,5 @@ public interface StudentAccountService {
 
     void removeStudentFromCourse(String studentId, String courseId);
 
-    List<StudentAccount> findAllStudents();
-
-    StudentAccountUpdateRequest findStudentById(String userId);
+    StudentAccountResponse findUserById(String userId);
 }

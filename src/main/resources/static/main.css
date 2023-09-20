@@ -56,7 +56,7 @@ header nav a:hover {
 
 .formInfo span {
     display: inline-block;
-    margin-left: -70px;
+    margin-left: -90px;
     font-size: 17px;
 }
 
@@ -71,20 +71,28 @@ header nav a:hover {
 .mainParams {
     border-radius: 5px;
     border-color: darkgrey;
-    border: 1px solid silver;
+    border: 1px solid;
     margin-top: 10px;
     margin-bottom: 15px;
+}
+
+.mainParams h3 span {
+    color: yellowgreen;
 }
 
 .formCourseInfo {
     border-radius: 5px;
     border-color: darkgrey;
-    border: 1px solid silver;
+    border: 1px solid;
     display: block;
     width: 600px;
     margin-left: 20px;
     padding-left: 15px;
     left: 10px;
+}
+
+.courseLinkInfo {
+    text-decoration: none;
 }
 
 h2 {
@@ -157,7 +165,6 @@ form input {
     font-family: 'Montserrat', sans-serif;
     display: block;
     resize: none;
-    display: flex;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -210,6 +217,10 @@ form button:hover {
     transform: scale(1.2);
     transition: background 500ms ease;
     background: darkgreen;
+}
+
+.langBox {
+    float: right;
 }
 
 footer {
