@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Student page for teacher</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/teacherStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 th:text="#{infoTeacherPanel}"></h1>
+    <h2 th:text="#{infoAboutStudent}"></h2><br>
+    <form style="float: left;" class="formInfoTeacher" method="POST" th:action="@{'/teacher/user/' + ${userId}}" th:object="${student}">
+        <div class="mainParamsTeacher">
+        <h3 th:text="#{paramStudentId}"></h3>
+        <h3><span th:text="${student.userId}"></span></h3>
+    </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramFirstName}"></h3>
+            <h3><span th:text="${student.firstName}"></span></h3>
+        </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramLastName}"></h3>
+            <h3><span th:text="${student.lastName}"></span></h3>
+        </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramEmail}"></h3>
+            <h3><span th:text="${student.email}"></span></h3>
+        </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramGroupId}"></h3>
+            <h3><span th:text="${student.groupId}"></span></h3>
+        </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramStudentId}"></h3>
+            <h3><span th:text="${student.studentCard}"></span></h3>
+        </div>
+        <div class="mainParamsTeacher">
+            <h3 th:text="#{paramCourses}"></h3>
+            <h3><span th:text="${student.courses}"></span></h3>
+        </div>
+        <button class="btnAcceptStudent" type="submit" th:text="#{acceptStudentBtn}"></button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

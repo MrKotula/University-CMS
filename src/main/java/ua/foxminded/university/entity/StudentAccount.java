@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper = true)
 @Entity
 @DiscriminatorValue("US_SA")
 public class StudentAccount extends UserAccount {
@@ -63,5 +61,10 @@ public class StudentAccount extends UserAccount {
         super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
         this.groupId = groupId;
         this.studentCard = studentCard;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " ( email: " + email + ")";
     }
 }

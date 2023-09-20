@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.entity.Role;
+import ua.foxminded.university.entity.UserAccount;
 import ua.foxminded.university.entity.enums.RoleModel;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.RoleRepository;
@@ -108,5 +109,29 @@ public class StudentAccountServiceImpl implements StudentAccountService {
         studentValidator.validateStudentId(studentId);
         studentValidator.validateGroupId(groupId);
         studentAccountRepository.changeGroup(groupId, studentId);
+    }
+
+    @Override
+    public List<StudentAccount> findAllStudents() {
+        return studentAccountRepository.findAll();
+    }
+
+    @Override
+    public StudentAccountUpdateRequest findStudentById(String userId) {
+        StudentAccount studentAccount = studentAccountRepository.findById(userId).get();
+
+        return StudentAccountUpdateRequest.builder()
+                .userId(studentAccount.getUserId())
+                .firstName(studentAccount.getFirstName())
+                .lastName(studentAccount.getLastName())
+                .email(studentAccount.getEmail())
+                .password(studentAccount.getPassword())
+                .passwordCheck(studentAccount.getPasswordCheck())
+                .roles(studentAccount.getRoles())
+                .registrationStatus(studentAccount.getRegistrationStatus())
+                .groupId(studentAccount.getGroupId())
+                .studentCard(studentAccount.getStudentCard())
+                .courses(studentAccount.getCourses())
+                .build();
     }
 }
