@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ua.foxminded.university.entity.enums.Degree;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import java.util.ArrayList;
 import java.util.List;

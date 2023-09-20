@@ -21,5 +21,7 @@ public interface StudentAccountService {
 
     void removeStudentFromCourse(String studentId, String courseId);
 
-    StudentAccountResponse findUserById(String userId);
+    StudentAccountResponse findStudentById(String userId);
+
+    List<StudentAccount> findAllStudents();
 }

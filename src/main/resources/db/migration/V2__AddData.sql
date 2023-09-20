@@ -61,9 +61,6 @@ INSERT INTO schedule.course_teachers (user_id, course_id) VALUES ('33c99439-aaf0
 
 INSERT INTO schedule.diploma_students(user_id, user_id_student) VALUES ('33c99439-aaf0-4ebd-a07a-bd0c550d8799', '33c99439-aaf0-4ebd-a07a-bd0c550d2311');
 
-insert into schedule.course_teachers (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c550d8799', '1d95bc79-a549-4d2c-aeb5-3f929aee0f22');
-insert into schedule.course_teachers (user_id, course_id) values ('33c99439-aaf0-4ebd-a07a-bd0c55asUr71', '1d95bc79-a549-4d2c-aeb5-3f929aee0f22');
-
 INSERT INTO schedule.roles (role_id, role) VALUES ('54RG9439-aaf0-4ebd-a07a-bd0c550db4e1', 'ADMIN');
 INSERT INTO schedule.roles (role_id, role) VALUES ('64TR9439-aaf0-4ebd-a07a-bd0c550db4e1', 'MODERATOR');
 INSERT INTO schedule.roles (role_id, role) VALUES ('98LD9439-aaf0-4ebd-a07a-bd0c550db4e1', 'STUDENT');
