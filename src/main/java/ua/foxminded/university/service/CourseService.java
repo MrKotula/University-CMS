@@ -18,5 +18,5 @@ public interface CourseService {
 
     List<Course> findAllCourses();
 
-    CourseResponse getCourseById(String email);
+    CourseResponse getCourseById(String userId);
 }
