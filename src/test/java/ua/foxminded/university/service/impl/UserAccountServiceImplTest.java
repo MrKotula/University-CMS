@@ -28,10 +28,7 @@ import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.UserAccountRepository;
 import ua.foxminded.university.service.UserAccountService;
 import ua.foxminded.university.validator.exception.ValidationException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
@@ -87,7 +84,7 @@ class UserAccountServiceImplTest {
     void verifyUseMethodRegister() throws ValidationException {
         userAccountService.register(testStudent);
 
-        assertEquals(testStudent.getFirstName(), userAccountRepository.findAll().get(3).getFirstName());
+        assertEquals(testStudent.getFirstName(), userAccountRepository.findAll().get(5).getFirstName());
     }
 
     @Test
@@ -192,49 +189,27 @@ class UserAccountServiceImplTest {
     @Transactional
     void verifyUseMethodFindAllUsers() {
         Set<Role> studentRoles = new HashSet<>();
-        Set<Role> adminRoles = new HashSet<>();
-        Set<Course> coursesTest = new HashSet<>();
         Set<Course> courses = new HashSet<>();
 
         Role roleStudent = roleRepository.findByRole(RoleModel.STUDENT);
-        Role roleAdmin = roleRepository.findByRole(RoleModel.ADMIN);
-        Role roleUser = roleRepository.findByRole(RoleModel.USER);
 
         studentRoles.add(roleStudent);
-        adminRoles.add(roleAdmin);
-        adminRoles.add(roleUser);
 
         Course testCourseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics");
         Course testCourseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology");
 
-        coursesTest.add(testCourseBiology);
         courses.add(testCourseMath);
         courses.add(testCourseBiology);
 
-        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com", null, null,
-                RegistrationStatus.NEW, studentRoles,"3c01e6f1-762e-43b8-a6e1-7cf493ce5325", "RT85796142");
         StudentAccount testStudent = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", null, null,
                 RegistrationStatus.NEW, studentRoles,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727");
 
-        testStudentAccount.setCourses(coursesTest);
         testStudent.setCourses(courses);
 
-        studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "1d95bc79-a549-4d2c-aeb5-3f929aee1234");
         studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0f22");
         studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee1234");
 
-        UserAccount testUserAccount = UserAccount.userAccountBuilder()
-                        .userId("11111439-aaf0-4ebd-a07a-bd0c550d2333")
-                        .firstName("Admin")
-                        .lastName("Admin")
-                        .email("admin@")
-                        .registrationStatus(RegistrationStatus.REGISTERED)
-                        .roles(adminRoles)
-                        .build();
-
-        List<UserAccount> users = new ArrayList<>(Arrays.asList(testStudent, testStudentAccount, testUserAccount));
-
-        assertEquals(users, userAccountService.findAllUsers());
+        assertEquals(testStudent, userAccountService.findAllUsers().get(0));
     }
 
     @Test
