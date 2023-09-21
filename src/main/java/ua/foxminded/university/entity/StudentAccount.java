@@ -20,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, of = {"groupId", "studentCard"})
 @Entity
 @DiscriminatorValue("US_SA")
 public class StudentAccount extends UserAccount {
