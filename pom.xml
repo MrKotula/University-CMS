@@ -197,6 +197,7 @@
                         <exclude>ua/foxminded/university/entity/enums/*</exclude>
                         <exclude>ua/foxminded/university/service/MyUserDetails.class</exclude>
                         <exclude>ua/foxminded/university/service/mapper/*</exclude>
+                        <exclude>ua/foxminded/university/service/dto/response/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
