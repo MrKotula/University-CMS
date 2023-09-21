@@ -35,7 +35,7 @@ public class TeacherController {
     }
 
     @GetMapping("/teacher/user/{userId}")
-    public String openPageAboutAllStudents(@PathVariable String userId, Model model) {
+    public String openPageAboutInfoStudent(@PathVariable String userId, Model model) {
         model.addAttribute("student", studentAccountService.findStudentById(userId));
 
         return "/teacher/infoStudent";
