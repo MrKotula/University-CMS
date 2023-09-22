@@ -1,6 +1,7 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
+import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.CourseService;
 
@@ -109,5 +111,19 @@ class CourseServiceImplTest {
     @Transactional
     void shouldReturnListOfCoursesWhenUseGetCoursesMissingByStudentId() {
         assertEquals(testListAllCourses, courseService.getCoursesMissingByStudentId("1d95bc79-a549-4d2c-aeb5-3f929aee1234"));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnListOfCoursesWhenUseFindAllCoursesTest() {
+        assertEquals(testListAllCourses, courseService.findAllCourses());
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnCourseResponseWhenUseGetCourseByIdTest() {
+        CourseResponse courseResponseTest = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>());
+
+        assertEquals(courseResponseTest, courseService.getCourseById("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
     }
 }

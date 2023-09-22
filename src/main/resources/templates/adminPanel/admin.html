@@ -9,11 +9,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
 </script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#locales").change(function () {
             var selectedOption = $('#locales').val();
-            if (selectedOption != ''){
-                window.location.replace('/about?lang=' + selectedOption);
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
             }
         });
     });
@@ -22,9 +23,10 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="adminPanel">Welcome to admin panel</h1>
-    <h2 th:inline="text">Hello, <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnAllUsers" th:href="@{/admin/users/all}">List all users</a>
+    <h1 class="adminPanel" th:text="#{infoWelcomeAdmPanel}"></h1>
+    <h2 th:text="#{helloMessage}"></h2>
+    <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
+    <a class="btnAllUsers" th:href="@{/admin/users/all}" th:text="#{infoListAllUsers}"></a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

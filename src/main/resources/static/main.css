@@ -118,6 +118,33 @@ h2 {
     background: yellowgreen;
 }
 
+.studentAccount {
+    float: right;
+    margin-left: 15px;
+    width: 140px;
+    height: 20px;
+    color: black;
+    border-radius: 30px;
+    padding: 10px 10px;
+    font-size: 15px;
+    background: yellow;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.studentAccount:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    color: saddlebrown;
+}
+
 .logOutBtn {
     float: right;
     margin-left: 15px;

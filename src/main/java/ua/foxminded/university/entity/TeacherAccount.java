@@ -10,16 +10,19 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ua.foxminded.university.entity.enums.Degree;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -41,8 +44,12 @@ public class TeacherAccount extends UserAccount {
     private List<StudentAccount> diplomaStudents = new ArrayList<>();
 
     @Builder(builderMethodName = "teacherBuilder")
-    public TeacherAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
+    public TeacherAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck,
+                          RegistrationStatus registrationStatus, Set<Role> roles, Degree degree, String phoneNumber, List<StudentAccount> diplomaStudents) {
         super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+        this.degree = degree;
+        this.phoneNumber = phoneNumber;
+        this.diplomaStudents = diplomaStudents;
     }
 
     @Override

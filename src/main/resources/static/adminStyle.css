@@ -9,26 +9,40 @@
     color: red;
 }
 
-.formInfoAdmin h3 {
+.formInfoAdmin {
+    border-radius: 5px;
     display: block;
     width: 600px;
+    margin-left: 20px;
+    padding-left: 15px;
+    left: 10px;
+    text-align: left;
+}
+.formInfoAdmin h3 {
+    display: inline-block;
+    width: 200px;
     left: 10px;
     margin-left: 10px;
     font-size: 17px;
 }
-
-.formInfoAdmin span {
+.formInfoAdmin h3 span {
+    background: transparent;
     display: inline-block;
-    margin-left: 20px;
+    margin-left: -20px;
     font-size: 17px;
 }
 
-.formInfoAdmin {
-    display: block;
+.mainParamsAdmin {
+    border-radius: 5px;
+    border-color: darkgrey;
+    border: 1px solid;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.mainParamsAdmin h3 span {
     width: 600px;
-    padding-left: 15px;
-    left: 10px;
-    text-align: left;
+    color: yellowgreen;
 }
 
 .formAllUsersInfo span {
@@ -128,6 +142,22 @@
     vertical-align: middle;
     position: relative;
     top: 20px;
+}
+
+.chooseRoles {
+    margin-left: 150px;
+}
+
+.btnEditInfoAdmin {
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: red;
+    transition: background 500ms ease;
+    text-decoration: none;
+    margin-left: -30px;
 }
 
 

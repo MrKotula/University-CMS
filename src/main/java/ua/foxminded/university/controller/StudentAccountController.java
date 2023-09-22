@@ -16,7 +16,7 @@ public class StudentAccountController {
 
     @GetMapping("/student/info/{userId}")
     public String openStudentPage(@PathVariable String userId, Model model) {
-        model.addAttribute("studentResponse", studentAccountService.findUserById(userId));
+        model.addAttribute("studentResponse", studentAccountService.findStudentById(userId));
 
         return "student/infoStudent";
     }
