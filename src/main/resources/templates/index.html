@@ -1,11 +1,25 @@
-<!DOCTYPE html>
-<html>
+</html><!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:spring="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != ''){
+                window.location.replace('/?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
-
-<h1>My First Heading</h1>
-
-<p>My first paragraph.</p>
-
+<header th:replace="~{layouts/header :: header}"></header>
+<h1 th:text="#{greeting}"></h1>
+<footer th:replace="~{layouts/footer :: footer}"></footer>
 </body>
 </html>
-

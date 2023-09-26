@@ -5,16 +5,29 @@
     <title>registration</title>
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != ''){
+                window.location.replace('/registration?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
 <body>
+<header th:replace="~{layouts/header :: header}"></header><br><br><br>
 <main class="container">
-  <h1>Registration</h1>
-  <form method="post" th:action="@{/registration}" th:object="${userRegistrationRequest}">
-    <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" placeholder="input your first name"><br>
-    <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" placeholder="input your last name"><br>
-    <input th:value="*{email}" type="text" class="form-control" id="email" name="email" placeholder="input your email"><br>
-    <input th:value="*{password}" type="password" class="form-control" id="password" name="password" placeholder="input your password"><br>
-    <input th:value="*{passwordCheck}" type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="input your password check"><br>
-    <button type="submit">register</button>
+    <h1 th:text="#{greetingRegMessage}"></h1>
+  <form method="post" th:action="@{/registration}" th:object="${userRegRequest}">
+    <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" th:placeholder="#{inputFirstName}"><br>
+    <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" th:placeholder="#{inputLastName}"><br>
+    <input th:value="*{email}" type="text" class="form-control" id="email" name="email" th:placeholder="#{inputEmail}"><br>
+    <input th:value="*{password}" type="password" class="form-control" id="password" name="password" th:placeholder="#{inputPassword}"><br>
+    <input th:value="*{passwordCheck}" type="password" class="form-control" id="passwordCheck" name="passwordCheck" th:placeholder="#{inputPasswordCheck}"><br>
+    <button type="submit" th:text="#{registerBtn}"></button>
   </form>
 </main>
 </body>

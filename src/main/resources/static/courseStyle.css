@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300;1,500&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    background: #e6e6ff;
+}
+
+.formCourseInfoPage {
+    border-radius: 5px;
+    display: block;
+    width: 800px;
+    margin-left: 20px;
+    padding-left: 15px;
+    left: 10px;
+    text-align: left;
+}
+
+.formCourseInfoPage h3 {
+    display: inline-block;
+    width: 350px;
+    left: 10px;
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+.formCourseInfoPage h3 span {
+    display: inline-block;
+    margin-left: -70px;
+    font-size: 17px;
+}

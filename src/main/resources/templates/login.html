@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorization</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != ''){
+                window.location.replace('/login?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div><br><br><br>
+<main class="container">
+    <h1 th:text="#{greetingLogMessage}"></h1>
+    <form method="post" th:action="@{/login}">
+        <input type="text" id="username" name="username" class="form-control" th:placeholder="#{inputLogin}"><br>
+        <input type="password" id="password" name="password" class="form-control" th:placeholder="#{inputPassword}"><br>
+            <div th:if="${param.error}" style="color: red" th:text="#{errorLogOrPass}"></div>
+        <button type="submit" th:text="#{logInBtn}"></button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}" ></div>
+</body>
+</html>

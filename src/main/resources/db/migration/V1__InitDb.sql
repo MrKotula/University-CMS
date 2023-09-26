@@ -1,8 +1,10 @@
 CREATE SCHEMA IF NOT EXISTS schedule;
 
-CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTRATED');
+CREATE TYPE registrationStatus AS ENUM ('NEW', 'REGISTERED');
 
 CREATE TYPE roleModel AS ENUM ('ADMIN', 'MODERATOR', 'STUDENT', 'TEACHER', 'USER');
+
+CREATE TYPE degrees AS ENUM ('ASSOCIATE', 'BACHELOR', 'MASTER', 'DOCTORAL', 'PROFESSIONAL');
 
 CREATE TABLE schedule.groups
 (
@@ -17,23 +19,6 @@ CREATE TABLE schedule.roles (
   CONSTRAINT roles_pkey PRIMARY KEY (role_id)
 );
 
-CREATE TABLE IF NOT EXISTS schedule.students
-(
-    user_id character(36) NOT NULL,
-    group_id character(36),
-    first_name character varying(50) NOT NULL,
-    last_name character varying(50) NOT NULL,
-    email character varying(36),
-    password character varying(70),
-    password_check character varying(70),
-    registration_status registrationStatus,
-    CONSTRAINT user_id_pkey PRIMARY KEY (user_id),
-    CONSTRAINT group_id FOREIGN KEY (group_id)
-        REFERENCES schedule.groups (group_id)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-);
-    
 CREATE TABLE IF NOT EXISTS schedule.courses
 (
     course_id character(36) NOT NULL,
@@ -42,20 +27,9 @@ CREATE TABLE IF NOT EXISTS schedule.courses
     CONSTRAINT courses_pkey PRIMARY KEY (course_id)
 );
 
-CREATE TABLE IF NOT EXISTS schedule.students_courses
+CREATE TABLE IF NOT EXISTS schedule.users
 (
-    user_id character(36) NOT NULL,
-    course_id character(36) NOT NULL,
-    CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES schedule.courses (course_id)
-    ON UPDATE NO ACTION
-    ON DELETE CASCADE,
-    CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.students (user_id)
-    ON UPDATE NO ACTION
-    ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS schedule.users_accounts
-(
+    user_type varchar(5),
     user_id character(36) NOT NULL,
     first_name character varying(50) NOT NULL,
     last_name character varying(50) NOT NULL,
@@ -63,12 +37,48 @@ CREATE TABLE IF NOT EXISTS schedule.users_accounts
     password character varying(70),
     password_check character varying(70),
     registration_status registrationStatus,
-    CONSTRAINT user_idx_pkey PRIMARY KEY (user_id)
-);
+    group_id character(36),
+    student_card character(36),
+    degrees degrees,
+    phone_number character varying(36),
+    CONSTRAINT user_id_pkey PRIMARY KEY (user_id),
+    CONSTRAINT group_id FOREIGN KEY (group_id)
+    REFERENCES schedule.groups (group_id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
+    );
+
+CREATE TABLE IF NOT EXISTS schedule.course_teachers
+(
+    user_id character(36) NOT NULL,
+    course_id character(36) NOT NULL,
+    CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id),
+    CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES schedule.courses (course_id)
+    );
+
+CREATE TABLE IF NOT EXISTS schedule.diploma_students
+(
+    user_id character(36) NOT NULL,
+    user_id_student character(36) NOT NULL,
+    CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id),
+    CONSTRAINT user_id_student FOREIGN KEY (user_id_student) REFERENCES schedule.users (user_id)
+    );
+
+CREATE TABLE IF NOT EXISTS schedule.students_courses
+(
+    user_id character(36) NOT NULL,
+    course_id character(36) NOT NULL,
+    CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES schedule.courses (course_id)
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE,
+    CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id)
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    );
 
 CREATE TABLE schedule.users_roles (
   user_id character(36) NOT NULL,
   role_id character(36) NOT NULL,
-  CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users_accounts (user_id),
+  CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id),
   CONSTRAINT role_id FOREIGN KEY (role_id) REFERENCES schedule.roles (role_id)
 );

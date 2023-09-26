@@ -1,6 +1,7 @@
 package ua.foxminded.university.validator;
 
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.updateData.UserAccountUpdateRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface UserValidator {
@@ -10,4 +11,6 @@ public interface UserValidator {
     void validateUserId(String userId) throws ValidationException;
 
     void validate(UserRegistrationRequest userRegistrationRequest) throws ValidationException;
+
+    void validate(UserAccountUpdateRequest userAccountUpdateRequest) throws ValidationException;
 }

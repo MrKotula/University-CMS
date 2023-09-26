@@ -16,5 +16,5 @@ public interface CourseRepository extends JpaRepository<Course, String> {
 
     @Query(value = "SELECT course_id, course_name, course_description FROM schedule.courses c "
             + "WHERE NOT EXISTS (SELECT * FROM schedule.students_courses s_c WHERE user_id =:userId AND c.course_id = s_c.course_id)", nativeQuery = true)
-    List<Course> getCoursesMissingByStudentId(String userId);
+    List<Course> getCoursesMissingByStudentId(@Param("userId") String userId);
 }

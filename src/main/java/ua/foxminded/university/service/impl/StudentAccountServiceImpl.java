@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
-import ua.foxminded.university.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.StudentAccountService;
@@ -49,9 +50,27 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     }
 
     @Override
-    public void deleteById(String studentId) {
-        studentValidator.validateStudentId(studentId);
-        studentAccountRepository.deleteById(studentId);
+    public StudentAccountResponse findStudentById(String userId) {
+        StudentAccount studentAccount = studentAccountRepository.findById(userId).get();
+
+        return StudentAccountResponse.builder()
+                .userId(studentAccount.getUserId())
+                .firstName(studentAccount.getFirstName())
+                .lastName(studentAccount.getLastName())
+                .email(studentAccount.getEmail())
+                .password(studentAccount.getPassword())
+                .passwordCheck(studentAccount.getPasswordCheck())
+                .roles(studentAccount.getRoles())
+                .registrationStatus(studentAccount.getRegistrationStatus())
+                .groupId(studentAccount.getGroupId())
+                .studentCard(studentAccount.getStudentCard())
+                .courses(studentAccount.getCourses())
+                .build();
+    }
+
+    @Override
+    public List<StudentAccount> findAllStudents() {
+        return studentAccountRepository.findAll();
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
+import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.validator.CourseValidator;
@@ -45,5 +46,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCoursesMissingByStudentId(String userId) {
         return courseRepository.getCoursesMissingByStudentId(userId);
+    }
+
+    @Override
+    public List<Course> findAllCourses() {
+        return courseRepository.findAll();
+    }
+
+    @Override
+    public CourseResponse getCourseById(String courseId) {
+        Course course = courseRepository.findById(courseId).get();
+
+        return new CourseResponse(course.getCourseId(), course.getCourseName(), course.getCourseDescription(), course.getTeachers());
     }
 }
