@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS schedule.courses
     course_id character(36) NOT NULL,
     course_name character varying(24) NOT NULL,
     course_description character varying(36),
+    number_seats integer,
+    seats_available integer,
     CONSTRAINT courses_pkey PRIMARY KEY (course_id)
 );
 

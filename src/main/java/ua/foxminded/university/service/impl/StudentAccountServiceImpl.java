@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
+import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
@@ -28,7 +29,9 @@ public class StudentAccountServiceImpl implements StudentAccountService {
 
     private final StudentAccountRepository studentAccountRepository;
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    private final CourseRepository courseRepository;
 
     @Override
     public List<StudentAccount> findByCourseName(String courseName) {
@@ -36,10 +39,14 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     }
 
     @Override
-    public void addStudentCourse(String studentId, String courseId) {
-        studentValidator.validateStudentId(studentId);
+    public void addStudentCourse(StudentAccountResponse studentAccountResponse, String courseId) {
+        studentValidator.validateStudentId(studentAccountResponse.getUserId());
         studentValidator.validateCourseId(courseId);
-        studentAccountRepository.addStudentCourse(studentId, courseId);
+        studentValidator.validateMaxAvailableCourses(studentAccountResponse);
+
+        if(studentValidator.validateAvailableCourses(studentAccountResponse, courseId)) {
+            studentAccountRepository.addStudentCourse(studentAccountResponse.getUserId(), courseId);
+        }
     }
 
     @Override
@@ -113,5 +120,24 @@ public class StudentAccountServiceImpl implements StudentAccountService {
         studentValidator.validateStudentId(studentId);
         studentValidator.validateGroupId(groupId);
         studentAccountRepository.changeGroup(groupId, studentId);
+    }
+
+    @Override
+    public StudentAccountResponse getStudentByEmail(String email) {
+        StudentAccount studentAccount = studentAccountRepository.getStudentByEmail(email);
+
+        return StudentAccountResponse.builder()
+                .userId(studentAccount.getUserId())
+                .firstName(studentAccount.getFirstName())
+                .lastName(studentAccount.getLastName())
+                .email(studentAccount.getEmail())
+                .password(studentAccount.getPassword())
+                .passwordCheck(studentAccount.getPasswordCheck())
+                .roles(studentAccount.getRoles())
+                .registrationStatus(studentAccount.getRegistrationStatus())
+                .groupId(studentAccount.getGroupId())
+                .studentCard(studentAccount.getStudentCard())
+                .courses(studentAccount.getCourses())
+                .build();
     }
 }

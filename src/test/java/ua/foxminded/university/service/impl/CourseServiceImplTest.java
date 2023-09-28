@@ -35,17 +35,17 @@ class CourseServiceImplTest {
     @Autowired
     CourseRepository courseRepository;
 
-    Course testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription");
-    Course testCourseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics");
-    Course testCourseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology");
-    Course testCourseChemistry = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5324", "Chemistry", "course of Chemistry");
-    Course testCoursePhysics = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee6589", "Physics", "course of Physics");
-    Course testCoursePhilosophy = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee8999", "Philosophy", "course of Philosophy");
-    Course testCourseDrawing = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0096", "Drawing", "course of Drawing");
-    Course testCourseLiterature = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1222", "Literature", "course of Literature");
-    Course testCourseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English");
-    Course testCourseGeography = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee3356", "Geography", "course of Geography");
-    Course testCoursePhysicalTraining = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0887", "Physical training", "course of Physical training");
+    Course testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+    Course testCourseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
+    Course testCourseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
+    Course testCourseChemistry = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5324", "Chemistry", "course of Chemistry", 15);
+    Course testCoursePhysics = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee6589", "Physics", "course of Physics", 15);
+    Course testCoursePhilosophy = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee8999", "Philosophy", "course of Philosophy", 30);
+    Course testCourseDrawing = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0096", "Drawing", "course of Drawing", 10);
+    Course testCourseLiterature = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1222", "Literature", "course of Literature", 10);
+    Course testCourseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", 30);
+    Course testCourseGeography = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee3356", "Geography", "course of Geography", 15);
+    Course testCoursePhysicalTraining = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0887", "Physical training", "course of Physical training", 30);
     List<Course> testListCourses = Arrays.asList(testCourseMath, testCourseBiology);
     List<Course> testListAllCourses = Arrays.asList(testCourseMath, testCourseBiology, testCourseChemistry, testCoursePhysics, testCoursePhilosophy,
             testCourseDrawing, testCourseLiterature, testCourseEnglish, testCourseGeography, testCoursePhysicalTraining);
@@ -86,7 +86,7 @@ class CourseServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUpdateCourseName() throws ValidationException {
-        testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "test", "course of Mathematics");
+        testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "test", "course of Mathematics", 30);
         courseService.updateCourseName(testCourse);
 
         assertEquals(Optional.of(testCourse), courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22"));
@@ -95,7 +95,7 @@ class CourseServiceImplTest {
     @Test
     @Transactional
     void verifyUseMethodUpdateCourseDescription() throws ValidationException {
-        testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "math", "test");
+        testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "math", "test", 30);
         courseService.updateCourseDescription(testCourse);
 
         assertEquals(Optional.of(testCourse), courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22"));
@@ -122,7 +122,7 @@ class CourseServiceImplTest {
     @Test
     @Transactional
     void shouldReturnCourseResponseWhenUseGetCourseByIdTest() {
-        CourseResponse courseResponseTest = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>());
+        CourseResponse courseResponseTest = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30);
 
         assertEquals(courseResponseTest, courseService.getCourseById("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
     }

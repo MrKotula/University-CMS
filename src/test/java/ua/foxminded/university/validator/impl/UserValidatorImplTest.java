@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.service.dto.updateData.UserAccountUpdateRequest;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
@@ -115,7 +116,12 @@ class UserValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenUserIdIsNotExists() throws ValidationException {
         String expectedMessage = "This userId is not exists!";
-        Exception exception = assertThrows(ValidationException.class, () -> studentAccountService.addStudentCourse("sad", "1d95bc79-a549-4d2c-aeb5-3f929aee0096"));
+
+        StudentAccountResponse studentAccountResponse = new StudentAccountResponse("wrong_user_id", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", new HashSet<>());
+
+        Exception exception = assertThrows(ValidationException.class, () -> studentAccountService.addStudentCourse(studentAccountResponse, "1d95bc79-a549-4d2c-aeb5-3f929aee0096"));
 
         assertEquals(expectedMessage, exception.getMessage());
     }

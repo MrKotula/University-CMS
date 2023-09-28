@@ -27,4 +27,7 @@ public interface StudentAccountRepository extends JpaRepository<StudentAccount, 
     @Modifying
     @Query(value = "DELETE FROM schedule.students_courses WHERE user_id = :userId AND course_id = :courseId", nativeQuery = true)
     void removeStudentFromCourse(@Param("userId") String userId, @Param("courseId") String courseId);
+
+    @Query("select u from StudentAccount u where u.email = :email")
+    StudentAccount getStudentByEmail(@Param("email") String email);
 }

@@ -41,7 +41,20 @@
             <h3 th:text="#{paramCourseTeachers}"></h3>
             <h3><span style="color: yellowgreen" th:text="${course.teachers}"></span></h3>
         </div>
+        <div class="mainParams">
+            <h3 th:text="#{paramSeatsOfCourse}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${course.numberOfSeats}"></span></h3>
+        </div>
+        <div class="mainParams">
+            <h3 th:text="#{paramSeatsAvailable}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${course.seatsAvailable}"></span></h3>
+        </div>
     </form>
+    <span sec:authorize="hasAuthority('STUDENT')">
+                    <form method="post" th:action="@{'/course/info/' + ${courseId}}">
+                        <button class="enterCourseBtn" th:text="#{enrollCourseBtn}"></button>
+                    </form>
+                </span>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>
