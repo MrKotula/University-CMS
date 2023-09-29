@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @ContextConfiguration(initializers = {UserControllerPageTest.Initializer.class})
 @Testcontainers
-public class UserControllerPageTest {
+class UserControllerPageTest {
 
     @MockBean
     private UserAccountService userAccountService;
@@ -66,7 +66,7 @@ public class UserControllerPageTest {
 
     @Test
     @WithMockUser
-    public void userPageTest() throws Exception {
+    void userPageTest() throws Exception {
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", new HashSet<>(), RegistrationStatus.NEW );
 
