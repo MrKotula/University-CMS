@@ -23,19 +23,19 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="adminPanel" th:text="#{infoAdminPanel}"></h1>
-    <h2 th:text="#{infoListAllUsers}"></h2>
+    <h1 class="adminPanel" th:text="#{infopage.adminpanel}"></h1>
+    <h2 th:text="#{infopage.listallusers}"></h2>
     <form style="float: left;" class="formAllUsersInfo" method="POST" th:action="@{/admin/allUsers}" th:object="${users}">
         <ul th:each="user : ${users}">
-            <li style="float: left;"> <h4 th:text="#{paramUserIdAllUser}"></h4>
+            <li style="float: left;"> <h4 th:text="#{paramname.useridalluser}"></h4>
                 <h4><span style="color: olivedrab" th:text="${user.userId}"></span></h4>
-                <h4 th:text="#{paramEmail}"></h4>
+                <h4 th:text="#{paramname.email}"></h4>
                 <h4><span style="color: olivedrab" th:text="${user.email}"></span></h4>
-                <h4 th:text="#{paramRoles}"></h4>
+                <h4 th:text="#{paramname.roles}"></h4>
                 <h4><span style="color: olivedrab" th:text="${user.roles}"></span></h4>
-                <h4 th:text="#{paramRegStatus}"></h4>
+                <h4 th:text="#{paramname.regstatus}"></h4>
                 <h4>Status: <span style="color: olivedrab" th:text="${user.registrationStatus}"></span></h4>
-                <a class="btnInfoAboutUser" th:href="@{/admin/user/{userId}(userId=${user.userId})}" th:text="#{userInfoBtn}"></a>
+                <a class="btnInfoAboutUser" th:href="@{/admin/user/{userId}(userId=${user.userId})}" th:text="#{button.userinfo}"></a>
             </li>
         </ul>
     </form>

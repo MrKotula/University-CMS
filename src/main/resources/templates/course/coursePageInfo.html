@@ -23,22 +23,22 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 th:text="#{infoCourse}"></h1>
+    <h1 th:text="#{infopage.course}"></h1>
     <form style="float: left;" class="formCourseInfoPage" method="GET" th:action="@{'/course/info/' + ${courseId}}" th:object="${course}">
         <div class="mainParams">
-            <h3 th:text="#{paramCourseId}"></h3>
+            <h3 th:text="#{paramname.courseid}"></h3>
             <h3><span style="color: yellowgreen" th:text="${course.courseId}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramCourseName}"></h3>
+            <h3 th:text="#{paramname.coursename}"></h3>
             <h3><span style="color: yellowgreen" th:text="${course.courseName}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramCourseDescription}"></h3>
+            <h3 th:text="#{paramname.coursedescription}"></h3>
             <h3><span style="color: yellowgreen" th:text="${course.courseDescription}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramCourseTeachers}"></h3>
+            <h3 th:text="#{paramname.courseteachers}"></h3>
             <h3><span style="color: yellowgreen" th:text="${course.teachers}"></span></h3>
         </div>
     </form>

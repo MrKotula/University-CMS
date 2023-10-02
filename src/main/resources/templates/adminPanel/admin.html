@@ -23,10 +23,10 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="adminPanel" th:text="#{infoWelcomeAdmPanel}"></h1>
-    <h2 th:text="#{helloMessage}"></h2>
+    <h1 class="adminPanel" th:text="#{infopage.welcomeadmpanel}"></h1>
+    <h2 th:text="#{elementonpage.hellomessage}"></h2>
     <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnAllUsers" th:href="@{/admin/users/all}" th:text="#{infoListAllUsers}"></a>
+    <a class="btnAllUsers" th:href="@{/admin/users/all}" th:text="#{infopage.listallusers}"></a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>
