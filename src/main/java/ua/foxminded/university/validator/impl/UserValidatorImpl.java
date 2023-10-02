@@ -81,9 +81,7 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     private void validateLogin(String email) throws ValidationException {
-        if (userAccountRepository.getUserByEmail(email).isEmpty()) {
-
-        } else if (email.equals(userAccountRepository.getUserByEmail(email).get().getEmail())) {
+        if (!userAccountRepository.getUserByEmail(email).isEmpty()) {
             throw new ValidationException("This login already exists!");
         }
     }
