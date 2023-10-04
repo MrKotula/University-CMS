@@ -114,7 +114,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void updateUserRoles(UserAccountUpdateRequest userAccountUpdateRequest, String roles) {
         UserAccount userAccount = userAccountRepository.findById(userAccountUpdateRequest.getUserId()).get();
 
-        String[] separetedRoles = roles.split(",");
+        String[] separetedRoles = roles.trim().split(",");
         Set<Role> setRoles = userAccountUpdateRequest.getRoles();
 
         for (String separetedRole : separetedRoles) {

@@ -73,7 +73,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void shouldReturnTeacherInfoPageTest() throws Exception {
+    void shouldReturnTeacherInfoPageTest() throws Exception {
         TeacherAccountResponse teacherAccountResponseTest = TeacherAccountResponse.builder()
                 .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
                 .firstName("Jin")
@@ -97,7 +97,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void shouldReturnAllStudentsInfoPageTest() throws Exception {
+    void shouldReturnAllStudentsInfoPageTest() throws Exception {
         when(studentAccountService.findAllStudents()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/teacher/students/all"))
@@ -106,7 +106,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void shouldReturnInfoPageAboutStudentTest() throws Exception {
+    void shouldReturnInfoPageAboutStudentTest() throws Exception {
         StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
                 new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", new HashSet<>());
@@ -119,7 +119,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void shouldRedirectToTeacherPageWhenAddedStudentTest() throws Exception {
+    void shouldRedirectToTeacherPageWhenAddedStudentTest() throws Exception {
         TeacherAccountResponse teacherAccountResponseTest = TeacherAccountResponse.builder()
                 .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
                 .firstName("Jin")

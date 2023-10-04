@@ -62,7 +62,7 @@ class CourseControllerTest {
 
     @Test
     @WithMockUser
-    public void shouldReturnCourseInfoPageTest() throws Exception {
+    void shouldReturnCourseInfoPageTest() throws Exception {
         CourseResponse courseResponse = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", new ArrayList<>());
 
         when(courseService.getCourseById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22")).thenReturn(courseResponse);

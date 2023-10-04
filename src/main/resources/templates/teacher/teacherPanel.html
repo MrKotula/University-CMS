@@ -23,18 +23,18 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 th:text="#{infoTeacherPanel}"></h1>
+    <h1 th:text="#{infopage.teacherpanel}"></h1>
     <form style="float: left;" class="formInfoTeacher" method="POST" th:action="@{/teacher}" th:object="${teacherUpdateRequest}">
         <div class="mainParams">
-            <h3 th:text="#{paramDegree}"></h3>
+            <h3 th:text="#{paramname.degree}"></h3>
             <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.degree}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramPhoneNumber}"></h3>
+            <h3 th:text="#{paramname.phonenumber}"></h3>
             <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.phoneNumber}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramDiplomaStudents}"></h3>
+            <h3 th:text="#{paramname.diplomastudents}"></h3>
             <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.diplomaStudents}"></span></h3>
         </div>
     </form>

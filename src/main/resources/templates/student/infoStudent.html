@@ -23,31 +23,31 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 th:text="#{infoStudentPanel}"></h1>
-    <h2 th:text="#{infoStudInfo}"></h2><br>
+    <h1 th:text="#{infopage.studentpanel}"></h1>
+    <h2 th:text="#{infopage.studinfo}"></h2><br>
     <form style="float: left;" class="formInfoStudent" method="POST" th:action="@{'/student/info/' + ${userId}}" th:object="${studentResponse}">
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramEmail}"></h3>
+            <h3 th:text="#{paramname.email}"></h3>
             <h3><span th:text="${studentResponse.email}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramFirstName}"></h3>
+            <h3 th:text="#{paramname.firstname}"></h3>
             <h3><span th:text="${studentResponse.firstName}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramLastName}"></h3>
+            <h3 th:text="#{paramname.lastname}"></h3>
             <h3><span th:text="${studentResponse.lastName}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramEmail}"></h3>
+            <h3 th:text="#{paramname.email}"></h3>
             <h3><span th:text="${studentResponse.studentCard}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramGroupId}"></h3>
+            <h3 th:text="#{paramname.groupid}"></h3>
             <h3><span th:text="${studentResponse.groupId}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramCourses}"></h3>
+            <h3 th:text="#{paramname.courses}"></h3>
             <h3><span th:text="${studentResponse.courses}"></span></h3>
         </div>
     </form>
