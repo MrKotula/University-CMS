@@ -188,6 +188,30 @@ class UserAccountServiceImplTest {
 
     @Test
     @Transactional
+    void verifyUseMethodUpdateUserAllRoles() {
+        Set<Role> roles = new HashSet<>();
+        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "", roles);
+        userAccountService.updateUserRoles(userAccountUpdateRequest, "USER,TEACHER,STUDENT,MODERATOR,ADMIN ");
+
+        Role roleUser = roleRepository.findByRole(RoleModel.USER);
+        Role roleAdmin = roleRepository.findByRole(RoleModel.ADMIN);
+        Role roleTeacher = roleRepository.findByRole(RoleModel.TEACHER);
+        Role roleModerator = roleRepository.findByRole(RoleModel.MODERATOR);
+        Role roleStudent = roleRepository.findByRole(RoleModel.STUDENT);
+
+        roles.add(roleUser);
+        roles.add(roleAdmin);
+        roles.add(roleTeacher);
+        roles.add(roleModerator);
+        roles.add(roleStudent);
+
+        testStudent.setRoles(roles);
+
+        assertEquals(testStudent.getRoles(), userAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1").get().getRoles());
+    }
+
+    @Test
+    @Transactional
     void verifyUseMethodFindAllUsers() {
         Set<Role> studentRoles = new HashSet<>();
         Set<Course> courses = new HashSet<>();

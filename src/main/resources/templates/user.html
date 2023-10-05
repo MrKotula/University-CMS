@@ -22,45 +22,45 @@
 <span sec:authorize="hasAuthority('STUDENT')">
                     <form method="post" th:action="@{/logout}">
                     <a class="studentAccount" th:href="@{/student/info/{userId}(userId=${userUpdateRequest.userId})}"
-                       th:text="#{studentBtn}"></a>
+                       th:text="#{button.student}"></a>
                     </form>
                 </span>
 <br><br><br>
 <main class="container">
-    <h1 th:text="#{greetingYourAcc}"></h1>
-    <h2 th:text="#{helloMessage}"></h2>
+    <h1 th:text="#{elementonpage.greetingaccmessage}"></h1>
+    <h2 th:text="#{elementonpage.hellomessage}"></h2>
     <h2 style="color: limegreen" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
     <form style="float: left;" class="formInfo" method="POST" th:action="@{/user}" th:object="${userUpdateRequest}">
         <div class="mainParams">
-            <h3 th:text="#{paramUserId}"></h3>
+            <h3 th:text="#{paramname.userid}"></h3>
             <h3><span th:text="${userUpdateRequest.userId}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramFirstName}"></h3>
+            <h3 th:text="#{paramname.firstname}"></h3>
             <h3><span th:text="${userUpdateRequest.firstName}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramLastName}"></h3>
+            <h3 th:text="#{paramname.lastname}"></h3>
             <h3><span th:text="${userUpdateRequest.lastName}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramEmail}"></h3>
+            <h3 th:text="#{paramname.email}"></h3>
             <h3><span th:text="${userUpdateRequest.email}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramRoles}"></h3>
+            <h3 th:text="#{paramname.roles}"></h3>
             <h3><span th:text="${userUpdateRequest.roles}"></span></h3>
         </div>
         <div class="mainParams">
-            <h3 th:text="#{paramRegStatus}"></h3>
+            <h3 th:text="#{paramname.regstatus}"></h3>
             <h3><span th:text="${userUpdateRequest.registrationStatus}"></span></h3>
         </div>
-        <a class="btnEditInfo" th:text="#{editMyDataBtn}"
+        <a class="btnEditInfo" th:text="#{button.editmydata}"
            th:href="@{/user/editData/{userId}(userId=${userUpdateRequest.userId})}"></a>
     </form>
 
     <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/user}" th:object="${courses}">
-        <h2 style="color:darkgreen" th:text="#{infoCourses}"></h2>
+        <h2 style="color:darkgreen" th:text="#{infopage.courses}"></h2>
         <ul th:each="course : ${courses}">
             <li><h3><a class="courseLinkInfo" style="color: yellowgreen" th:text="${course.courseName}"
                        th:href="@{/course/info/{userId}(userId=${course.courseId})}"></a></h3></li>

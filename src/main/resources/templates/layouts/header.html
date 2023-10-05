@@ -15,26 +15,26 @@
     </div>
     <br><br>
     <nav>
-        <a href="/" th:text="#{mainPageBtn}"></a>
-        <a href="/about" th:text="#{aboutUsBtn}"></a>
+        <a href="/" th:text="#{button.mainpage}"></a>
+        <a href="/about" th:text="#{button.aboutus}"></a>
         <span class="auth">
-            <a href="/login" th:text="#{logInBtn}"></a>
-            <a href="/registration" th:text="#{signUpBtn}"></a>
+            <a href="/login" th:text="#{button.login}"></a>
+            <a href="/registration" th:text="#{button.signup}"></a>
     </span><br><br><br>
 
         <span sec:authorize="isAuthenticated()">
             <form method="post" th:action="@{/logout}">
-                <button class="logOutBtn" type="submit" th:text="#{logOutBtn}"></button>
-                <a class="myAccountBtn" href="/user" th:text="#{myAccountBtn}"></a>
+                <button class="logOutBtn" type="submit" th:text="#{button.logout}"></button>
+                <a class="myAccountBtn" href="/user" th:text="#{button.myaccount}"></a>
             </form>
                 <span sec:authorize="hasAuthority('ADMIN')">
                     <form method="post" th:action="@{/logout}">
-                    <a class="adminAccount" href="/admin" th:text="#{adminBtn}"></a>
+                    <a class="adminAccount" href="/admin" th:text="#{button.admin}"></a>
                     </form>
                 </span>
                 <span sec:authorize="hasAuthority('TEACHER')">
                     <form method="post" th:action="@{/logout}">
-                    <a class="teacherAccount" th:href="@{/teacher}" th:text="#{teacherBtn}"></a>
+                    <a class="teacherAccount" th:href="@{/teacher}" th:text="#{button.teacher}"></a>
                     </form>
                 </span>
         </span>

@@ -130,4 +130,18 @@ class TeacherAccountServiceImplTest {
 
         assertEquals(teacherAccountTest.getDiplomaStudents(), teacherAccountService.getTeacherByEmail("teacherMail@gmail.com").getDiplomaStudents());
     }
+
+    @Test
+    @Transactional
+    void verifyUseAddStudentToScienceSupervisorWhenAddStudentToSupervisorTest() {
+        List<StudentAccount> listOfStudents = new ArrayList<>();
+
+        listOfStudents.add(testStudentAccount);
+
+        teacherAccountTest.setDiplomaStudents(listOfStudents);
+
+        teacherAccountService.addStudentToScienceSupervisor(teacherAccountTest.getUserId(), testStudentAccountJohn.getUserId());
+
+        assertEquals(teacherAccountTest.getDiplomaStudents(), teacherAccountService.getTeacherByEmail("teacherMail@gmail.com").getDiplomaStudents());
+    }
 }

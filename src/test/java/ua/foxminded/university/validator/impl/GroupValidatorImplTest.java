@@ -3,14 +3,25 @@ package ua.foxminded.university.validator.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.GroupService;
 
 @SpringBootTest
+@ContextConfiguration(initializers = {GroupValidatorImplTest.Initializer.class})
+@Testcontainers
 class GroupValidatorImplTest {
 
     @Autowired
@@ -18,6 +29,30 @@ class GroupValidatorImplTest {
 
     @Autowired
     StudentAccountService studentAccountService;
+
+    @Container
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
+            .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
+
+    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues
+                    .of("spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+                            "spring.datasource.password=" + postgreSQLContainer.getPassword())
+                    .applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
+
+    @BeforeAll
+    static void setUp() {
+        postgreSQLContainer.start();
+    }
+
+    @AfterAll
+    static void tearDown() {
+        postgreSQLContainer.stop();
+    }
 
     @Test
     void shouldReturnValidationExceptionWhenGroupNameCannotSpecialCharacter() throws ValidationException {
