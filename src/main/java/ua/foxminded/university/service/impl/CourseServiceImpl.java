@@ -57,6 +57,18 @@ public class CourseServiceImpl implements CourseService {
     public CourseResponse getCourseById(String courseId) {
         Course course = courseRepository.findById(courseId).get();
 
-        return new CourseResponse(course.getCourseId(), course.getCourseName(), course.getCourseDescription(), course.getTeachers());
+        return new CourseResponse(course.getCourseId(), course.getCourseName(), course.getCourseDescription(), course.getTeachers(),
+                course.getNumberOfSeats(), countAvailableSeats(courseId));
+    }
+
+    private int countAvailableSeats(String courseId) {
+        Course course = courseRepository.findById(courseId).get();
+
+        int availableSeats = course.getNumberOfSeats() - courseRepository.getCountedCoursesSeats(courseId);
+
+        course.setSeatsAvailable(availableSeats);
+        courseRepository.save(course);
+
+        return availableSeats;
     }
 }

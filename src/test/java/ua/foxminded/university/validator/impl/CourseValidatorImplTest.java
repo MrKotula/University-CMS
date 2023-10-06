@@ -16,6 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.service.StudentAccountService;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.service.CourseService;
 
@@ -81,7 +82,9 @@ class CourseValidatorImplTest {
     @Test
     void shouldReturnValidationExceptionWhenCourseIdIsNotExists() throws ValidationException {
         String expectedMessage = "This courseId is not exists!";
-        Exception exception = Assert.assertThrows(ValidationException.class, () -> studentAccountService.addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0446"));
+        StudentAccountResponse studentAccountResponse = StudentAccountResponse.builder().userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1").build();
+
+        Exception exception = Assert.assertThrows(ValidationException.class, () -> studentAccountService.addStudentCourse(studentAccountResponse, "1d95bc79-a549-4d2c-aeb5-3f929aee0446"));
 
         assertEquals(expectedMessage, exception.getMessage());
     }

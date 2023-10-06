@@ -17,11 +17,13 @@ public interface StudentAccountService {
 
     List<StudentAccount> findByCourseName(String courseName);
 
-    void addStudentCourse(String studentId, String courseId);
+    void addStudentCourse(StudentAccountResponse studentAccountResponse, String courseId);
 
     void removeStudentFromCourse(String studentId, String courseId);
 
     StudentAccountResponse findStudentById(String userId);
 
     List<StudentAccount> findAllStudents();
+
+    StudentAccountResponse getStudentByEmail(String email);
 }

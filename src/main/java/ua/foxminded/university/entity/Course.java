@@ -46,15 +46,22 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<TeacherAccount> teachers = new ArrayList<>();
 
+    @Column(name = "number_seats")
+    private int numberOfSeats;
+
+    @Column(name = "seats_available")
+    private int seatsAvailable;
+
     public Course(String courseName, String courseDescription) {
         this.courseName = courseName;
         this.courseDescription = courseDescription;
     }
 
-    public Course(String courseId, String courseName, String courseDescription) {
+    public Course(String courseId, String courseName, String courseDescription, int numberOfSeats) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.courseDescription = courseDescription;
+        this.numberOfSeats = numberOfSeats;
     }
 
     public void addTeacher(TeacherAccount teacherAccount) {
