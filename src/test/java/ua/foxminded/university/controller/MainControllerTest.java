@@ -52,14 +52,14 @@ class MainControllerTest {
     }
 
     @Test
-    public void indexPageTest() throws Exception {
+    void indexPageTest() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void aboutPageTest() throws Exception {
+    void aboutPageTest() throws Exception {
         mockMvc.perform(get("/about"))
                 .andDo(print())
                 .andExpect(status().isOk());

@@ -20,12 +20,12 @@
 <body>
 <div th:replace="~{layouts/header :: header}"></div><br><br><br>
 <main class="container">
-    <h1 th:text="#{greetingLogMessage}"></h1>
+    <h1 th:text="#{elementonpage.greetinglog}"></h1>
     <form method="post" th:action="@{/login}">
-        <input type="text" id="username" name="username" class="form-control" th:placeholder="#{inputLogin}"><br>
-        <input type="password" id="password" name="password" class="form-control" th:placeholder="#{inputPassword}"><br>
-            <div th:if="${param.error}" style="color: red" th:text="#{errorLogOrPass}"></div>
-        <button type="submit" th:text="#{logInBtn}"></button>
+        <input type="text" id="username" name="username" class="form-control" th:placeholder="#{placeholder.login}"><br>
+        <input type="password" id="password" name="password" class="form-control" th:placeholder="#{placeholder.password}"><br>
+            <div th:if="${param.error}" style="color: red" th:text="#{error.messagelogorpass}"></div>
+        <button type="submit" th:text="#{button.login}"></button>
     </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}" ></div>

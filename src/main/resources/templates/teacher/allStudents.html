@@ -23,34 +23,34 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 th:text="#{infoTeacherPanel}"></h1>
-    <h2 th:text="#{infoListAllStudents}"></h2><br>
+    <h1 th:text="#{infopage.teacherpanel}"></h1>
+    <h2 th:text="#{infopage.listallstudents}"></h2><br>
     <form class="formAllStudentsInfo" method="POST" th:action="@{/teacher/students/all}" th:object="${students}">
         <ul th:each="student : ${students}">
             <li>
                 <div class="mainParamsTeacher">
-                    <h3 th:text="#{paramStudentId}"></h3>
+                    <h3 th:text="#{paramname.studentid}"></h3>
                     <h3><span th:text="${student.userId}"></span></h3>
                     <input th:value="${student.userId}" type="hidden" class="form-control" id="studentId" name="studentId"><br>
                 </div>
                 <div class="mainParamsTeacher">
-                    <h3 th:text="#{paramEmail}"></h3>
+                    <h3 th:text="#{paramname.email}"></h3>
                     <h3><span th:text="${student.email}"></span></h3>
                 </div>
                 <div class="mainParamsTeacher">
-                    <h3 th:text="#{paramFirstName}"></h3>
+                    <h3 th:text="#{paramname.firstname}"></h3>
                     <h3><span th:text="${student.firstName}"></span></h3>
                 </div>
                 <div class="mainParamsTeacher">
-                    <h3 th:text="#{paramLastName}"></h3>
+                    <h3 th:text="#{paramname.lastname}"></h3>
                     <h3><span th:text="${student.lastName}"></span></h3>
                 </div>
                 <div class="mainParamsTeacher">
-                    <h3 th:text="#{paramGroupId}"></h3>
+                    <h3 th:text="#{paramname.groupid}"></h3>
                     <h3><span th:text="${student.groupId}"></span></h3>
                 </div>
             </li>
-            <a class="btnInfoAboutStudent" th:text="#{studentInfoBtn}" th:href="@{/teacher/user/{userId}(userId=${student.userId})}"></a>
+            <a class="btnInfoAboutStudent" th:text="#{button.studentinfo}" th:href="@{/teacher/user/{userId}(userId=${student.userId})}"></a>
         </ul>
     </form>
 </main>

@@ -9,16 +9,16 @@ INSERT INTO schedule.groups (group_id, group_name) VALUES ('3c01e6f1-762e-43b8-a
 INSERT INTO schedule.groups (group_id, group_name) VALUES ('3c01e6f1-762e-43b8-a6e1-7cf493ce2337', 'GN-33');
 INSERT INTO schedule.groups (group_id, group_name) VALUES ('3c01e6f1-762e-43b8-a6e1-7cf493ce9988', 'IT-18');
 
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0f22', 'Mathematics', 'course of Mathematics');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee1234', 'Biology', 'course of Biology');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee5324', 'Chemistry', 'course of Chemistry');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee6589', 'Physics', 'course of Physics');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee8999', 'Philosophy', 'course of Philosophy');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0096', 'Drawing', 'course of Drawing');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee1222', 'Literature', 'course of Literature');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee7658', 'English', 'course of English');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee3356', 'Geography', 'course of Geography');
-INSERT INTO schedule.courses (course_id, course_name, course_description) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0887', 'Physical training', 'course of Physical training');
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0f22', 'Mathematics', 'course of Mathematics', 30, 29);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee1234', 'Biology', 'course of Biology', 30, 28);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee5324', 'Chemistry', 'course of Chemistry', 15, 15);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee6589', 'Physics', 'course of Physics', 15, 15);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee8999', 'Philosophy', 'course of Philosophy', 30, 30);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0096', 'Drawing', 'course of Drawing', 10, 10);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee1222', 'Literature', 'course of Literature', 10, 10);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee7658', 'English', 'course of English', 30, 30);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee3356', 'Geography', 'course of Geography', 15, 15);
+INSERT INTO schedule.courses (course_id, course_name, course_description, number_seats, seats_available) VALUES ('1d95bc79-a549-4d2c-aeb5-3f929aee0887', 'Physical training', 'course of Physical training', 30, 30);
 
 INSERT INTO schedule.users (user_type, user_id, group_id, student_card, first_name, last_name, email, password,
                             password_check, registration_status)

@@ -54,7 +54,7 @@ class LoginTest {
     }
 
     @Test
-    public void accessDeniedTest() throws Exception {
+    void accessDeniedTest() throws Exception {
         mockMvc.perform(get("/user"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -62,7 +62,7 @@ class LoginTest {
     }
 
     @Test
-    public void correctLoginTest() throws Exception {
+    void correctLoginTest() throws Exception {
         mockMvc.perform(formLogin().user("admin@").password("1234"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -70,7 +70,7 @@ class LoginTest {
     }
 
     @Test
-    public void invalidLoginTest() throws Exception {
+    void invalidLoginTest() throws Exception {
         mockMvc.perform(formLogin().user("test3@gmail.com").password("1"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -78,7 +78,7 @@ class LoginTest {
     }
 
     @Test
-    public void loginPageTest() throws Exception {
+    void loginPageTest() throws Exception {
         mockMvc.perform(get("/login"))
                 .andDo(print())
                 .andExpect(status().isOk());
