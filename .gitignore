@@ -5,4 +5,7 @@ target
 .classpath
 .project
 .settings
+university-service/logs/*
+university-ui/logs/*
+university-data/logs/*
 logs/*
