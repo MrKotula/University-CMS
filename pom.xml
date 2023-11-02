@@ -77,7 +77,7 @@
                 <configuration>
                     <excludes>
                         <exclude>ua/foxminded/university/entity/*</exclude>
-                        <exclude>ua/foxminded/university/service/dto/updatedata/*</exclude>
+                        <exclude>ua/foxminded/university/service/dto/dataupdate/*</exclude>
                         <exclude>ua/foxminded/university/service/dto/registration/*</exclude>
                         <exclude>ua/foxminded/university/entity/enums/*</exclude>
                         <exclude>ua/foxminded/university/service/MyUserDetails.class</exclude>

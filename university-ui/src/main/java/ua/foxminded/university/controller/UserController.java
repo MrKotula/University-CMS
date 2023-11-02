@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import lombok.AllArgsConstructor;
+import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.service.CourseService;
@@ -22,10 +23,12 @@ public class UserController {
 
     private final UserAccountService userAccountService;
     private final CourseService courseService;
+    private final DateService dateService;
 
     @GetMapping("/registration")
     public String registration(@ModelAttribute UserRegistrationRequest userRegistrationRequest, Model model) {
         model.addAttribute("userRegRequest", userRegistrationRequest);
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "registration";
     }
@@ -42,6 +45,7 @@ public class UserController {
     public String userPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("courses", courseService.findAllCourses());
         model.addAttribute("userUpdateRequest", userAccountService.getUserByEmail(userDetails.getUsername()));
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "user";
     }
@@ -49,6 +53,7 @@ public class UserController {
     @GetMapping ("/user/editData/{userId}")
     public String userData(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest, Model model) {
         model.addAttribute("userUpdateRequest", userAccountUpdateRequest);
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "editData";
     }

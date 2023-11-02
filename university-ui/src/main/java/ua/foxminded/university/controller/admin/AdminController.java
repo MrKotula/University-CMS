@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.service.RoleService;
 import ua.foxminded.university.service.CourseService;
@@ -22,10 +23,12 @@ public class AdminController {
     private final UserAccountService userAccountService;
     private final CourseService courseService;
     private final RoleService roleService;
+    private final DateService dateService;
 
     @GetMapping("/admin")
     public String openAdminPanel(Model model) {
         model.addAttribute("title", "Admin panel");
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "adminPanel/admin";
     }
@@ -33,6 +36,7 @@ public class AdminController {
     @GetMapping("/admin/users/all")
     public String viewAllUsers(Model model) {
         model.addAttribute("users", userAccountService.findAllUsers());
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "adminPanel/allUsers";
     }
@@ -41,6 +45,7 @@ public class AdminController {
     public String viewUserData(@PathVariable String userId, Model model) {
         model.addAttribute("userAccount", userAccountService.findUserById(userId));
         model.addAttribute("courses", courseService.findByStudentId(userId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "adminPanel/userPageAdmin";
     }
@@ -48,6 +53,7 @@ public class AdminController {
     @GetMapping("/admin/user/editData/{userId}")
     public String changeUserData(@ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest, Model model) {
         model.addAttribute("userUpdateRequest", userAccountUpdateRequest);
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "adminPanel/userEditAdmin";
     }
@@ -64,6 +70,7 @@ public class AdminController {
     public String changeUserRole(@PathVariable String userId, Model model) {
         model.addAttribute("updateUserAccountRequest", userAccountService.findUserById(userId));
         model.addAttribute("listRoles", roleService.findAllRoles());
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "adminPanel/userEditRoleAdmin";
     }

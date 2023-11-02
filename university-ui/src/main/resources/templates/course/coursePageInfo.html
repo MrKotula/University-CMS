@@ -52,7 +52,7 @@
     </form>
     <span sec:authorize="hasAuthority('STUDENT')">
                     <form method="post" th:action="@{'/course/info/' + ${courseId}}">
-                        <button class="enterCourseBtn" th:text="#{enrollCourseBtn}"></button>
+                        <button class="enterCourseBtn" th:text="#{button.enrollacourse}"></button>
                     </form>
                 </span>
 </main>

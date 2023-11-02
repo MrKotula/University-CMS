@@ -1,78 +1,41 @@
 package ua.foxminded.university.service.impl;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
 import ua.foxminded.university.repository.RoleRepository;
-import ua.foxminded.university.service.RoleService;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ContextConfiguration(initializers = {RoleServiceImplTest.Initializer.class})
-@Testcontainers
+@ExtendWith(MockitoExtension.class)
 class RoleServiceImplTest {
 
-    @Autowired
-    RoleService roleService;
+    @Mock
+    private RoleRepository roleRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+    @InjectMocks
+    private RoleServiceImpl roleService;
 
-    @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
-            .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
+    private Role roleAdmin = new Role("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN);
+    private Role roleModerator = new Role("64TR9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.MODERATOR);
+    private Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT);
+    private Role roleTeacher = new Role("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER);
+    private Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER);
 
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues
-                    .of("spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                            "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    static void setUp() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        postgreSQLContainer.stop();
-    }
+    List<Role> listAllRoles = Arrays.asList(roleAdmin, roleModerator, roleStudent, roleTeacher, roleUser);
 
     @Test
-    @Transactional
     void shouldReturnListOfRolesWhenUseFindAllRoles() {
-        List<Role> rolesTest = new ArrayList<>();
+        when(roleRepository.findAll()).thenReturn(listAllRoles);
 
-        Role roleAdmin = roleRepository.findByRole(RoleModel.ADMIN);
-        Role roleModerator = roleRepository.findByRole(RoleModel.MODERATOR);
-        Role roleStudent = roleRepository.findByRole(RoleModel.STUDENT);
-        Role roleTeacher = roleRepository.findByRole(RoleModel.TEACHER);
-        Role roleUser = roleRepository.findByRole(RoleModel.USER);
-
-        rolesTest.add(roleAdmin);
-        rolesTest.add(roleModerator);
-        rolesTest.add(roleStudent);
-        rolesTest.add(roleTeacher);
-        rolesTest.add(roleUser);
-
-        assertEquals(rolesTest ,roleService.findAllRoles());
+        assertEquals(listAllRoles, roleService.findAllRoles());
+        verify(roleRepository).findAll();
     }
 }
