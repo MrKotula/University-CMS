@@ -147,4 +147,46 @@ class AdminControllerTest {
                 .andDo(print())
                 .andExpect(redirectedUrl("/admin/user/33c99439-aaf0-4ebd-a07a-bd0c550d2311"));
     }
+
+    @Test
+    @WithMockUser(authorities = "STUDENT")
+    void shouldReturnErrorWhenHasRoleStudentTest() throws Exception {
+        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", new HashSet<>(), RegistrationStatus.NEW );
+
+        when(userAccountService.findUserById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(userAccountUpdateRequest);
+
+        mockMvc.perform(get("/admin/user/33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void shouldReturnErrorWhenHasRoleUserTest() throws Exception {
+        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", new HashSet<>(), RegistrationStatus.NEW );
+
+        when(userAccountService.findUserById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(userAccountUpdateRequest);
+
+        mockMvc.perform(get("/admin/user/33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithMockUser(authorities = "TEACHER")
+    void shouldReturnErrorWhenHasRoleTeacherTest() throws Exception {
+        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", new HashSet<>(), RegistrationStatus.NEW );
+
+        when(userAccountService.findUserById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(userAccountUpdateRequest);
+
+        mockMvc.perform(get("/admin/user/33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
 }

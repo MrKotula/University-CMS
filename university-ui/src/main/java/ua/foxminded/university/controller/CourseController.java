@@ -9,17 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.foxminded.university.service.CourseService;
+import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.StudentAccountService;
 
 @Controller
 @AllArgsConstructor
 public class CourseController {
+
     private final CourseService courseService;
     private final StudentAccountService studentAccountService;
+    private final DateService dateService;
 
     @GetMapping("/course/info/{courseId}")
     public String viewCourseInfo(@PathVariable String courseId, Model model) {
         model.addAttribute("course", courseService.getCourseById(courseId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "course/coursePageInfo";
     }

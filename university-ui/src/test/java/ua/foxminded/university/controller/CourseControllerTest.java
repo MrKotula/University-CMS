@@ -72,7 +72,7 @@ class CourseControllerTest {
     }
 
     @Test
-    public void shouldReturnCourseInfoPageTest() throws Exception {
+    void shouldReturnCourseInfoPageTest() throws Exception {
         CourseResponse courseResponse = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", new ArrayList<>());
 
         when(courseService.getCourseById("1d95bc79-a549-4d2c-aeb5-3f929aee0f22")).thenReturn(courseResponse);
@@ -84,7 +84,7 @@ class CourseControllerTest {
     }
 
     @Test
-    public void shouldRedirectAfterEnrollStudentToCourseTest() throws Exception {
+    void shouldRedirectAfterEnrollStudentToCourseTest() throws Exception {
         CourseResponse courseResponse = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", new ArrayList<>());
         StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",

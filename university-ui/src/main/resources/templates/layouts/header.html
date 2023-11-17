@@ -1,10 +1,12 @@
 <header class="container" xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header"
         xmlns:spring="http://www.w3.org/1999/XSL/Transform">
-    <a class="logo" href="/static">University</a><br>
-    <h1>
-        <spring:message code="greeting" text="default"/>
-    </h1>
+    <a class="logo" href="/">University</a><br>
+    <div class="currentData">
+        <form method="GET" th:action="@{/}" th:object="${dataService}"></form>
+        <h1 th:text="#{elementonpage.todaymessage}"></h1>
+        <h1 th:text="${dateService}"></h1>
+    </div>
     <div class="langBox">
         <span th:text="#{lang.change}"></span>:
         <select id="locales">
@@ -15,7 +17,7 @@
     </div>
     <br><br>
     <nav>
-        <a href="/static" th:text="#{button.mainpage}"></a>
+        <a href="/" th:text="#{button.mainpage}"></a>
         <a href="/about" th:text="#{button.aboutus}"></a>
         <span class="auth">
             <a href="/login" th:text="#{button.login}"></a>

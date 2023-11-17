@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = "TEACHER")
 @ContextConfiguration(initializers = {TeacherControllerTest.Initializer.class})
 @Testcontainers
 class TeacherControllerTest {
@@ -141,5 +141,19 @@ class TeacherControllerTest {
                         .param("studentId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1"))
                 .andDo(print())
                 .andExpect(redirectedUrl("/teacher"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "STUDENT")
+    void shouldReturnErrorWhenHasAnotherRoleTest() throws Exception {
+        StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", new HashSet<>());
+
+        when(studentAccountService.findStudentById(anyString())).thenReturn(studentAccountResponseTest);
+
+        mockMvc.perform(get("/teacher/user/33c99439-aaf0-4ebd-a07a-bd0c550db4e1"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 }

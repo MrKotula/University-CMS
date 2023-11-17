@@ -1,72 +1,61 @@
 package ua.foxminded.university.validator.impl;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.Assert;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.service.StudentAccountService;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ua.foxminded.university.entity.Group;
+import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.validator.exception.ValidationException;
-import ua.foxminded.university.service.GroupService;
+import java.util.Optional;
 
-@SpringBootTest
-@ContextConfiguration(initializers = {GroupValidatorImplTest.Initializer.class})
-@Testcontainers
+@ExtendWith(MockitoExtension.class)
 class GroupValidatorImplTest {
 
-    @Autowired
-    GroupService groupService;
+    @InjectMocks
+    private GroupValidatorImpl groupValidator;
 
-    @Autowired
-    StudentAccountService studentAccountService;
-
-    @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
-            .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
-
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues
-                    .of("spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                            "spring.datasource.password=" + postgreSQLContainer.getPassword())
-                    .applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    static void setUp() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        postgreSQLContainer.stop();
-    }
+    @Mock
+    private GroupRepository groupRepository;
 
     @Test
     void shouldReturnValidationExceptionWhenGroupNameCannotSpecialCharacter() throws ValidationException {
         String expectedMessage = "Group name cannot special format for group!";
-        Exception exception = assertThrows(ValidationException.class, () -> groupService.register("test"));
+
+        Exception exception = assertThrows(ValidationException.class, () -> groupValidator.validateGroupName("test"));
 
         assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldDoesNotThrowValidationExceptionWhenGroupNameCanSpecialCharacter() throws ValidationException {
+        assertDoesNotThrow(() -> groupValidator.validateGroupName("DR-29"));
     }
 
     @Test
     void shouldReturnValidationExceptionWhenGroupIdIsNotExists() throws ValidationException {
         String expectedMessage = "This groupId is not exists!";
-        Exception exception = Assert.assertThrows(ValidationException.class, () -> studentAccountService.changeGroup("sad", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+
+        when(groupRepository.findById("wrong_id")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(ValidationException.class, () -> groupValidator.validateGroupId("wrong_id"));
 
         assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldDoesNotThrowValidationExceptionWhenGroupIdIsOkExists() throws ValidationException {
+        Group testGroup = new Group("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "DT-43");
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(testGroup));
+
+        assertDoesNotThrow(() -> groupValidator.validateGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
     }
 }

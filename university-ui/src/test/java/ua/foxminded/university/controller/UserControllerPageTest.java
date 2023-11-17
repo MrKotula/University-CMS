@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.service.CourseService;
@@ -36,6 +37,9 @@ class UserControllerPageTest {
 
     @MockBean
     private CourseService courseService;
+
+    @MockBean
+    private DateService dateService;
 
     @Autowired
     private MockMvc mockMvc;
