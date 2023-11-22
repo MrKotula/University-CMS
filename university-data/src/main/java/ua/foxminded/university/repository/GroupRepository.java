@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Group;
 
 @Repository
+@Transactional
 public interface GroupRepository extends JpaRepository<Group, String> {
     @Query(value = "SELECT groups.group_id, groups.group_name, COUNT(user_id) FROM schedule.groups "
             + "LEFT JOIN schedule.users ON groups.group_id = users.group_id GROUP BY groups.group_id, groups.group_name "

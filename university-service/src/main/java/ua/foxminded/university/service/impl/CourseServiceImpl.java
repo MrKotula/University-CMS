@@ -3,6 +3,7 @@ package ua.foxminded.university.service.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
@@ -11,6 +12,7 @@ import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.CourseValidator;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
     private final CourseValidator courseValidator;

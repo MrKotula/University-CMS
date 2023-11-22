@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.entity.Role;
@@ -20,6 +21,7 @@ import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class StudentAccountServiceImpl implements StudentAccountService {
 

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Student page for teacher</title>
+    <title>Student schedule tomorrow</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/studentStyle.css}">
 </head>
@@ -25,7 +25,7 @@
 <main class="container">
     <h1 th:text="#{infopage.studentpanel}"></h1>
     <h2 th:text="#{infopage.studinfo}"></h2><br>
-    <form style="float: left;" class="formInfoStudent" method="POST" th:action="@{'/student/info/' + ${userId}}" th:object="${studentResponse}">
+    <form style="float: left;" class="formInfoStudent" method="POST" th:action="@{'/student/info/' + ${userId} + 'schedule/tomorrow'}" th:object="${studentResponse}">
         <div class="mainParamsStudent">
             <h3 th:text="#{paramname.email}"></h3>
             <h3><span th:text="${studentResponse.email}"></span></h3>
@@ -53,9 +53,10 @@
     </form>
     <form class="formInfoSchedule">
         <div>
-            <h3 class="mySchedule" th:text="#{infopage.mytodayschedule}"></h3>
-            <a class="btnNextScheduleDay" th:href="@{/student/info/{userId}/schedule/tomorrow(userId=${studentResponse.userId})}"><span>&#8594;</span></a>
-            <ul th:each="schedule : ${scheduleToday}">
+            <a class="btnPreviousScheduleDay" th:href="@{/student/info/{userId}(userId=${studentResponse.userId})}"><span>&#10229;</span></a>
+            <h3 class="mySchedule" th:text="#{infopage.myschedule}"></h3>
+            <h3 class="nextDayOfMonth" th:text="${nextDayOfMonth}"></h3>
+            <ul th:each="schedule : ${scheduleTomorrow}">
                 <li th:text="${schedule}"></li>
             </ul>
         </div>

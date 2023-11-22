@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.UserAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
@@ -22,6 +23,7 @@ import java.util.Set;
 import static java.lang.String.valueOf;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
 
