@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false, of = {"groupId", "studentCard"})
 @Entity
 @DiscriminatorValue("US_SA")
+@Builder
 public class StudentAccount extends UserAccount {
 
     @Column(name = "group_id")

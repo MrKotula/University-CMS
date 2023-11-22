@@ -12,7 +12,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("US_AC")
 public class UserAccount extends User {
+
     @Enumerated(EnumType.STRING)
     @Column(name = "registration_status")
     protected RegistrationStatus registrationStatus;

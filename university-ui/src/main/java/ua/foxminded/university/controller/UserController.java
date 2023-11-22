@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String userPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("courses", courseService.findAllCourses());
+        model.addAttribute("courses", courseService.getAllCourses());
         model.addAttribute("userUpdateRequest", userAccountService.getUserByEmail(userDetails.getUsername()));
         model.addAttribute("dateService", dateService.getCurrentDate());
 

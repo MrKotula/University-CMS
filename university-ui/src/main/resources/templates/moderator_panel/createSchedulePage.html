@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Create schedule</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
+    <h1 th:text="#{infopage.createnewschedule}"></h1>
+
+    <form style="float: left;" class="formTeachersInfo" method="POST" th:action="@{/user/moderator/schedule}">
+        <h2 style="color:darkgreen" th:text="#{infopage.teachers}"></h2>
+        <select id="selectedTeacherId" name="selectedTeacherId" th:value="selectedTeacherId">
+            <option th:each="teacher : ${teachers}" th:value="${teacher.userId}" th:text="${teacher}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.groups}"></h2>
+        <select id="selectedGroupId" name="selectedGroupId" th:value="selectedGroupId">
+            <option th:each="group : ${groups}" th:value="${group.groupId}" th:text="${group}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.courses}"></h2>
+        <select id="selectedCourseId" name="selectedCourseId" th:value="selectedCourseId">
+            <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.startlecture}"></h2>
+        <select id="selectedStartLecture" name="selectedStartLecture" th:value="selectedStartLecture">
+            <option th:each="startLecture : ${startOfLecture}" th:value="${startLecture}"
+                    th:text="${startLecture}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.endlecture}"></h2>
+        <select id="selectedEndLecture" name="selectedEndLecture" th:value="selectedEndLecture">
+            <option th:each="endLecture : ${endOfLecture}" th:value="${endLecture}"
+                    th:text="${endLecture}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.dates}"></h2>
+        <select id="selectedDateOfLecture" name="selectedDateOfLecture" th:value="selectedDateOfLecture">
+            <option th:each="nextTwoWeeks : ${listOfNextTwoWeeks}" th:value="${nextTwoWeeks}"
+                    th:text="${nextTwoWeeks}"></option>
+        </select>
+
+        <h2 style="color:darkgreen" th:text="#{infopage.lectureroom}"></h2>
+        <select id="selectedLectureRoom" name="selectedLectureRoom" th:value="selectedLectureRoom">
+            <option th:each="lectureRoom : ${lectureRooms}" th:value="${lectureRoom}"
+                    th:text="${lectureRoom}"></option>
+        </select>
+
+        <script>
+            $(document).ready(function () {
+                $('.formTeachersInfo').submit(function (event) {
+                    event.preventDefault();
+
+                    var formData = {
+                        selectedTeacherId: $('#selectedTeacherId').val(),
+                        selectedGroupId: $('#selectedGroupId').val(),
+                        selectedCourseId: $('#selectedCourseId').val(),
+                        selectedStartLecture: $('#selectedStartLecture').val(),
+                        selectedEndLecture: $('#selectedEndLecture').val(),
+                        selectedDateOfLecture: $('#selectedDateOfLecture').val(),
+                        selectedLectureRoom: $('#selectedLectureRoom').val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: '/user/moderator/schedule',
+                        data: JSON.stringify(formData),
+                        success: function (data) {
+                            console.log(data);
+
+                            window.location.href = '/user/moderator';
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <button type="submit" th:text="#{button.submit}"></button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

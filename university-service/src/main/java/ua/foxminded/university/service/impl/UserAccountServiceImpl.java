@@ -1,9 +1,9 @@
 package ua.foxminded.university.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.UserAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
@@ -12,8 +12,9 @@ import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.UserAccountRepository;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
-import ua.foxminded.university.service.mapper.UserUpdateMapper;
 import ua.foxminded.university.service.UserAccountService;
+import ua.foxminded.university.service.dto.response.UserAccountResponse;
+import ua.foxminded.university.service.mapper.UserUpdateMapper;
 import ua.foxminded.university.validator.UserValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import java.util.Set;
 import static java.lang.String.valueOf;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
 
@@ -30,7 +32,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final RoleRepository roleRepository;
 
-    private final UserUpdateMapper userUpdateMapper = Mappers.getMapper(UserUpdateMapper.class);
+    private final UserUpdateMapper userUpdateMapper;
 
     @Override
     public void register(UserRegistrationRequest userRegistrationRequest) throws ValidationException {
@@ -54,24 +56,24 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public UserAccountUpdateRequest getUserByEmail(String email) {
+    public UserAccountResponse getUserByEmail(String email) {
         UserAccount userAccount = userAccountRepository.getUserByEmail(email).get();
 
-        return new UserAccountUpdateRequest(userAccount.getUserId(), userAccount.getFirstName(), userAccount.getLastName(), userAccount.getEmail(),
-                userAccount.getPassword(), userAccount.getPasswordCheck(), userAccount.getRoles(), userAccount.getRegistrationStatus());
+        return userUpdateMapper.transformUserAccountToDtoResponse(userAccount);
     }
 
     @Override
-    public List<UserAccount> findAllUsers() {
-        return userAccountRepository.findAll();
+    public List<UserAccountResponse> findAllUsers() {
+        List<UserAccount> userAccountList = userAccountRepository.findAll();
+
+        return userUpdateMapper.transformListUserAccountToDtoResponse(userAccountList);
     }
 
     @Override
-    public UserAccountUpdateRequest findUserById(String userId) {
+    public UserAccountResponse findUserById(String userId) {
         UserAccount userAccount = userAccountRepository.findById(userId).get();
 
-        return new UserAccountUpdateRequest(userAccount.getUserId(), userAccount.getFirstName(), userAccount.getLastName(), userAccount.getEmail(),
-                userAccount.getPassword(), userAccount.getPasswordCheck(), userAccount.getRoles(), userAccount.getRegistrationStatus());
+        return userUpdateMapper.transformUserAccountToDtoResponse(userAccount);
     }
 
     @Override
@@ -137,7 +139,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         userAccountUpdateRequest.setRoles(setRoles);
-        userUpdateMapper.updateUserAccountFromDto(userAccountUpdateRequest, userAccount);
+
+        userUpdateMapper.transformUserAccountFromDtoRequest(userAccountUpdateRequest);
 
         userAccountRepository.save(userAccount);
     }

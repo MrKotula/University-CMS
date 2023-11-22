@@ -6,7 +6,9 @@ import java.util.Set;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.request.StudentAccountRequest;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
@@ -16,36 +18,37 @@ import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.service.mapper.StudentAccountMapper;
 import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class StudentAccountServiceImpl implements StudentAccountService {
-
     private final StudentValidator studentValidator;
-
     private final PasswordEncoder passwordEncoder;
-
     private final StudentAccountRepository studentAccountRepository;
-
     private final RoleRepository roleRepository;
-
     private final CourseRepository courseRepository;
 
+    private final StudentAccountMapper studentAccountMapper;
+
     @Override
-    public List<StudentAccount> findByCourseName(String courseName) {
-        return studentAccountRepository.findByCourseName(courseName);
+    public List<StudentAccountResponse> findByCourseName(String courseName) {
+        List<StudentAccount> studentAccountList = studentAccountRepository.findByCourseName(courseName);
+
+        return studentAccountMapper.transformListStudentsToDto(studentAccountList);
     }
 
     @Override
-    public void addStudentCourse(StudentAccountResponse studentAccountResponse, String courseId) {
-        studentValidator.validateStudentId(studentAccountResponse.getUserId());
+    public void addStudentCourse(StudentAccountRequest studentAccountRequest, String courseId) {
+        studentValidator.validateStudentId(studentAccountRequest.getUserId());
         studentValidator.validateCourseId(courseId);
-        studentValidator.validateMaxAvailableCourses(studentAccountResponse);
+        studentValidator.validateMaxAvailableCourses(studentAccountRequest);
 
-        if(studentValidator.validateAvailableCourses(studentAccountResponse, courseId)) {
-            studentAccountRepository.addStudentCourse(studentAccountResponse.getUserId(), courseId);
+        if(studentValidator.validateAvailableCourses(studentAccountRequest, courseId)) {
+            studentAccountRepository.addStudentCourse(studentAccountRequest.getUserId(), courseId);
         }
     }
 
@@ -60,24 +63,14 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     public StudentAccountResponse findStudentById(String userId) {
         StudentAccount studentAccount = studentAccountRepository.findById(userId).get();
 
-        return StudentAccountResponse.builder()
-                .userId(studentAccount.getUserId())
-                .firstName(studentAccount.getFirstName())
-                .lastName(studentAccount.getLastName())
-                .email(studentAccount.getEmail())
-                .password(studentAccount.getPassword())
-                .passwordCheck(studentAccount.getPasswordCheck())
-                .roles(studentAccount.getRoles())
-                .registrationStatus(studentAccount.getRegistrationStatus())
-                .groupId(studentAccount.getGroupId())
-                .studentCard(studentAccount.getStudentCard())
-                .courses(studentAccount.getCourses())
-                .build();
+        return studentAccountMapper.transformStudentAccountToDto(studentAccount);
     }
 
     @Override
-    public List<StudentAccount> findAllStudents() {
-        return studentAccountRepository.findAll();
+    public List<StudentAccountResponse> findAllStudents() {
+        List<StudentAccount> studentAccountList = studentAccountRepository.findAll();
+
+        return studentAccountMapper.transformListStudentsToDto(studentAccountList);
     }
 
     @Override
@@ -102,16 +95,21 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     }
 
     @Override
-    public void updateEmail(StudentAccount studentAccount) throws ValidationException {
-        studentValidator.validateStudentId(studentAccount.getUserId());
-        studentValidator.validateEmail(studentAccount.getEmail());
+    public void updateEmail(StudentAccountRequest studentAccountRequest) throws ValidationException {
+        studentValidator.validateStudentId(studentAccountRequest.getUserId());
+        studentValidator.validateEmail(studentAccountRequest.getEmail());
+
+        StudentAccount studentAccount = studentAccountMapper.transformStudentAccountFromDto(studentAccountRequest);
 
         studentAccountRepository.save(studentAccount);
     }
 
     @Override
-    public void updatePassword(StudentAccount studentAccount) {
-        studentValidator.validateStudentId(studentAccount.getUserId());
+    public void updatePassword(StudentAccountRequest studentAccountRequest) {
+        studentValidator.validateStudentId(studentAccountRequest.getUserId());
+
+        StudentAccount studentAccount = studentAccountMapper.transformStudentAccountFromDto(studentAccountRequest);
+
         studentAccountRepository.save(studentAccount);
     }
 
@@ -124,20 +122,6 @@ public class StudentAccountServiceImpl implements StudentAccountService {
 
     @Override
     public StudentAccountResponse getStudentByEmail(String email) {
-        StudentAccount studentAccount = studentAccountRepository.getStudentByEmail(email);
-
-        return StudentAccountResponse.builder()
-                .userId(studentAccount.getUserId())
-                .firstName(studentAccount.getFirstName())
-                .lastName(studentAccount.getLastName())
-                .email(studentAccount.getEmail())
-                .password(studentAccount.getPassword())
-                .passwordCheck(studentAccount.getPasswordCheck())
-                .roles(studentAccount.getRoles())
-                .registrationStatus(studentAccount.getRegistrationStatus())
-                .groupId(studentAccount.getGroupId())
-                .studentCard(studentAccount.getStudentCard())
-                .courses(studentAccount.getCourses())
-                .build();
+        return studentAccountMapper.transformStudentAccountToDto(studentAccountRepository.getStudentByEmail(email));
     }
 }

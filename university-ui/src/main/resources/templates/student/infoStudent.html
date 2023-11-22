@@ -43,12 +43,21 @@
             <h3><span th:text="${studentResponse.studentCard}"></span></h3>
         </div>
         <div class="mainParamsStudent">
-            <h3 th:text="#{paramname.groupid}"></h3>
-            <h3><span th:text="${studentResponse.groupId}"></span></h3>
+            <h3 th:text="#{paramname.groupname}"></h3>
+            <h3><span th:text="${groupService.groupName}"></span></h3>
         </div>
         <div class="mainParamsStudent">
             <h3 th:text="#{paramname.courses}"></h3>
             <h3><span th:text="${studentResponse.courses}"></span></h3>
+        </div>
+    </form>
+    <form class="formInfoSchedule">
+        <div>
+            <h3 class="mySchedule" th:text="#{infopage.mytodayschedule}"></h3>
+            <a class="btnNextScheduleDay" th:href="@{/student/info/{userId}/schedule/tomorrow(userId=${studentResponse.userId})}"><span>&#8594;</span></a>
+            <ul th:each="schedule : ${scheduleToday}">
+                <li th:text="${schedule}"></li>
+            </ul>
         </div>
     </form>
 </main>

@@ -118,6 +118,18 @@ h2 {
     background: yellowgreen;
 }
 
+.teacherAccount:hover {
+    color: white;
+}
+
+.moderatorAccount {
+    background: dodgerblue;
+}
+
+.moderatorAccount:hover {
+    color: white;
+}
+
 .studentAccount {
     float: right;
     margin-left: 15px;

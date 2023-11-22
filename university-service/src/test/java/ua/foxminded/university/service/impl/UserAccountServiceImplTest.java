@@ -21,7 +21,11 @@ import ua.foxminded.university.entity.enums.RoleModel;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.UserAccountRepository;
-import ua.foxminded.university.service.dto.response.StudentAccountResponse;
+import ua.foxminded.university.service.dto.request.CourseRequest;
+import ua.foxminded.university.service.dto.request.StudentAccountRequest;
+import ua.foxminded.university.service.dto.response.UserAccountResponse;
+import ua.foxminded.university.service.mapper.CourseMapper;
+import ua.foxminded.university.service.mapper.UserUpdateMapper;
 import ua.foxminded.university.validator.UserValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.ArrayList;
@@ -48,6 +52,12 @@ class UserAccountServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private CourseMapper courseMapper;
+
+    @Mock
+    private UserUpdateMapper userUpdateMapper;
+
     @InjectMocks
     private UserAccountServiceImpl userAccountService;
 
@@ -67,8 +77,16 @@ class UserAccountServiceImplTest {
     @Test
     void verifyUseMethodGetUserById() {
         UserAccount userAccount = new UserAccount("Jane", "Does", "dtestMail@gmail.com", "1234", "1234");
+        UserAccountResponse userAccountResponse = UserAccountResponse.builder()
+                .firstName("Jane")
+                .lastName("Does")
+                .email("dtestMail@gmail.com")
+                .password("1234")
+                .passwordCheck("1234")
+                .build();
 
         when(userAccountRepository.getUserByEmail("dtestMail@gmail.com")).thenReturn(Optional.of(userAccount));
+        when(userUpdateMapper.transformUserAccountToDtoResponse(userAccount)).thenReturn(userAccountResponse);
 
         assertEquals(userAccount.getFirstName(), userAccountService.getUserByEmail("dtestMail@gmail.com").getFirstName());
         verify(userAccountRepository).getUserByEmail("dtestMail@gmail.com");
@@ -249,32 +267,37 @@ class UserAccountServiceImplTest {
 
         roles.add(roleStudent);
 
-        when(userAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311")).thenReturn(Optional.of(userAccountJane));
-
-        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
+        UserAccountResponse userAccountResponse = new UserAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", roles, RegistrationStatus.NEW );
 
-        assertEquals(userAccountUpdateRequest, userAccountService.findUserById("33c99439-aaf0-4ebd-a07a-bd0c550d2311"));
+        when(userAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311")).thenReturn(Optional.of(userAccountJane));
+        when(userUpdateMapper.transformUserAccountToDtoResponse(userAccountJane)).thenReturn(userAccountResponse);
+
+        assertEquals(userAccountResponse, userAccountService.findUserById("33c99439-aaf0-4ebd-a07a-bd0c550d2311"));
         verify(userAccountRepository).findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311");
     }
 
     @Test
     void shouldReturnListOfUsersWhenUseMethodFindAllUsersTest() {
-        Set<Course> courses = new HashSet<>();
+        HashSet<CourseRequest> listCoursesRequest = new HashSet<>();
         List<UserAccount> userAccountList = new ArrayList<>();
 
-        StudentAccountResponse studentAccountResponse = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+        StudentAccountRequest studentAccountResponse = new StudentAccountRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
-                new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", courses);
+                new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", listCoursesRequest);
 
-        Course testCourseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
-        Course testCourseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
+        CourseRequest testCourseMath = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
+        CourseRequest testCourseBiology = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
 
-        courses.add(testCourseMath);
-        courses.add(testCourseBiology);
+        listCoursesRequest.add(testCourseMath);
+        listCoursesRequest.add(testCourseBiology);
+
+        HashSet<Course> courses = courseMapper.transformHashSetCourseFromDtoRequest(listCoursesRequest);
 
         StudentAccount testStudent = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", null, null,
                 RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727");
+
+        courseMapper.transformHashSetCourseToDtoResponse(courses);
 
         testStudent.setCourses(courses);
 
@@ -285,7 +308,7 @@ class UserAccountServiceImplTest {
 
         when(userAccountRepository.findAll()).thenReturn(userAccountList);
 
-        assertEquals(userAccountList, userAccountService.findAllUsers());
+        assertEquals(userUpdateMapper.transformListUserAccountToDtoResponse(userAccountList), userAccountService.findAllUsers());
     }
 
     @Test
