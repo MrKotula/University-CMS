@@ -4,4 +4,6 @@ import java.time.LocalDate;
 
 public interface DateService {
     LocalDate getCurrentDate();
+
+    LocalDate getNextDayOfMonth();
 }

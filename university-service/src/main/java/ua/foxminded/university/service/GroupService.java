@@ -2,6 +2,7 @@ package ua.foxminded.university.service;
 
 import java.util.List;
 import ua.foxminded.university.entity.Group;
+import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface GroupService {
@@ -10,4 +11,6 @@ public interface GroupService {
     void updateGroupName(Group group) throws ValidationException;
 
     List<Group> getGroupsWithLessEqualsStudentCount(int studentCount);
+
+    GroupResponse getGroupByUserId(String userId);
 }

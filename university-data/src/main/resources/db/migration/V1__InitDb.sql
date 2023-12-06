@@ -84,3 +84,16 @@ CREATE TABLE schedule.users_roles (
   CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schedule.users (user_id),
   CONSTRAINT role_id FOREIGN KEY (role_id) REFERENCES schedule.roles (role_id)
 );
+
+CREATE TABLE IF NOT EXISTS schedule.timetable
+(
+    schedule_id character(36) NOT NULL,
+    lecture_room character varying(24) NOT NULL,
+    date_of_lecture DATE,
+    course_course_id character(36) NOT NULL,
+    group_group_id character(36) NOT NULL,
+    teacher_user_id character(36) NOT NULL,
+    start_of_lecture TIME,
+    end_of_lecture TIME,
+    CONSTRAINT schedule_pkey PRIMARY KEY (schedule_id)
+    );

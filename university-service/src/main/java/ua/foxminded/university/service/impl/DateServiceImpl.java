@@ -9,7 +9,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class DateServiceImpl implements DateService {
 
+    @Override
     public LocalDate getCurrentDate() {
+
         return LocalDate.now();
+    }
+
+    @Override
+    public LocalDate getNextDayOfMonth() {
+
+        return getCurrentDate().plusDays(1);
     }
 }

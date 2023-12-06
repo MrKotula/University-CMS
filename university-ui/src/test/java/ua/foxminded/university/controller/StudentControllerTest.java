@@ -21,6 +21,7 @@ import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.entity.enums.RoleModel;
 import ua.foxminded.university.repository.RoleRepository;
+import ua.foxminded.university.service.ScheduleService;
 import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import java.util.HashSet;
@@ -43,6 +44,9 @@ class StudentControllerTest {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -102,5 +106,23 @@ class StudentControllerTest {
                         .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithMockUser(authorities = "STUDENT")
+    void shouldReturnStudentInfoScheduleTomorrowPageTest() throws Exception {
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByRole(RoleModel.STUDENT));
+
+        StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                roles, RegistrationStatus.NEW, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", new HashSet<>());
+
+        when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
+
+        mockMvc.perform(get("/student/info/33c99439-aaf0-4ebd-a07a-bd0c550db4e1/schedule/tomorrow")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
