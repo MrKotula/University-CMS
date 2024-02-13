@@ -97,3 +97,18 @@ CREATE TABLE IF NOT EXISTS schedule.timetable
     end_of_lecture TIME,
     CONSTRAINT schedule_pkey PRIMARY KEY (schedule_id)
     );
+
+CREATE TABLE schedule.lecture_start_time
+(
+    start_lecture_time TIME
+);
+
+CREATE TABLE schedule.lecture_end_time
+(
+    end_lecture_time TIME
+);
+
+CREATE TABLE schedule.lecture_rooms
+(
+    lecture_room character(10)
+);

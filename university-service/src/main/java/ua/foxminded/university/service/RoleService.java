@@ -1,8 +1,8 @@
 package ua.foxminded.university.service;
 
-import ua.foxminded.university.entity.Role;
+import ua.foxminded.university.service.dto.response.RoleResponse;
 import java.util.List;
 
 public interface RoleService {
-    List<Role> findAllRoles();
+    List<RoleResponse> findAllRoles();
 }

@@ -27,6 +27,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @DiscriminatorValue("US_TA")
+@Builder
 public class TeacherAccount extends UserAccount {
     @Column(name="degrees")
     @Enumerated(EnumType.STRING)

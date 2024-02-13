@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
+import ua.foxminded.university.service.dto.request.CourseRequest;
+import ua.foxminded.university.service.dto.request.StudentAccountRequest;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.entity.Role;
@@ -20,6 +22,9 @@ import ua.foxminded.university.repository.RoleRepository;
 import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.service.mapper.CourseMapper;
+import ua.foxminded.university.service.mapper.RoleMapper;
+import ua.foxminded.university.service.mapper.StudentAccountMapper;
 import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.Arrays;
@@ -44,12 +49,20 @@ class StudentAccountServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private StudentAccountMapper studentAccountMapper;
+
+    @Mock
+    private CourseMapper courseMapper;
+
+    @Mock
+    private RoleMapper roleMapper;
+
     @InjectMocks
     private StudentAccountServiceImpl studentAccountService;
 
     private StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", null, null,
            RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727");
-
 
     @Test
     void verifyUseMethodRegister() throws ValidationException {
@@ -64,10 +77,19 @@ class StudentAccountServiceImplTest {
 
     @Test
     void verifyUseMethodUpdateEmail() throws ValidationException {
-        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "testemail@ukr.net", null, null,
-                RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+        StudentAccountRequest studentAccountRequest = StudentAccountRequest.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("John")
+                .lastName("Doe")
+                .email("testemail@ukr.net")
+                .registrationStatus(RegistrationStatus.NEW)
+                .courses(new HashSet<>())
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2")
+                .build();
 
-        studentAccountService.updateEmail(testStudentAccount);
+        when(studentAccountMapper.transformStudentAccountFromDto(studentAccountRequest)).thenReturn(testStudentAccount);
+
+        studentAccountService.updateEmail(studentAccountRequest);
 
         verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
         verify(studentValidator).validateEmail("testemail@ukr.net");
@@ -76,10 +98,21 @@ class StudentAccountServiceImplTest {
 
     @Test
     void verifyUseMethodUpdatePassword() {
-        StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "testemail@ukr.net",
-                "1234", "1234", RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+        StudentAccountRequest studentAccountRequest = StudentAccountRequest.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("John")
+                .lastName("Doe")
+                .password("1234")
+                .passwordCheck("1234")
+                .email("testemail@ukr.net")
+                .registrationStatus(RegistrationStatus.NEW)
+                .courses(new HashSet<>())
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2")
+                .build();
 
-        studentAccountService.updatePassword(testStudentAccount);
+        when(studentAccountMapper.transformStudentAccountFromDto(studentAccountRequest)).thenReturn(testStudentAccount);
+
+        studentAccountService.updatePassword(studentAccountRequest);
 
         verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
         verify(studentAccountRepository).save(any(StudentAccount.class));
@@ -129,42 +162,42 @@ class StudentAccountServiceImplTest {
 
     @Test
     void verifyUseMethodWhenUseInsertSaveAndAddStudentCourse() {
-        Course courseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
-        Course courseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
+        CourseRequest courseMath = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
+        CourseRequest courseBiology = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
 
-        HashSet<Course> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
+        HashSet<CourseRequest> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
 
-        StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+        StudentAccountRequest studentAccountRequest = new StudentAccountRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
                 new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", courses);
 
-        studentAccountService.addStudentCourse(studentAccountResponseTest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
+        studentAccountService.addStudentCourse(studentAccountRequest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
         verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
         verify(studentValidator).validateCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee0096");
-        verify(studentValidator).validateMaxAvailableCourses(studentAccountResponseTest);
-        verify(studentValidator).validateAvailableCourses(studentAccountResponseTest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
+        verify(studentValidator).validateMaxAvailableCourses(studentAccountRequest);
+        verify(studentValidator).validateAvailableCourses(studentAccountRequest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
     }
 
     @Test
     void verifyUseMethodAndAddStudentCourseTest() {
-        Course courseMath = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
-        Course courseBiology = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
+        CourseRequest courseMath = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee0f22", "Mathematics", "course of Mathematics", 30);
+        CourseRequest courseBiology = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee1234", "Biology", "course of Biology", 30);
 
-        HashSet<Course> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
+        HashSet<CourseRequest> courses = new HashSet<>(Arrays.asList(courseMath, courseBiology));
 
-        StudentAccountResponse studentAccountResponseTest = new StudentAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+        StudentAccountRequest studentAccountRequest = new StudentAccountRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
                 new HashSet<>(), RegistrationStatus.NEW,"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", courses);
 
-        doReturn(true).when(studentValidator).validateAvailableCourses(studentAccountResponseTest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
+        doReturn(true).when(studentValidator).validateAvailableCourses(studentAccountRequest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
-        studentAccountService.addStudentCourse(studentAccountResponseTest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
+        studentAccountService.addStudentCourse(studentAccountRequest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
 
         verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
         verify(studentValidator).validateCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee0096");
-        verify(studentValidator).validateMaxAvailableCourses(studentAccountResponseTest);
-        verify(studentValidator).validateAvailableCourses(studentAccountResponseTest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
+        verify(studentValidator).validateMaxAvailableCourses(studentAccountRequest);
+        verify(studentValidator).validateAvailableCourses(studentAccountRequest, "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
         verify(studentAccountRepository).addStudentCourse("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "1d95bc79-a549-4d2c-aeb5-3f929aee0096");
     }
 
@@ -229,14 +262,15 @@ class StudentAccountServiceImplTest {
                 .email("dis@ukr.net")
                 .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
                 .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
-                .roles(roles)
+                .roles(roleMapper.transformSetRoleResponseFromSetRole(roles))
                 .registrationStatus(RegistrationStatus.NEW)
                 .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2")
                 .studentCard("DT94381727")
-                .courses(courses)
+                .courses(courseMapper.transformHashSetCourseToDtoResponse(courses))
                 .build();
 
         when(studentAccountRepository.getStudentByEmail("dis@ukr.net")).thenReturn(studentAccount);
+        when(studentAccountMapper.transformStudentAccountToDto(studentAccount)).thenReturn(studentAccountResponseTest);
 
         assertEquals(studentAccountResponseTest, studentAccountService.getStudentByEmail("dis@ukr.net"));
         verify(studentAccountRepository).getStudentByEmail("dis@ukr.net");

@@ -1,17 +1,19 @@
 package ua.foxminded.university.validator.impl;
 
 import lombok.AllArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
-import ua.foxminded.university.service.dto.response.StudentAccountResponse;
+import ua.foxminded.university.service.dto.request.CourseRequest;
+import ua.foxminded.university.service.dto.request.StudentAccountRequest;
 import ua.foxminded.university.entity.Course;
+import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.validator.UserValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.CourseValidator;
 import ua.foxminded.university.validator.GroupValidator;
 import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.ValidationService;
-
 import java.util.Set;
 
 @ValidationService
@@ -24,6 +26,8 @@ public class StudentValidatorImpl implements StudentValidator {
     private final CourseValidator courseValidator;
     private final GroupValidator groupValidator;
     private final CourseRepository courseRepository;
+
+    private final CourseMapper courseMapper = Mappers.getMapper(CourseMapper.class);
 
     @Override
     public void validateStudent(UserRegistrationRequest userRegistrationRequest) throws ValidationException {
@@ -51,13 +55,15 @@ public class StudentValidatorImpl implements StudentValidator {
     }
 
     @Override
-    public boolean validateAvailableCourses(StudentAccountResponse studentAccountResponse, String courseId) throws ValidationException {
-        Set<Course> listOfCouses = studentAccountResponse.getCourses();
+    public boolean validateAvailableCourses(StudentAccountRequest studentAccountRequest, String courseId) throws ValidationException {
+        Set<CourseRequest> listOfCourses = studentAccountRequest.getCourses();
         Course newCourse = courseRepository.findById(courseId).get();
+
+        CourseRequest courseRequest = courseMapper.transformCourseToDtoRequest(newCourse);
 
         boolean isTrue = false;
 
-        if(!listOfCouses.contains(newCourse)) {
+        if(!listOfCourses.contains(courseRequest)) {
             isTrue = true;
         }
 
@@ -65,10 +71,10 @@ public class StudentValidatorImpl implements StudentValidator {
     }
 
     @Override
-    public void validateMaxAvailableCourses(StudentAccountResponse studentAccountResponse) throws ValidationException {
-        Set<Course> listOfCouses = studentAccountResponse.getCourses();
+    public void validateMaxAvailableCourses(StudentAccountRequest studentAccountRequest) throws ValidationException {
+        Set<CourseRequest> listOfCourses = studentAccountRequest.getCourses();
 
-        if(listOfCouses.size() >= MAX_AMOUNT_COURSES) {
+        if(listOfCourses.size() >= MAX_AMOUNT_COURSES) {
             throw new ValidationException("You have a max available courses!");
         }
     }

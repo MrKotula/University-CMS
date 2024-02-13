@@ -84,6 +84,7 @@
                         <exclude>ua/foxminded/university/service/mapper/*</exclude>
                         <exclude>ua/foxminded/university/service/dto/response/*</exclude>
                         <exclude>ua/foxminded/university/UniversityApplication.class</exclude>
+                        <exclude>ua/foxminded/university/service/dto/request/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -25,6 +25,8 @@
         <maven-surefire.version>3.1.2</maven-surefire.version>
         <devtools.version>3.1.0</devtools.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct-processor.version>1.5.5.Final</mapstruct-processor.version>
+        <org.mapstruct.extensions.spring.version>1.1.1</org.mapstruct.extensions.spring.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <maven-compiler.version>3.11.0</maven-compiler.version>
         <thymeleaf-extras.version>3.1.1.RELEASE</thymeleaf-extras.version>
@@ -95,6 +97,25 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct.extensions.spring</groupId>
+            <artifactId>mapstruct-spring-annotations</artifactId>
+            <version>${org.mapstruct.extensions.spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct.extensions.spring</groupId>
+            <artifactId>mapstruct-spring-test-extensions</artifactId>
+            <scope>test</scope>
+            <version>${org.mapstruct.extensions.spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct-processor.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -110,7 +131,12 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
+                            <version>${mapstruct-processor.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct.extensions.spring</groupId>
+                            <artifactId>mapstruct-spring-extensions</artifactId>
+                            <version>${org.mapstruct.extensions.spring.version}</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>

@@ -99,3 +99,7 @@ INSERT INTO schedule.timetable (schedule_id, lecture_room, date_of_lecture, cour
 INSERT INTO schedule.timetable (schedule_id, lecture_room, date_of_lecture, course_course_id, group_group_id, teacher_user_id, start_of_lecture, end_of_lecture) VALUES
     ('jh5ae483-0284-4088-ad1e-6780128e5464', 'c. 879', '2023-09-02', '1d95bc79-a549-4d2c-aeb5-3f929aee1234',
      '3c01e6f1-762e-43b8-a6e1-7cf493ce92e2', '33c99439-aaf0-4ebd-a07a-bd0c55asUr71', '16:20:00', '17:50:00');
+
+INSERT INTO schedule.lecture_start_time (start_lecture_time) VALUES ('08:30:00'), ('10:20:00'), ('12:10:00'), ('14:30:00'), ('16:20:00');
+INSERT INTO schedule.lecture_end_time (end_lecture_time) VALUES ('10:05:00'), ('11:55:00'), ('13:45:00'), ('16:05:00'), ('17:50:00');
+INSERT INTO schedule.lecture_rooms (lecture_room) VALUES ('c. 742'), ('c. 476'), ('c. 376'), ('c. 879'), ('c. 321'), ('c. 755'), ('c. 432');

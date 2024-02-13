@@ -7,7 +7,6 @@ import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.validator.UserValidator;
 import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.exception.ValidationException;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

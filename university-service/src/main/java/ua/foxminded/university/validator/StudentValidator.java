@@ -1,7 +1,7 @@
 package ua.foxminded.university.validator;
 
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
-import ua.foxminded.university.service.dto.response.StudentAccountResponse;
+import ua.foxminded.university.service.dto.request.StudentAccountRequest;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 public interface StudentValidator {
@@ -15,7 +15,7 @@ public interface StudentValidator {
 
     void validateCourseId(String courseId) throws ValidationException;
 
-    boolean validateAvailableCourses(StudentAccountResponse studentAccountResponse, String courseId) throws ValidationException;
+    boolean validateAvailableCourses(StudentAccountRequest studentAccountRequest, String courseId) throws ValidationException;
 
-    void validateMaxAvailableCourses(StudentAccountResponse studentAccountResponse) throws ValidationException;
+    void validateMaxAvailableCourses(StudentAccountRequest studentAccountRequest) throws ValidationException;
 }

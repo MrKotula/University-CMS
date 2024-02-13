@@ -12,8 +12,10 @@ import ua.foxminded.university.entity.TeacherAccount;
 import ua.foxminded.university.entity.enums.Degree;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.repository.TeacherAccountRepository;
+import ua.foxminded.university.service.mapper.TeacherAccountMapper;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -29,6 +31,9 @@ class TeacherAccountServiceImplTest {
 
     @Mock
     private StudentAccountRepository studentAccountRepository;
+
+    @Mock
+    private TeacherAccountMapper teacherAccountMapper;
 
     @InjectMocks
     private TeacherAccountServiceImpl teacherAccountService;
@@ -67,13 +72,14 @@ class TeacherAccountServiceImplTest {
                 .build();
 
         when(teacherAccountRepository.getTeacherByEmail("teacherMail@gmail.com")).thenReturn(teacherAccountTest);
+        when(teacherAccountMapper.transformTeacherAccountToDto(teacherAccountTest)).thenReturn(teacherAccountResponseTest);
 
         assertEquals(teacherAccountResponseTest, teacherAccountService.getTeacherByEmail("teacherMail@gmail.com"));
     }
 
     @Test
     void verifyUseAddStudentToScienceSupervisorWhenStudentAlreadyIsTest() {
-        ArrayList listOfStudents = mock(ArrayList.class);
+        ArrayList<StudentAccount> listOfStudents = mock(ArrayList.class);
 
         listOfStudents.add(testStudentAccount);
 
@@ -83,15 +89,15 @@ class TeacherAccountServiceImplTest {
         when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311")).thenReturn(Optional.ofNullable(testStudentAccount));
         doReturn(true).when(listOfStudents).contains(testStudentAccount);
 
-        teacherAccountService.addStudentToScienceSupervisor(teacherAccountTest.getUserId(), testStudentAccount.getUserId());
+        teacherAccountService.addStudentToScienceSupervisor("33c99439-aaf0-4ebd-a07a-bd0c550d8799", "33c99439-aaf0-4ebd-a07a-bd0c550d2311");
 
-        verify(teacherAccountRepository).findById(teacherAccountTest.getUserId());
-        verify(studentAccountRepository).findById(testStudentAccount.getUserId());
+        verify(teacherAccountRepository).findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799");
+        verify(studentAccountRepository).findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311");
     }
 
     @Test
     void verifyUseAddStudentToScienceSupervisorWhenAddStudentToSupervisorTest() {
-        ArrayList listOfStudents = mock(ArrayList.class);
+        ArrayList<StudentAccount> listOfStudents = mock(ArrayList.class);
 
         listOfStudents.add(testStudentAccount);
 
@@ -101,10 +107,38 @@ class TeacherAccountServiceImplTest {
         when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311")).thenReturn(Optional.ofNullable(testStudentAccount));
         doReturn(false).when(listOfStudents).contains(testStudentAccount);
 
-        teacherAccountService.addStudentToScienceSupervisor(teacherAccountTest.getUserId(), testStudentAccount.getUserId());
+        teacherAccountService.addStudentToScienceSupervisor("33c99439-aaf0-4ebd-a07a-bd0c550d8799", "33c99439-aaf0-4ebd-a07a-bd0c550d2311");
 
-        verify(teacherAccountRepository).findById(teacherAccountTest.getUserId());
-        verify(studentAccountRepository).findById(testStudentAccount.getUserId());
-        verify(teacherAccountRepository).addStudentToScienceSupervisor(teacherAccountTest.getUserId(), testStudentAccount.getUserId());
+        verify(teacherAccountRepository).findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799");
+        verify(studentAccountRepository).findById("33c99439-aaf0-4ebd-a07a-bd0c550d2311");
+        verify(teacherAccountRepository).addStudentToScienceSupervisor("33c99439-aaf0-4ebd-a07a-bd0c550d8799", "33c99439-aaf0-4ebd-a07a-bd0c550d2311");
+    }
+
+    @Test
+    void shouldReturnListOfTeacherResponsesWhenUseGetAllTeachersTest() {
+        List<TeacherAccount> listOfTeachers = new ArrayList();
+        List<TeacherAccountResponse> listOfTeachersResponses = new ArrayList();
+
+        TeacherAccountResponse teacherAccountResponseTest = TeacherAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .firstName("Jin")
+                .lastName("Tores")
+                .email("teacherMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .roles(new HashSet<>())
+                .registrationStatus(RegistrationStatus.REGISTERED)
+                .degree(Degree.DOCTORAL)
+                .phoneNumber("067-768-874")
+                .diplomaStudents(new ArrayList<>())
+                .build();
+
+        listOfTeachers.add(teacherAccountTest);
+        listOfTeachersResponses.add(teacherAccountResponseTest);
+
+        when(teacherAccountRepository.findAll()).thenReturn(listOfTeachers);
+        when(teacherAccountMapper.transformListTeachersToDto(listOfTeachers)).thenReturn(listOfTeachersResponses);
+
+        assertEquals(listOfTeachersResponses, teacherAccountService.getAllTeachers());
     }
 }
