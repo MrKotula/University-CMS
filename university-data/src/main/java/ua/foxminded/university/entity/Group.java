@@ -1,5 +1,6 @@
 package ua.foxminded.university.entity;
 
+import jakarta.persistence.Version;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import jakarta.persistence.Column;
@@ -32,6 +33,10 @@ public class Group {
     @ColumnDefault(value = "0")
     @ToString.Exclude
     private int countStudents;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
 
     public Group(String groupId, String groupName) {
         this.groupId = groupId;

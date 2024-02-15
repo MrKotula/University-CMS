@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,10 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private RoleModel role;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
 
     public Role(RoleModel role) {
         this.role = role;

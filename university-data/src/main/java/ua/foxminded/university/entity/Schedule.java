@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,4 +44,8 @@ public class Schedule {
     @Embedded
     @ToString.Include(name = "Lecture")
     private Lecture lecture;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
 }

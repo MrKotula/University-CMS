@@ -11,6 +11,7 @@ import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
+import ua.foxminded.university.validator.exception.CourseException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.CourseValidator;
 
@@ -78,5 +79,16 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
 
         return availableSeats;
+    }
+
+    @Override
+    public void removeCourse(String courseId) {
+        Course course = courseRepository.findById(courseId).get();
+
+        if (course.getNumberOfSeats() == course.getSeatsAvailable()) {
+            courseRepository.removeCourse(courseId);
+        } else {
+            throw new CourseException("Students are enrolled in this course");
+        }
     }
 }

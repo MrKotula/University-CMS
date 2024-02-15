@@ -20,6 +20,7 @@ import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.request.CourseRequest;
 import ua.foxminded.university.service.dto.request.GroupRequest;
+import ua.foxminded.university.service.dto.request.LectureRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
 import ua.foxminded.university.service.dto.request.TeacherAccountRequest;
@@ -31,6 +32,7 @@ import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.service.mapper.ScheduleMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
+import ua.foxminded.university.validator.ScheduleValidator;
 import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -80,6 +82,9 @@ class ScheduleServiceImplTest {
 
     @Mock
     private ScheduleMapper scheduleMapper;
+
+    @Mock
+    private ScheduleValidator scheduleValidator;
 
     @InjectMocks
     private ScheduleServiceImpl scheduleService;
@@ -165,7 +170,7 @@ class ScheduleServiceImplTest {
         Course course = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
         CourseRequest courseRequest = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
-        Group group = new Group("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        Group group = new Group("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
         GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
 
         Schedule schedule = Schedule.builder()
@@ -174,15 +179,38 @@ class ScheduleServiceImplTest {
                 .course(course)
                 .build();
 
+        LectureRequest lectureRequest = LectureRequest.builder()
+                .lectureRoom("c. 325")
+                .dateOfLecture(LocalDate.of(2024, 1, 1))
+                .startOfLecture(LocalTime.of(8, 30, 0))
+                .endOfLecture(LocalTime.of(10, 5, 0))
+                .build();
+
         ScheduleRequest scheduleRequest = ScheduleRequest.builder()
+                .scheduleId("1234")
+                .lecture(lectureRequest)
                 .teacher(teacherAccountRequest)
                 .group(groupRequest)
                 .course(courseRequest)
                 .build();
 
+        ScheduleRequestBody scheduleRequestBody = ScheduleRequestBody.builder()
+                .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .selectedGroupId("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23")
+                .selectedCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedLectureRoom("c. 325")
+                .selectedDateOfLecture("2024-01-01")
+                .selectedStartLecture("08:30:00")
+                .selectedEndLecture("10:05:00")
+                .build();
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(course));
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccount));
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23")).thenReturn(Optional.of(group));
+        when(scheduleMapper.transformScheduleResponseFromDto(any())).thenReturn(scheduleRequest);
         when(scheduleMapper.transformScheduleFromDto(scheduleRequest)).thenReturn(schedule);
 
-        scheduleService.register(scheduleRequest);
+        scheduleService.register(scheduleRequestBody);
 
         verify(scheduleRepository).save(any(Schedule.class));
     }

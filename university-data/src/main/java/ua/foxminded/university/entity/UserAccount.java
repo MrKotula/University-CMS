@@ -29,8 +29,8 @@ public class UserAccount extends User {
     protected RegistrationStatus registrationStatus;
 
     @Builder(builderMethodName = "userAccountBuilder")
-    public UserAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles){
-        super(userId, firstName, lastName, email, password, passwordCheck, roles);
+    public UserAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles, Integer version){
+        super(userId, firstName, lastName, email, password, passwordCheck, roles, version);
         this.registrationStatus = registrationStatus;
     }
 

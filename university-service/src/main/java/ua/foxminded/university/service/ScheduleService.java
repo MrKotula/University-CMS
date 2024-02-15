@@ -11,7 +11,7 @@ public interface ScheduleService {
 
     List<ScheduleResponse> getListOfScheduleTomorrow(String studentId);
 
-    void register(ScheduleRequest scheduleRequest);
+    void register(ScheduleRequestBody scheduleRequestBody);
 
     ScheduleResponse createSchedule(String teacherId, String groupId, String courseId);
 
