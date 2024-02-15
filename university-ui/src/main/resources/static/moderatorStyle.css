@@ -1,0 +1,50 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+    background: #e6e6ff;
+}
+
+.btnCreateSchedule {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: royalblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnCreateSchedule:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}
+
+.btnEditSchedule {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: royalblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnEditSchedule:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}

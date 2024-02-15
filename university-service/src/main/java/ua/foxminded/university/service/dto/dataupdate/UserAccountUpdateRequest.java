@@ -2,6 +2,7 @@ package ua.foxminded.university.service.dto.dataupdate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.foxminded.university.entity.Role;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "roles"})
 public class UserAccountUpdateRequest {
     private String userId;
     private String firstName;

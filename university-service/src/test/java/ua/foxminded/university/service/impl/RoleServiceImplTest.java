@@ -8,6 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RoleModel;
 import ua.foxminded.university.repository.RoleRepository;
+import ua.foxminded.university.service.dto.response.RoleResponse;
+import ua.foxminded.university.service.mapper.RoleMapper;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -20,6 +22,9 @@ class RoleServiceImplTest {
     @Mock
     private RoleRepository roleRepository;
 
+    @Mock
+    private RoleMapper roleMapper;
+
     @InjectMocks
     private RoleServiceImpl roleService;
 
@@ -29,13 +34,21 @@ class RoleServiceImplTest {
     private Role roleTeacher = new Role("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER);
     private Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER);
 
-    List<Role> listAllRoles = Arrays.asList(roleAdmin, roleModerator, roleStudent, roleTeacher, roleUser);
+    private RoleResponse roleResponseAdmin = new RoleResponse("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN);
+    private RoleResponse roleResponseModerator = new RoleResponse("64TR9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.MODERATOR);
+    private RoleResponse roleResponseStudent = new RoleResponse("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT);
+    private RoleResponse roleResponseTeacher = new RoleResponse("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER);
+    private RoleResponse roleResponseUser = new RoleResponse("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER);
 
     @Test
     void shouldReturnListOfRolesWhenUseFindAllRoles() {
-        when(roleRepository.findAll()).thenReturn(listAllRoles);
+        List<Role> listAllRoles = Arrays.asList(roleAdmin, roleModerator, roleStudent, roleTeacher, roleUser);
+        List<RoleResponse> listAllResponseRoles = Arrays.asList(roleResponseAdmin, roleResponseModerator, roleResponseStudent, roleResponseTeacher, roleResponseUser);
 
-        assertEquals(listAllRoles, roleService.findAllRoles());
+        when(roleRepository.findAll()).thenReturn(listAllRoles);
+        when(roleMapper.transformListRoleResponseFromListRole(listAllRoles)).thenReturn(listAllResponseRoles);
+
+        assertEquals(listAllResponseRoles, roleService.findAllRoles());
         verify(roleRepository).findAll();
     }
 }

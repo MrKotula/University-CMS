@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Student schedule tomorrow</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/studentStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 th:text="#{infopage.studentpanel}"></h1>
+    <h2 th:text="#{infopage.studinfo}"></h2><br>
+    <form style="float: left;" class="formInfoStudent" method="POST" th:action="@{'/student/info/' + ${userId} + 'schedule/tomorrow'}" th:object="${studentResponse}">
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.email}"></h3>
+            <h3><span th:text="${studentResponse.email}"></span></h3>
+        </div>
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.firstname}"></h3>
+            <h3><span th:text="${studentResponse.firstName}"></span></h3>
+        </div>
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.lastname}"></h3>
+            <h3><span th:text="${studentResponse.lastName}"></span></h3>
+        </div>
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.email}"></h3>
+            <h3><span th:text="${studentResponse.studentCard}"></span></h3>
+        </div>
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.groupname}"></h3>
+            <h3><span th:text="${groupService.groupName}"></span></h3>
+        </div>
+        <div class="mainParamsStudent">
+            <h3 th:text="#{paramname.courses}"></h3>
+            <h3><span th:text="${studentResponse.courses}"></span></h3>
+        </div>
+    </form>
+    <form class="formInfoSchedule">
+        <div>
+            <a class="btnPreviousScheduleDay" th:href="@{/student/info/{userId}(userId=${studentResponse.userId})}"><span>&#10229;</span></a>
+            <h3 class="mySchedule" th:text="#{infopage.myschedule}"></h3>
+            <h3 class="nextDayOfMonth" th:text="${nextDayOfMonth}"></h3>
+            <ul th:each="schedule : ${scheduleTomorrow}">
+                <li th:text="${schedule}"></li>
+            </ul>
+        </div>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

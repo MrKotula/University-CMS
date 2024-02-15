@@ -3,10 +3,9 @@ package ua.foxminded.university.service.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.foxminded.university.entity.Course;
-import ua.foxminded.university.entity.Role;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import java.util.Set;
 
@@ -14,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "groupId", "studentCard"})
 public class StudentAccountResponse {
     private String userId;
     private String firstName;
@@ -25,9 +25,9 @@ public class StudentAccountResponse {
     @ToString.Exclude
     private String passwordCheck;
 
-    private Set<Role> roles;
+    private Set<RoleResponse> roles;
     private RegistrationStatus registrationStatus;
     private String groupId;
     private String studentCard;
-    private Set<Course> courses;
+    private Set<CourseResponse> courses;
 }

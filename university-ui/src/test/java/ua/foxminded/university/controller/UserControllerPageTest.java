@@ -16,10 +16,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.service.DateService;
-import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.UserAccountService;
+import ua.foxminded.university.service.dto.response.UserAccountResponse;
 import java.util.HashSet;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -71,10 +71,10 @@ class UserControllerPageTest {
     @Test
     @WithMockUser
     void userPageTest() throws Exception {
-        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
+        UserAccountResponse userAccountResponse = new UserAccountResponse("33c99439-aaf0-4ebd-a07a-bd0c550d2311", "Jane", "Does", "dtestMail@gmail.com",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", new HashSet<>(), RegistrationStatus.NEW );
 
-        when(userAccountService.getUserByEmail(anyString())).thenReturn(userAccountUpdateRequest);
+        when(userAccountService.getUserByEmail(anyString())).thenReturn(userAccountResponse);
 
         mockMvc.perform(get("/user")
                         .param("userId", "3c99439-aaf0-4ebd-a07a-bd0c550d2311")

@@ -1,5 +1,6 @@
 package ua.foxminded.university.entity;
 
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,13 +23,15 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "group_id")
+    @ToString.Exclude
     private String groupId;
 
     @Column(name = "group_name")
     private String groupName;
 
     @ColumnDefault(value = "0")
-    private int count;
+    @ToString.Exclude
+    private int countStudents;
 
     public Group(String groupId, String groupName) {
         this.groupId = groupId;

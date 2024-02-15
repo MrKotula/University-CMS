@@ -40,3 +40,70 @@
     width: 400px;
     color: yellowgreen;
 }
+
+.formInfoSchedule div {
+    display: block;
+    width: 1200px;
+    margin-left: 650px;
+}
+
+.formInfoSchedule div ul {
+
+}
+
+.formInfoSchedule div ul li {
+    background: yellowgreen;
+    border-radius: 5px;
+    border: 1px solid;
+    text-align: left;
+    padding-left: 10px;
+    word-spacing: 5px;
+    font-size: 15px;
+}
+
+.mySchedule {
+    background: #33adff;
+    color: darkgreen;
+    font-size: 21px;
+    border-radius: 15px;
+    border: 2px solid;
+    border-color: darkgreen;
+    width: 300px;
+    height: 40px;
+    margin-left: 30px;
+    margin-top: -10px;
+    padding-top: 15px;
+    display: inline-block;
+}
+
+.nextDayOfMonth {
+    background: #33adff;
+    color: black;
+    font-size: 21px;
+    border-radius: 15px;
+    border: 2px solid;
+    border-color: darkgreen;
+    width: 150px;
+    height: 40px;
+    margin-left: 10px;
+    margin-top: -10px;
+    padding-top: 15px;
+    display: inline-block;
+}
+
+.btnNextScheduleDay {
+    content: "\2192";
+    font-size: 40px;
+    margin-left: 50px;
+    text-decoration: none;
+    color: black;
+}
+
+.btnPreviousScheduleDay {
+    content: "\27F5";
+    font-size: 40px;
+    margin-right: 20px;
+    text-decoration: none;
+    color: black;
+}
+
