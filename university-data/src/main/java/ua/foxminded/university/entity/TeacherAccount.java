@@ -46,8 +46,8 @@ public class TeacherAccount extends UserAccount {
 
     @Builder(builderMethodName = "teacherBuilder")
     public TeacherAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck,
-                          RegistrationStatus registrationStatus, Set<Role> roles, Degree degree, String phoneNumber, List<StudentAccount> diplomaStudents) {
-        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+                          RegistrationStatus registrationStatus, Set<Role> roles, Degree degree, String phoneNumber, List<StudentAccount> diplomaStudents, Integer version) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles, version);
         this.degree = degree;
         this.phoneNumber = phoneNumber;
         this.diplomaStudents = diplomaStudents;

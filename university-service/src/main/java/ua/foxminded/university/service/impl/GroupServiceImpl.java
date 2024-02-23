@@ -66,17 +66,4 @@ public class GroupServiceImpl implements GroupService {
     public void updateStudentsSeats() {
         groupRepository.countGroupSeat();
     }
-
-    @Override
-    public GroupResponse getGroupByUserId(String userId) {
-        StudentAccountResponse studentAccount = studentAccountService.findStudentById(userId);
-
-        Group group = groupRepository.findById(studentAccount.getGroupId()).get();
-
-        return GroupResponse.builder()
-                .groupId(group.getGroupId())
-                .groupName(group.getGroupName())
-                .countStudents(group.getCountStudents())
-                .build();
-    }
 }

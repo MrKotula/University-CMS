@@ -41,25 +41,25 @@ public class StudentAccount extends UserAccount {
     private Set<Course> courses = new HashSet<>();
 
     public StudentAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus,
-                          Set<Role> roles, String groupId) {
-        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+                          Set<Role> roles, String groupId, Integer version) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles, version);
         this.groupId = groupId;
     }
 
     public StudentAccount(String userId, String groupId, String firstName, String lastName, String email, String password,
-                          String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
-        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+                          String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles, Integer version) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles, version);
         this.groupId = groupId;
     }
 
     @Builder(builderMethodName = "studentBuilder")
-    public StudentAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles) {
-        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+    public StudentAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus, Set<Role> roles, Integer version) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles, version);
     }
 
     public StudentAccount(String userId, String firstName, String lastName, String email, String password, String passwordCheck, RegistrationStatus registrationStatus,
-                          Set<Role> roles, String groupId, String studentCard) {
-        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles);
+                          Set<Role> roles, String groupId, String studentCard, Integer version) {
+        super(userId, firstName, lastName, email, password, passwordCheck, registrationStatus, roles, version);
         this.groupId = groupId;
         this.studentCard = studentCard;
     }

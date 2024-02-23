@@ -1,6 +1,7 @@
 package ua.foxminded.university.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,8 @@ public interface CourseRepository extends JpaRepository<Course, String> {
 
     @Query(value = "SELECT COUNT(course_id) FROM schedule.students_courses WHERE course_id=:courseId", nativeQuery = true)
     int getCountedCoursesSeats(@Param("courseId") String courseId);
+
+    @Modifying
+    @Query(value = "DELETE FROM schedule.courses WHERE course_id=:courseId", nativeQuery = true)
+    void removeCourse(@Param("courseId") String courseId);
 }

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,6 +63,10 @@ public abstract class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     protected Set<Role> roles = new HashSet<>();
+
+    @Version
+    @Column(name = "version")
+    protected Integer version;
 
     public void addRole(Role role) {
         this.roles.add(role);

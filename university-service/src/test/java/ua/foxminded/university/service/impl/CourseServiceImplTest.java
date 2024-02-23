@@ -12,12 +12,15 @@ import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
 import ua.foxminded.university.validator.CourseValidator;
+import ua.foxminded.university.validator.exception.CourseException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -114,7 +117,7 @@ class CourseServiceImplTest {
         List<Course> listOfCourses = new ArrayList<>();
 
         CourseResponse courseResponseEnglish = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30);
-        Course courseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30);
+        Course courseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
 
         listOfCourseResponses.add(courseResponseEnglish);
         listOfCourses.add(courseEnglish);
@@ -128,7 +131,7 @@ class CourseServiceImplTest {
 
     @Test
     void shouldReturnCourseResponseWhenUseGetCourseByIdTest() {
-        Course course = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30);
+        Course course = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
 
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.of(course));
         when(teacherAccountMapper.transformListTeachersToDto(course.getTeachers())).thenReturn(new ArrayList<>());
@@ -138,5 +141,32 @@ class CourseServiceImplTest {
         assertEquals("English", courseResponse.getCourseName());
         assertEquals("course of English", courseResponse.getCourseDescription());
         assertEquals("1d95bc79-a549-4d2c-aeb5-3f929aee7658", courseResponse.getCourseId());
+    }
+
+    @Test
+    void shouldRemoveCourseWhenUseRemoveCourseTest() {
+        Course course = mock(Course.class);
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.of(course));
+        when(course.getNumberOfSeats()).thenReturn(30);
+        when(course.getSeatsAvailable()).thenReturn(30);
+
+        courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658");
+
+        verify(courseRepository).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658");
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUseRemoveCourseTest() {
+        String exceptedMessage = "Students are enrolled in this course";
+        Course course = mock(Course.class);
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.of(course));
+        when(course.getNumberOfSeats()).thenReturn(30);
+        when(course.getSeatsAvailable()).thenReturn(29);
+
+        Exception exception = assertThrows(CourseException.class, () -> courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
+
+        assertEquals(exceptedMessage, exception.getMessage());
     }
 }

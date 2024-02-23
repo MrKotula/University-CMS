@@ -21,6 +21,7 @@ import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.service.mapper.ScheduleMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
+import ua.foxminded.university.validator.ScheduleValidator;
 import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -44,6 +45,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final CourseMapper courseMapper;
     private final GroupMapper groupMapper;
     private final TeacherAccountMapper teacherAccountMapper;
+
+    private final ScheduleValidator scheduleValidator;
 
     @Override
     public List<ScheduleResponse> getListOfScheduleToday(String studentId) {
@@ -74,7 +77,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void register(ScheduleRequest scheduleRequest) {
+    public void register(ScheduleRequestBody scheduleRequestBody) {
+        ScheduleRequest scheduleRequest = getPreparedScheduleRequest(scheduleRequestBody);
+
+        scheduleValidator.checkAvailableLectorRoom(scheduleRequest);
+        scheduleValidator.checkAvailableTeacher(scheduleRequest);
+        scheduleValidator.checkAvailableGroup(scheduleRequest);
+
         scheduleRepository.save(scheduleMapper.transformScheduleFromDto(scheduleRequest));
     }
 
