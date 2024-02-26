@@ -324,6 +324,8 @@ class UserAccountServiceImplTest {
 
         courseMapper.transformHashSetCourseToDtoResponse(courses);
 
+        courseMapper.transformHashSetCourseToDtoResponse(courses);
+
         testStudent.setCourses(courses);
 
         userAccountList.add(testStudent);
