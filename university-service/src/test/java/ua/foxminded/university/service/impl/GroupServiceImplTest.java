@@ -1,7 +1,11 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
@@ -13,11 +17,11 @@ import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.entity.Group;
 import ua.foxminded.university.service.StudentAccountService;
-import ua.foxminded.university.service.dto.request.GroupRequest;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.validator.GroupValidator;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,14 +58,12 @@ class GroupServiceImplTest {
 
     @Test
     void verifyUseMethodUpdateGroupName() throws ValidationException {
-        GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "DT-43", 0);
+        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "DT-43", 0,1);
 
-        when(groupMapper.transformGroupFromDto(groupRequest)).thenReturn(testGroup);
-
-        groupService.updateGroupName(groupRequest);
+        groupService.updateGroupName(groupResponse);
 
         verify(groupValidator).validateGroupName("DT-43");
-        verify(groupRepository).save(any(Group.class));
+        verify(groupRepository).updateGroupName(groupResponse.getGroupName(), groupResponse.getGroupId());
     }
 
     @Test
@@ -111,20 +113,68 @@ class GroupServiceImplTest {
                 .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
                 .build();
 
-        Group mockGroup = Group.builder()
+        Group group = Group.builder()
                 .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
                 .groupName("DT-43")
                 .build();
 
-        GroupResponse mockGroupResponse = GroupResponse.builder()
+        GroupResponse groupResponse = GroupResponse.builder()
                 .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
                 .groupName("DT-43")
                 .build();
 
         when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponse);
-        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.ofNullable(mockGroup));
-        when(groupMapper.transformGroupToDto(mockGroup)).thenReturn(mockGroupResponse);
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.ofNullable(group));
+        when(groupMapper.transformGroupToDto(group)).thenReturn(groupResponse);
 
-        assertEquals(mockGroupResponse, groupService.getGroupByUserId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+        assertEquals(groupResponse, groupService.getGroupByUserId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+    }
+
+    @Test
+    void shouldReturnGroupResponseWhenUseGetGroupByIdTest() {
+        Group group = Group.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        GroupResponse groupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(group));
+        when(groupMapper.transformGroupToDto(group)).thenReturn(groupResponse);
+
+        groupService.getGroupById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        verify(groupMapper).transformGroupToDto(group);
+    }
+
+    @Test
+    void shouldRemoveGroupWhenUseRemoveGroupTest() {
+        Group group = mock(Group.class);
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(group));
+        doNothing().when(groupValidator).validateStudentsInGroupBeforeRemove(group);
+
+        groupService.removeGroup("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        verify(groupRepository).removeGroup("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        verify(groupValidator).validateStudentsInGroupBeforeRemove(group);
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenUseRemoveGroupTest() {
+        String exceptedMessage = "Group not found!";
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> groupService.removeGroup("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        verify(groupRepository, never()).removeGroup("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
     }
 }

@@ -159,3 +159,85 @@
     text-decoration: none;
     margin-left: -30px;
 }
+
+.btnAllGroups {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllGroups:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}
+
+.formAllGroupsInfo span {
+    background: darkgrey;
+}
+
+.formAllGroupsInfo h4 {
+    background: darkgrey;
+    display: inline;
+    float: left;
+    margin-left: 15px;
+    margin-top: 3px;
+}
+
+.formAllGroupsInfo li {
+    background: darkgrey;
+    width: 1800px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 10px;
+}
+
+.btnInfoAboutGroup {
+    margin-right: 55px;
+    float: right;
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: cornflowerblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+}
+
+.btnInfoAboutGroup:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    color: snow;
+    transition: all 0.3s ease;
+}
+
+.infoAboutGroup {
+    color: darkgreen;
+    font-size: 35px;
+}
+
+.btnChangeNameOfGroup {
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: red;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+}

@@ -12,7 +12,7 @@ import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
 import ua.foxminded.university.validator.CourseValidator;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +116,7 @@ class CourseServiceImplTest {
         List<CourseResponse> listOfCourseResponses = new ArrayList<>();
         List<Course> listOfCourses = new ArrayList<>();
 
-        CourseResponse courseResponseEnglish = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30);
+        CourseResponse courseResponseEnglish = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
         Course courseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
 
         listOfCourseResponses.add(courseResponseEnglish);
@@ -148,24 +148,20 @@ class CourseServiceImplTest {
         Course course = mock(Course.class);
 
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.of(course));
-        when(course.getNumberOfSeats()).thenReturn(30);
-        when(course.getSeatsAvailable()).thenReturn(30);
 
         courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658");
 
         verify(courseRepository).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658");
+        verify(courseValidator).validateAvailableCourseSeatsBeforeRemove(course);
     }
 
     @Test
-    void shouldThrowExceptionWhenUseRemoveCourseTest() {
-        String exceptedMessage = "Students are enrolled in this course";
-        Course course = mock(Course.class);
+    void shouldThrowExceptionWhenValidateCourseBeforeRemoveTest() {
+        String exceptedMessage = "Course not found!";
 
-        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.of(course));
-        when(course.getNumberOfSeats()).thenReturn(30);
-        when(course.getSeatsAvailable()).thenReturn(29);
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee7658")).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(CourseException.class, () -> courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
 
         assertEquals(exceptedMessage, exception.getMessage());
     }

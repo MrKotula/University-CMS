@@ -11,7 +11,7 @@ import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.CourseValidator;
 
@@ -67,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
         Course course = courseRepository.findById(courseId).get();
 
         return new CourseResponse(course.getCourseId(), course.getCourseName(), course.getCourseDescription(),
-                teacherAccountMapper.transformListTeachersToDto(course.getTeachers()), course.getNumberOfSeats(), countAvailableSeats(courseId));
+                teacherAccountMapper.transformListTeachersToDto(course.getTeachers()), course.getNumberOfSeats(), countAvailableSeats(courseId), course.getVersion());
     }
 
     private int countAvailableSeats(String courseId) {
@@ -83,12 +83,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void removeCourse(String courseId) {
-        Course course = courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found!"));
 
-        if (course.getNumberOfSeats() == course.getSeatsAvailable()) {
-            courseRepository.removeCourse(courseId);
-        } else {
-            throw new CourseException("Students are enrolled in this course");
-        }
+        courseValidator.validateAvailableCourseSeatsBeforeRemove(course);
+
+        courseRepository.removeCourse(courseId);
     }
 }

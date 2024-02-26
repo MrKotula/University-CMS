@@ -24,7 +24,7 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel" th:text="#{infopage.adminpanel}"></h1>
-    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{/admin/user/userId}"
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{/admin/users/userId}"
           th:object="${userAccount}">
         <div class="mainParamsAdmin">
             <h3 class="infoAboutUser" th:text="#{infopage.aboutuser}"></h3>
@@ -50,17 +50,17 @@
         <div class="mainParamsAdmin">
             <h3 th:text="#{paramname.roles}"></h3>
             <h3><span style="color: yellowgreen" th:text="${userAccount.roles}"></span></h3>
-            <a class="btnEditRolesAdmin" th:href="@{/admin/user/editRole/{userId}(userId=${userAccount.userId})}"
+            <a class="btnEditRolesAdmin" th:href="@{/admin/users/{userId}/roles(userId=${userAccount.userId})}"
                th:text="#{button.editroles}"></a>
         </div>
         <div class="mainParamsAdmin">
             <h3 th:text="#{paramname.regstatus}"></h3>
             <h3><span style="color: yellowgreen" th:text="${userAccount.registrationStatus}"></span></h3>
-            <a class="btnEditInfoAdmin" th:href="@{/admin/user/editData/{userId}(userId=${userAccount.userId})}"
+            <a class="btnEditInfoAdmin" th:href="@{/admin/users/{userId}/edit(userId=${userAccount.userId})}"
                th:text="#{button.editdata}"></a>
         </div>
     </form>
-    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/admin/user/userId}"
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/admin/users/userId}"
           th:object="${courses}">
         <h2 th:text="#{infopage.studentcourses}" style="color:darkgreen"></h2>
         <ul th:each="course : ${courses}">

@@ -19,6 +19,7 @@ public class CourseResponse {
     private List<TeacherAccountResponse> teachers;
     private int numberOfSeats;
     private int seatsAvailable;
+    private Integer version;
 
     public CourseResponse(String courseId, String courseName, String courseDescription, List<TeacherAccountResponse> teachers) {
         this.courseId = courseId;

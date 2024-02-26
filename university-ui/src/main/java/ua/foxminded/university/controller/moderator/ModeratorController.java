@@ -15,7 +15,7 @@ import ua.foxminded.university.service.ScheduleService;
 import ua.foxminded.university.service.TeacherAccountService;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
 import ua.foxminded.university.validator.ScheduleValidator;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -84,7 +84,7 @@ public class ModeratorController {
     public String actionRemoveCourse(@RequestParam String courseId, Model model) {
         try {
             courseService.removeCourse(courseId);
-        } catch (CourseException e) {
+        } catch (ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
 
             return "error_panel/errorPage";

@@ -24,7 +24,7 @@
 <br><br><br>
 <main class="container">
     <h1 th:text="#{button.editdata}"></h1>
-    <form class="editInfoAdmin" method="POST" th:action="@{'/admin/user/editData/' + ${userId}}" th:object="${userUpdateRequest}">
+    <form class="editInfoAdmin" method="POST" th:action="@{'/admin/users/' + ${userId} + '/edit'}" th:object="${userUpdateRequest}">
         <h3 th:text="#{paramname.userid}"></h3>
         <h3><span style="color: yellowgreen" th:text="${userUpdateRequest.userId}"></span></h3>
         <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>

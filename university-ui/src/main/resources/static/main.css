@@ -295,3 +295,10 @@ footer {
     margin-left: 700px;
     margin-top: 250px;
 }
+
+.dataIntegrityErrorMessage {
+    color: red;
+    font-size: 35px;
+    margin-left: 700px;
+    margin-top: 250px;
+}

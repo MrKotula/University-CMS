@@ -93,7 +93,7 @@ class ScheduleServiceImplTest {
     void shouldThrowEntityNotFoundExceptionWhenEntityNameIsNullTest() {
         String expectedMessage = "GroupResponse return a null!";
 
-        GroupResponse groupResponse = new GroupResponse("", null, 1);
+        GroupResponse groupResponse = new GroupResponse("", null, 1, 1);
 
         when(groupService.getGroupByUserId("")).thenReturn(groupResponse);
 
@@ -117,7 +117,7 @@ class ScheduleServiceImplTest {
     void shouldThrowEntityNotFoundExceptionWhenGetListOfScheduleTomorrowReturnNameNullTest() {
         String expectedMessage = "GroupResponse return a null!";
 
-        GroupResponse groupResponse = new GroupResponse("", null, 1);
+        GroupResponse groupResponse = new GroupResponse("", null, 1, 1);
 
         when(groupService.getGroupByUserId("")).thenReturn(groupResponse);
 
@@ -171,7 +171,7 @@ class ScheduleServiceImplTest {
         CourseRequest courseRequest = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         Group group = new Group("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
-        GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         Schedule schedule = Schedule.builder()
                 .teacher(teacherAccount)
@@ -242,7 +242,7 @@ class ScheduleServiceImplTest {
     @Test
     void shouldReturnListOfScheduleToday() {
         LocalDate localDate = LocalDate.of(2024,1,27);
-        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         List<Schedule> listOfScheduleToday = new ArrayList<>();
         List<ScheduleResponse> scheduleResponseListToday = new ArrayList<>();
@@ -257,7 +257,7 @@ class ScheduleServiceImplTest {
     @Test
     void shouldReturnListOfScheduleTomorrow() {
         LocalDate localDate = LocalDate.of(2024,1,27);
-        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         List<Schedule> listOfScheduleToday = new ArrayList<>();
         List<ScheduleResponse> scheduleResponseListToday = new ArrayList<>();

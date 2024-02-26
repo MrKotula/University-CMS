@@ -17,6 +17,7 @@ public class GroupRequest {
     private String groupId;
     private String groupName;
     private int countStudents;
+    private Integer version;
 
     @Override
     public String toString() {
