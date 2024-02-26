@@ -62,7 +62,7 @@ class StudentAccountServiceImplTest {
     private StudentAccountServiceImpl studentAccountService;
 
     private StudentAccount testStudentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net", null, null,
-           RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727");
+           RegistrationStatus.NEW, new HashSet<>(),"3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", "DT94381727", 1);
 
     @Test
     void verifyUseMethodRegister() throws ValidationException {
@@ -217,13 +217,13 @@ class StudentAccountServiceImplTest {
 
         Set<Role> roles = new HashSet<>();
 
-        Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT);
+        Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT, 1);
 
         roles.add(roleStudent);
 
         StudentAccount studentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
-                RegistrationStatus.NEW, roles, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+                RegistrationStatus.NEW, roles, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
 
         studentAccount.setStudentCard("DT94381727");
         studentAccount.setCourses(courses);
@@ -239,7 +239,7 @@ class StudentAccountServiceImplTest {
     void verifyUseMethodGetStudentByEmailTest() {
         Set<Role> roles = new HashSet<>();
 
-        Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT);
+        Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT, 1);
 
         roles.add(roleStudent);
 
@@ -250,7 +250,7 @@ class StudentAccountServiceImplTest {
 
         StudentAccount studentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
                 "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
-                RegistrationStatus.NEW, roles, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2");
+                RegistrationStatus.NEW, roles, "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
 
         studentAccount.setStudentCard("DT94381727");
         studentAccount.setCourses(courses);

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Moderator</title>
+    <title>Courses</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
 </head>
@@ -24,11 +24,25 @@
 <br><br><br>
 <main class="container">
     <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
-    <h2 th:text="#{elementonpage.hellomessage}"></h2>
-    <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnCreateSchedule" th:href="@{/user/moderator/schedule}" th:text="#{infopage.createschedule}"></a>
-    <a class="btnEditSchedule" th:href="@{/user/moderator/schedule/edit}" th:text="#{infopage.editschedule}"></a>
-    <a class="btnCourses" th:href="@{/user/moderator/courses}" th:text="#{infopage.courses}"></a>
+    <h1 th:text="#{infopage.course}"></h1>
+
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/user/moderator/courses}"
+          th:object="${allCourses}">
+        <h2 style="color:darkgreen" th:text="#{infopage.courses}"></h2>
+        <ul>
+            <li th:each="course : ${allCourses}">
+                <h3>
+                    <a class="courseLinkInfo" style="color: yellowgreen"
+                       th:text="${course.courseName}"
+                       th:href="@{/course/info/{userId}(userId=${course.courseId})}"></a>
+                </h3>
+                <form th:action="@{/user/moderator/courses}" method="post">
+                    <input type="hidden" th:name="courseId" th:value="${course.courseId}">
+                    <button type="submit" class="removeCourse" th:text="#{button.removecourse}"></button>
+                </form>
+            </li>
+        </ul>
+    </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

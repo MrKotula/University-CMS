@@ -288,3 +288,10 @@ footer {
     margin-bottom: 100px;
     text-align: center;
 }
+
+.errorMessage {
+    color: red;
+    font-size: 35px;
+    margin-left: 700px;
+    margin-top: 250px;
+}

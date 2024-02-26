@@ -19,4 +19,6 @@ public interface CourseService {
     List<CourseResponse> getAllCourses();
 
     CourseResponse getCourseById(String userId);
+
+    void removeCourse(String courseId);
 }

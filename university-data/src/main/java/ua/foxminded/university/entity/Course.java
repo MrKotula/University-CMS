@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +52,10 @@ public class Course {
 
     @Column(name = "seats_available")
     private int seatsAvailable;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
 
     public Course(String courseName, String courseDescription) {
         this.courseName = courseName;

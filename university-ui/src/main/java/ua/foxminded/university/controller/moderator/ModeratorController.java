@@ -7,14 +7,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.ScheduleService;
 import ua.foxminded.university.service.TeacherAccountService;
-import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
 import ua.foxminded.university.validator.ScheduleValidator;
+import ua.foxminded.university.validator.exception.CourseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -58,16 +59,10 @@ public class ModeratorController {
     }
 
     @PostMapping(value = "/user/moderator/schedule", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String actionCreateSchedulePage(@RequestBody ScheduleRequestBody scheduleRequestBody) {
-        ScheduleRequest scheduleRequest = scheduleService.getPreparedScheduleRequest(scheduleRequestBody);
+    public String actionCreateSchedulePage(@RequestBody ScheduleRequestBody scheduleRequestBody, Model model) {
+        scheduleService.register(scheduleRequestBody);
 
-        scheduleValidator.checkAvailableLectorRoom(scheduleRequest);
-        scheduleValidator.checkAvailableTeacher(scheduleRequest);
-        scheduleValidator.checkAvailableGroup(scheduleRequest);
-
-        scheduleService.register(scheduleRequest);
-
-        return "moderator_panel/createSchedulePage";
+        return "redirect:/user/moderator";
     }
 
     @GetMapping("/user/moderator/schedule/edit")
@@ -75,5 +70,26 @@ public class ModeratorController {
         model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "moderator_panel/editSchedulePage";
+    }
+
+    @GetMapping("/user/moderator/courses")
+    public String openCoursesPage(Model model) {
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("allCourses", courseService.getAllCourses());
+
+        return "moderator_panel/coursesPage";
+    }
+
+    @PostMapping("/user/moderator/courses")
+    public String actionRemoveCourse(@RequestParam String courseId, Model model) {
+        try {
+            courseService.removeCourse(courseId);
+        } catch (CourseException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "error_panel/errorPage";
+        }
+
+        return "redirect:/user/moderator/courses";
     }
 }

@@ -10,12 +10,14 @@ CREATE TABLE schedule.groups
 (
     group_id character(36) NOT NULL,
     group_name character varying(10) NOT NULL,
+    version integer,
     CONSTRAINT groups_pkey PRIMARY KEY (group_id)
 );
 
 CREATE TABLE schedule.roles (
   role_id character(36) NOT NULL,
   role roleModel NOT NULL,
+  version integer,
   CONSTRAINT roles_pkey PRIMARY KEY (role_id)
 );
 
@@ -26,6 +28,7 @@ CREATE TABLE IF NOT EXISTS schedule.courses
     course_description character varying(36),
     number_seats integer,
     seats_available integer,
+    version integer,
     CONSTRAINT courses_pkey PRIMARY KEY (course_id)
 );
 
@@ -43,6 +46,7 @@ CREATE TABLE IF NOT EXISTS schedule.users
     student_card character(36),
     degrees degrees,
     phone_number character varying(36),
+    version integer,
     CONSTRAINT user_id_pkey PRIMARY KEY (user_id),
     CONSTRAINT group_id FOREIGN KEY (group_id)
     REFERENCES schedule.groups (group_id)
@@ -95,6 +99,7 @@ CREATE TABLE IF NOT EXISTS schedule.timetable
     teacher_user_id character(36) NOT NULL,
     start_of_lecture TIME,
     end_of_lecture TIME,
+    version integer,
     CONSTRAINT schedule_pkey PRIMARY KEY (schedule_id)
     );
 
