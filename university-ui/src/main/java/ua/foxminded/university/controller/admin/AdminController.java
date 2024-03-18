@@ -25,6 +25,8 @@ import ua.foxminded.university.validator.exception.ValidationException;
 @Log4j2
 public class AdminController {
     private static final String ERROR_MESSAGE_VIOLATES_SCHEDULE = "This group have a schedule. Remove schedule before remove group!";
+    private static final String GROUP_ADMIN_API = "/admin/groups";
+    private static final String USER_ADMIN_API = "/admin/users";
 
     private final UserAccountService userAccountService;
     private final CourseService courseService;
@@ -40,7 +42,7 @@ public class AdminController {
         return "adminPanel/admin";
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping(USER_ADMIN_API)
     public String viewAllUsers(Model model) {
         model.addAttribute("users", userAccountService.findAllUsers());
         model.addAttribute("dateService", dateService.getCurrentDate());
@@ -48,7 +50,7 @@ public class AdminController {
         return "adminPanel/allUsers";
     }
 
-    @GetMapping("/admin/users/{userId}")
+    @GetMapping(USER_ADMIN_API + "/{userId}")
     public String viewUserData(@PathVariable String userId, Model model) {
         model.addAttribute("userAccount", userAccountService.findUserById(userId));
         model.addAttribute("courses", courseService.findByStudentId(userId));
@@ -57,7 +59,7 @@ public class AdminController {
         return "adminPanel/userPageAdmin";
     }
 
-    @GetMapping("/admin/users/{userId}/edit")
+    @GetMapping(USER_ADMIN_API + "/{userId}/edit")
     public String changeUserData(@ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest, Model model) {
         model.addAttribute("userUpdateRequest", userAccountUpdateRequest);
         model.addAttribute("dateService", dateService.getCurrentDate());
@@ -65,7 +67,7 @@ public class AdminController {
         return "adminPanel/userEditAdmin";
     }
 
-    @PostMapping("/admin/users/{userId}/edit")
+    @PostMapping(USER_ADMIN_API + "/{userId}/edit")
     public String editUserData(@ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest, Model model) {
         userAccountService.updateUserData(userAccountUpdateRequest);
         log.warn("Changed data for user by help Admin! " + userAccountUpdateRequest.toString());
@@ -73,7 +75,7 @@ public class AdminController {
         return "redirect:/admin/users/"+ userAccountUpdateRequest.getUserId();
     }
 
-    @GetMapping("/admin/users/{userId}/roles")
+    @GetMapping(USER_ADMIN_API + "/{userId}/roles")
     public String changeUserRole(@PathVariable String userId, Model model) {
         model.addAttribute("updateUserAccountRequest", userAccountService.findUserById(userId));
         model.addAttribute("listRoles", roleService.findAllRoles());
@@ -82,7 +84,7 @@ public class AdminController {
         return "adminPanel/userEditRoleAdmin";
     }
 
-    @PostMapping("/admin/users/{userId}/roles")
+    @PostMapping(USER_ADMIN_API + "/{userId}/roles")
     public String updateUserRole(UserAccountUpdateRequest userAccountUpdateRequest, @RequestParam(defaultValue = "USER") String roles) {
         userAccountService.updateUserRoles(userAccountUpdateRequest, roles);
         log.warn("Changed roles for user by help Admin! UserId: " + userAccountUpdateRequest.getUserId());
@@ -90,7 +92,7 @@ public class AdminController {
         return "redirect:/admin/users/"+ userAccountUpdateRequest.getUserId();
     }
 
-    @GetMapping("/admin/groups")
+    @GetMapping(GROUP_ADMIN_API)
     public String viewGroups(Model model) {
         model.addAttribute("groups", groupService.getAllGroups());
         model.addAttribute("dateService", dateService.getCurrentDate());
@@ -98,7 +100,7 @@ public class AdminController {
         return "adminPanel/allGroups";
     }
 
-    @GetMapping("/admin/groups/{groupId}")
+    @GetMapping(GROUP_ADMIN_API + "/{groupId}")
     public String viewGroupData(@PathVariable String groupId, Model model) {
         model.addAttribute("groupResponse", groupService.getGroupById(groupId));
         model.addAttribute("dateService", dateService.getCurrentDate());
@@ -106,7 +108,7 @@ public class AdminController {
         return "adminPanel/groupPageAdmin";
     }
 
-    @DeleteMapping("/admin/groups/{groupId}")
+    @DeleteMapping(GROUP_ADMIN_API + "/{groupId}")
     public String actionRemoveGroup(@PathVariable String groupId, Model model) {
         try {
             groupService.removeGroup(groupId);
@@ -124,7 +126,7 @@ public class AdminController {
         return "redirect:/admin/groups";
     }
 
-    @GetMapping("/admin/groups/{groupId}/edit")
+    @GetMapping(GROUP_ADMIN_API + "/{groupId}/edit")
     public String editGroupNamePage(@PathVariable String groupId, Model model) {
         model.addAttribute("groupResponse", groupService.getGroupById(groupId));
         model.addAttribute("dateService", dateService.getCurrentDate());
@@ -132,7 +134,7 @@ public class AdminController {
         return "adminPanel/groupEditAdmin";
     }
 
-    @PostMapping("/admin/groups/{groupId}/edit")
+    @PostMapping(GROUP_ADMIN_API + "/{groupId}/edit")
     public String actionEditGroupName(GroupResponse groupResponse, Model model) {
         try {
             groupService.updateGroupName(groupResponse);

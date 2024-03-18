@@ -26,7 +26,7 @@
     <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
     <h1 th:text="#{infopage.createnewschedule}"></h1>
 
-    <form style="float: left;" class="formTeachersInfo" method="POST" th:action="@{/user/moderator/schedule}">
+    <form style="float: left;" class="formTeachersInfo" method="POST" th:action="@{/moderator/schedule}">
         <h2 style="color:darkgreen" th:text="#{infopage.teachers}"></h2>
         <select id="selectedTeacherId" name="selectedTeacherId" th:value="selectedTeacherId">
             <option th:each="teacher : ${teachers}" th:value="${teacher.userId}" th:text="${teacher}"></option>
@@ -84,12 +84,12 @@
                     $.ajax({
                         type: 'POST',
                         contentType: 'application/json',
-                        url: '/user/moderator/schedule',
+                        url: '/moderator/schedule',
                         data: JSON.stringify(formData),
                         success: function (data) {
                             console.log(data);
 
-                            window.location.href = '/user/moderator';
+                            window.location.href = '/moderator';
                         },
                         error: function (error) {
                             console.error('Error:', error);

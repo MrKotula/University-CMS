@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Group page for Moderator</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="moderatorPanel" th:text="#{infopage.moderatorpanel}"></h1>
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{'/admin/groups/' + ${groupId}}"
+          th:object="${groupResponse}">
+        <div class="mainParamsAdmin">
+            <h3 class="infoAboutGroup" th:text="#{infopage.aboutgroup}"></h3>
+            <h3><span style="color: red" th:text="${groupResponse.groupName}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.groupid}">GroupId: <span style="color: yellowgreen"
+                                                               th:text="${groupResponse.groupId}"></span></h3>
+            <h3><span style="color: yellowgreen" th:text="${groupResponse.groupId}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.groupname}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${groupResponse.groupName}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.countstudent}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${groupResponse.countStudents}"></span></h3>
+        </div> <br>
+        <a class="btnChangeNameOfGroup" th:href="@{/moderator/groups/{groupId}/edit(groupId=${groupResponse.groupId})}" th:text="#{button.changegroupname}"></a>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

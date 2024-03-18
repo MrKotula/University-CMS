@@ -3,7 +3,10 @@ package ua.foxminded.university.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.foxminded.university.entity.Course;
+import ua.foxminded.university.entity.Group;
 import ua.foxminded.university.entity.Schedule;
+import ua.foxminded.university.entity.TeacherAccount;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.repository.ScheduleRepository;
@@ -15,8 +18,10 @@ import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.request.LectureRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
+import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
+import ua.foxminded.university.service.dto.response.TeacherAccountResponse;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.service.mapper.ScheduleMapper;
@@ -84,15 +89,25 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleValidator.checkAvailableTeacher(scheduleRequest);
         scheduleValidator.checkAvailableGroup(scheduleRequest);
 
-        scheduleRepository.save(scheduleMapper.transformScheduleFromDto(scheduleRequest));
+        Schedule newSchedule = scheduleMapper.transformScheduleFromDto(scheduleRequest);
+
+        scheduleRepository.save(newSchedule);
     }
 
     @Override
     public ScheduleResponse createSchedule(String teacherId, String groupId, String courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found!"));
+        TeacherAccount teacher = teacherAccountRepository.findById(teacherId).orElseThrow(() -> new EntityNotFoundException("TeacherAccount not found!"));
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new EntityNotFoundException("Group not found!"));
+
+        CourseResponse courseResponse = courseMapper.transformCourseToDto(course);
+        TeacherAccountResponse teacherAccountResponse = teacherAccountMapper.transformTeacherAccountToDto(teacher);
+        GroupResponse groupResponse = groupMapper.transformGroupToDto(group);
+
         return ScheduleResponse.builder()
-                .course(courseMapper.transformCourseToDto(courseRepository.findById(courseId).get()))
-                .teacher(teacherAccountMapper.transformTeacherAccountToDto(teacherAccountRepository.findById(teacherId).get()))
-                .group(groupMapper.transformGroupToDto(groupRepository.findById(groupId).get()))
+                .course(courseResponse)
+                .teacher(teacherAccountResponse)
+                .group(groupResponse)
                 .build();
     }
 

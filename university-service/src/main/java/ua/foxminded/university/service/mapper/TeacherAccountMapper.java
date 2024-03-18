@@ -23,6 +23,7 @@ public interface TeacherAccountMapper {
     @Mapping(target = "degree", source = "degree")
     @Mapping(target = "phoneNumber", source = "phoneNumber")
     @Mapping(target = "diplomaStudents", source = "diplomaStudents")
+    @Mapping(target = "version", source = "version")
     TeacherAccountResponse transformTeacherAccountToDto(TeacherAccount teacherAccount);
 
     @Mapping(target = "userId", source = "userId")
@@ -36,6 +37,7 @@ public interface TeacherAccountMapper {
     @Mapping(target = "degree", source = "degree")
     @Mapping(target = "phoneNumber", source = "phoneNumber")
     @Mapping(target = "diplomaStudents", source = "diplomaStudents")
+    @Mapping(target = "version", source = "version")
     TeacherAccount transformTeacherAccountFromDto(TeacherAccountResponse teacherAccountResponse);
 
     @Mapping(target = "userId", source = "userId")
@@ -49,5 +51,6 @@ public interface TeacherAccountMapper {
     @Mapping(target = "degree", source = "degree")
     @Mapping(target = "phoneNumber", source = "phoneNumber")
     @Mapping(target = "diplomaStudents", source = "diplomaStudents")
+    @Mapping(target = "version", source = "version")
     TeacherAccountRequest transformTeacherAccountToDtoRequest(TeacherAccount teacherAccount);
 }

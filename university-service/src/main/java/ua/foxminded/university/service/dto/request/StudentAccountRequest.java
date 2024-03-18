@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "groupId", "studentCard"})
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "groupId", "studentCard", "version"})
 public class StudentAccountRequest {
     private String userId;
     private String firstName;
@@ -30,4 +30,5 @@ public class StudentAccountRequest {
     private String groupId;
     private String studentCard;
     private Set<CourseRequest> courses;
+    private Integer version;
 }

@@ -17,6 +17,7 @@ public interface CourseMapper {
     @Mapping(target = "teachers", source = "teachers")
     @Mapping(target = "numberOfSeats", source = "numberOfSeats")
     @Mapping(target = "seatsAvailable", source = "seatsAvailable")
+    @Mapping(target = "version", source = "version")
     Course transformCourseFromDto(CourseResponse courseResponse);
 
     Course transformCourseFromDto(CourseRequest courseRequest);
@@ -27,6 +28,7 @@ public interface CourseMapper {
     @Mapping(target = "teachers", source = "teachers")
     @Mapping(target = "numberOfSeats", source = "numberOfSeats")
     @Mapping(target = "seatsAvailable", source = "seatsAvailable")
+    @Mapping(target = "version", source = "version")
     CourseResponse transformCourseToDto(Course course);
 
     @Mapping(target = "courseId", source = "courseId")
@@ -35,6 +37,7 @@ public interface CourseMapper {
     @Mapping(target = "teachers", source = "teachers")
     @Mapping(target = "numberOfSeats", source = "numberOfSeats")
     @Mapping(target = "seatsAvailable", source = "seatsAvailable")
+    @Mapping(target = "version", source = "version")
     CourseRequest transformCourseToDtoRequest(Course course);
 
     List<CourseResponse> transformListCourseToDto(List<Course> course);
