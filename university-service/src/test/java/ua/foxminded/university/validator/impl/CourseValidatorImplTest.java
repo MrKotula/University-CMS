@@ -3,6 +3,7 @@ package ua.foxminded.university.validator.impl;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,5 +78,29 @@ class CourseValidatorImplTest {
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(testCourse));
 
         assertDoesNotThrow(() -> courseValidator.validateCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUseValidateStudentsInGroupBeforeRemoveTest() {
+        String exceptedMessage = "Students are enrolled in this course";
+
+        Course course = mock(Course.class);
+
+        when(course.getNumberOfSeats()).thenReturn(30);
+        when(course.getSeatsAvailable()).thenReturn(29);
+
+        Exception exception = assertThrows(ValidationException.class, () -> courseValidator.validateAvailableCourseSeatsBeforeRemove(course));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldDoNothingWhenUseValidateStudentsInGroupBeforeRemoveTest() {
+        Course course = mock(Course.class);
+
+        when(course.getNumberOfSeats()).thenReturn(30);
+        when(course.getSeatsAvailable()).thenReturn(30);
+
+        courseValidator.validateAvailableCourseSeatsBeforeRemove(course);
     }
 }

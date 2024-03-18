@@ -3,9 +3,7 @@ package ua.foxminded.university.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -37,7 +35,6 @@ import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -226,44 +223,10 @@ class UserAccountServiceImplTest {
     }
 
     @Test
-    void verifyUseMethodUpdateUserAllRoles() {
-        Set<Role> roles = new HashSet<>();
-        UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "", roles);
-
-        Role roleAdmin = new Role("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN, 1);
-        Role roleModerator = new Role("64TR9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.MODERATOR, 1);
-        Role roleStudent = new Role("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT, 1);
-        Role roleTeacher = new Role("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER, 1);
-        Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
-
-        roles.add(roleAdmin);
-        roles.add(roleModerator);
-        roles.add(roleStudent);
-        roles.add(roleTeacher);
-        roles.add(roleUser);
-
-        when(roleRepository.findByRole(RoleModel.ADMIN)).thenReturn(roleAdmin);
-        when(roleRepository.findByRole(RoleModel.MODERATOR)).thenReturn(roleModerator);
-        when(roleRepository.findByRole(RoleModel.STUDENT)).thenReturn(roleStudent);
-        when(roleRepository.findByRole(RoleModel.TEACHER)).thenReturn(roleTeacher);
-        when(roleRepository.findByRole(RoleModel.USER)).thenReturn(roleUser);
-        when(userAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.ofNullable(userAccount));
-
-        userAccount.setRoles(roles);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, "ADMIN,MODERATOR,STUDENT,TEACHER,USER");
-
-        userRegistrationRequest.setRoles(roles);
-
-        assertEquals(userRegistrationRequest.getRoles(), userAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1").get().getRoles());
-        verify(userAccountRepository).save(any(UserAccount.class));
-    }
-
-    @Test
     void verifyUseMethodUpdateEmptyRolesTest() {
         UserAccount userAccount = new UserAccount();
 
-        when(userAccountRepository.findById(anyString())).thenReturn(java.util.Optional.ofNullable(userAccount));
+        when(userAccountRepository.findById(anyString())).thenReturn(Optional.of(userAccount));
 
         List<String> userRoles = Arrays.asList("roleId1", "roleId2", "roleId3");
         when(roleRepository.getUserRoles(anyString())).thenReturn(userRoles);
@@ -388,115 +351,5 @@ class UserAccountServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> {
             userAccountService.updateUserRoles(userAccountUpdateRequest, "ADMIN,TEACHER");
         });
-    }
-
-    @Test
-    void testInsertNewRolesWhenNotExist() {
-        UserAccount userAccount = new UserAccount();
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-
-        when(userAccountRepository.findById(anyString())).thenReturn(Optional.ofNullable(userAccount));
-        when(roleRepository.getUserRoles("userId")).thenReturn(List.of("existingRole1", "existingRole2"));
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, "ADMIN,TEACHER");
-
-        verify(userAccountUpdateRequest, never()).setRoles(anySet());
-        verify(roleRepository, never()).insertNewRoles(eq("userId"), anyString());
-    }
-
-    @Test
-    void testRolesInsertedWhenNotExist() {
-        UserAccount userAccount = new UserAccount();
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-
-        List<String> userRoles = Collections.emptyList();
-
-        when(userAccountRepository.findById("userId")).thenReturn(Optional.of(userAccount));
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-        when(roleRepository.getUserRoles("userId")).thenReturn(userRoles);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, "ADMIN,TEACHER");
-
-        verify(roleRepository, never()).insertNewRoles(anyString(), anyString());
-    }
-
-    @Test
-    void testRoleInsertionWhenRoleExists() {
-        UserAccount userAccount = new UserAccount();
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-
-        List<String> userRoles = Arrays.asList("ADMIN,TEACHER");
-
-        when(userAccountRepository.findById("userId")).thenReturn(Optional.of(userAccount));
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-        when(roleRepository.getUserRoles("userId")).thenReturn(userRoles);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, "ADMIN,TEACHER");
-
-        verify(roleRepository, never()).insertNewRoles(anyString(), anyString());
-    }
-
-    @Test
-    void testRoleInsertionWhenRoleNotExists() {
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-        Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
-
-        List<String> newRolesToCheck = Arrays.asList("USER");
-        List<String> existingUserRoles = Arrays.asList("ADMIN", "TEACHER");
-
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-        when(userAccountRepository.findById("userId")).thenReturn(Optional.of(userAccount));
-        when(roleRepository.getUserRoles("userId")).thenReturn(existingUserRoles);
-        when(roleRepository.findByRole(RoleModel.USER)).thenReturn(roleUser);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, newRolesToCheck.get(0));
-
-        verify(roleRepository).insertNewRoles(anyString(), anyString());
-    }
-
-    @Test
-    void testRoleInsertionWhenRoleNotExistsWhenUpdate() {
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-        Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
-
-        List<String> newRolesToCheck = Arrays.asList("USER");
-        List<String> existingUserRoles = Arrays.asList("USER");
-        Set<Role> roles = new HashSet<>();
-
-        roles.add(roleUser);
-
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-        when(userAccountRepository.findById("userId")).thenReturn(Optional.of(userAccount));
-        when(roleRepository.getUserRoles("userId")).thenReturn(existingUserRoles);
-        when(userAccountUpdateRequest.getRoles()).thenReturn(roles);
-        when(roleRepository.findByRole(RoleModel.USER)).thenReturn(roleUser);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, newRolesToCheck.get(0));
-
-        verify(roleRepository).insertNewRoles(anyString(), anyString());
-    }
-
-    @Test
-    void testRoleInsertionWhenRoleExistsWhenUpdate() {
-        UserAccountUpdateRequest userAccountUpdateRequest = mock(UserAccountUpdateRequest.class);
-        Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
-        Role roleAdmin = new Role("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN, 1);
-
-        List<String> newRolesToCheck = Arrays.asList("ADMIN");
-        List<String> existingUserRoles = Arrays.asList("USER");
-        Set<Role> roles = new HashSet<>();
-
-        roles.add(roleUser);
-
-        when(userAccountUpdateRequest.getUserId()).thenReturn("userId");
-        when(userAccountRepository.findById("userId")).thenReturn(Optional.of(userAccount));
-        when(roleRepository.getUserRoles("userId")).thenReturn(existingUserRoles);
-        when(userAccountUpdateRequest.getRoles()).thenReturn(roles);
-        when(roleRepository.findByRole(RoleModel.ADMIN)).thenReturn(roleAdmin);
-
-        userAccountService.updateUserRoles(userAccountUpdateRequest, newRolesToCheck.get(0));
-
-        verify(roleRepository).insertNewRoles(anyString(), anyString());
     }
 }

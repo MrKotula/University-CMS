@@ -28,4 +28,6 @@ public interface GroupMapper {
     Group transformGroupFromDto(GroupResponse group);
 
     Group transformGroupFromDto(GroupRequest groupRequest);
+
+    GroupRequest transformGroupRequestFromDtoResponse(GroupResponse groupResponse);
 }

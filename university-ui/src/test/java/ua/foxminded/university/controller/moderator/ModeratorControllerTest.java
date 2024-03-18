@@ -28,7 +28,7 @@ import ua.foxminded.university.service.TeacherAccountService;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
 import ua.foxminded.university.validator.ScheduleValidator;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -172,7 +172,7 @@ class ModeratorControllerTest {
         Course course = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(course));
-        doThrow(new CourseException("Students are enrolled in this course")).when(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        doThrow(new ValidationException("Students are enrolled in this course")).when(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
 
         mockMvc.perform(post("/user/moderator/courses")
                         .param("courseId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")

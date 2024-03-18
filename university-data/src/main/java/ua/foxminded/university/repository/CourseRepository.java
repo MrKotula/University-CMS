@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @Transactional
 public interface CourseRepository extends JpaRepository<Course, String> {
-    @Query(value = "SELECT courses.course_id, courses.course_name, courses.course_description, courses.number_seats, courses.seats_available "
+    @Query(value = "SELECT courses.course_id, courses.course_name, courses.course_description, courses.number_seats, courses.seats_available, courses.version "
             + "FROM schedule.courses INNER JOIN schedule.students_courses ON courses.course_id = students_courses.course_id "
             + "WHERE students_courses.user_id=:userId", nativeQuery = true)
     List<Course> findByStudentId(@Param("userId") String userId);

@@ -8,10 +8,10 @@ import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.entity.Group;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.StudentAccountService;
-import ua.foxminded.university.service.dto.request.GroupRequest;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.service.mapper.GroupMapper;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import ua.foxminded.university.validator.GroupValidator;
 
@@ -19,6 +19,7 @@ import ua.foxminded.university.validator.GroupValidator;
 @Transactional
 @AllArgsConstructor
 public class GroupServiceImpl implements GroupService {
+
     private final GroupValidator groupValidator;
     private final GroupRepository groupRepository;
     private final StudentAccountService studentAccountService;
@@ -27,16 +28,15 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void register(String groupName) throws ValidationException {
         groupValidator.validateGroupName(groupName);
+
         groupRepository.save(new Group(groupName));
     }
 
     @Override
-    public void updateGroupName(GroupRequest groupRequest) throws ValidationException {
-        groupValidator.validateGroupName(groupRequest.getGroupName());
+    public void updateGroupName(GroupResponse groupResponse) throws ValidationException {
+        groupValidator.validateGroupName(groupResponse.getGroupName());
 
-        Group group = groupMapper.transformGroupFromDto(groupRequest);
-
-        groupRepository.save(group);
+        groupRepository.updateGroupName(groupResponse.getGroupName(), groupResponse.getGroupId());
     }
 
     @Override
@@ -65,5 +65,21 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void updateStudentsSeats() {
         groupRepository.countGroupSeat();
+    }
+
+    @Override
+    public GroupResponse getGroupById(String groupId) {
+        Group group = groupRepository.findById(groupId).get();
+
+        return groupMapper.transformGroupToDto(group);
+    }
+
+    @Override
+    public void removeGroup(String groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new EntityNotFoundException("Group not found!"));
+
+        groupValidator.validateStudentsInGroupBeforeRemove(group);
+
+        groupRepository.removeGroup(groupId);
     }
 }

@@ -23,4 +23,12 @@ public interface GroupRepository extends JpaRepository<Group, String> {
             "WHERE EXISTS (SELECT 1 FROM schedule.users u " +
             "WHERE u.group_id = g.group_id AND u.user_type = 'US_SA')", nativeQuery = true)
     void countGroupSeat();
+
+    @Modifying
+    @Query(value = "DELETE FROM schedule.groups WHERE group_id=:groupId", nativeQuery = true)
+    void removeGroup(@Param("groupId") String groupId);
+
+    @Modifying
+    @Query(value = "UPDATE schedule.groups g SET group_name=:groupName WHERE group_id=:groupId", nativeQuery = true)
+    void updateGroupName(@Param("groupName") String groupName, @Param("groupId") String groupId);
 }

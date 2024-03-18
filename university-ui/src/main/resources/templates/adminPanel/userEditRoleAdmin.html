@@ -24,7 +24,7 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel" th:text="#{infopage.adminpanel}"></h1>
-    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{'/admin/user/editRole/' + ${userId}}" th:object="${updateUserAccountRequest}">
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{'/admin/users/' + ${userId} + '/roles'}" th:object="${updateUserAccountRequest}">
         <div class="mainParamsAdmin">
             <h3 class="infoAboutUser" th:text="#{infopage.aboutuser}"></h3>
             <h3><span style="color: red" th:text="${updateUserAccountRequest.email}"></span></h3>
