@@ -21,6 +21,7 @@ public interface ScheduleMapper extends Converter<Schedule, ScheduleResponse> {
     @Mapping(target = "group", source = "group")
     @Mapping(target = "teacher", source = "teacher")
     @Mapping(target = "lecture", source = "lecture")
+    @Mapping(target = "version", source = "version")
     @Named("toScheduleResponse")
     ScheduleResponse transformScheduleToDto(Schedule schedule);
 
@@ -29,6 +30,7 @@ public interface ScheduleMapper extends Converter<Schedule, ScheduleResponse> {
     @Mapping(target = "group", source = "group")
     @Mapping(target = "teacher", source = "teacher")
     @Mapping(target = "lecture", source = "lecture")
+    @Mapping(target = "version", source = "version")
     @Named("toEntity")
     Schedule transformScheduleFromDto(ScheduleResponse scheduleResponse);
 
@@ -40,6 +42,7 @@ public interface ScheduleMapper extends Converter<Schedule, ScheduleResponse> {
     @Mapping(target = "group", source = "group")
     @Mapping(target = "teacher", source = "teacher")
     @Mapping(target = "lecture", source = "lecture")
+    @Mapping(target = "version", source = "version")
     @Named("toScheduleRequest")
     ScheduleRequest transformScheduleResponseFromDto(ScheduleResponse scheduleResponse);
 }

@@ -23,7 +23,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"courseId", "courseName", "courseDescription"})
+@EqualsAndHashCode(of = {"courseId", "courseName", "courseDescription", "version"})
 @Builder
 @Entity
 @Table(name = "courses", schema = "schedule")

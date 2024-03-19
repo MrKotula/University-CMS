@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "roles"})
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "roles", "version"})
 public class UserAccountUpdateRequest {
     private String userId;
     private String firstName;
@@ -26,6 +26,7 @@ public class UserAccountUpdateRequest {
 
     private Set<Role> roles;
     private RegistrationStatus registrationStatus;
+    private Integer version;
 
     public UserAccountUpdateRequest(String userId, String firstName, String lastName, String email, String password, String passwordCheck) {
         this.userId = userId;

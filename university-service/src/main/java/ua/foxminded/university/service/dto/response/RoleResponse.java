@@ -13,6 +13,7 @@ import ua.foxminded.university.entity.enums.RoleModel;
 public class RoleResponse {
     private String roleId;
     private RoleModel role;
+    private Integer version;
 
     @Override
     public String toString() {

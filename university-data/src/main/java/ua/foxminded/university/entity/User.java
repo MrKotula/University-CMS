@@ -25,7 +25,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email"})
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "version"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "schedule", name = "users")

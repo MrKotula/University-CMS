@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"groupId", "groupName"})
+@EqualsAndHashCode(of = {"groupId", "groupName", "version"})
 public class GroupResponse {
     private String groupId;
     private String groupName;
     private int countStudents;
+    private Integer version;
 
     @Override
     public String toString() {

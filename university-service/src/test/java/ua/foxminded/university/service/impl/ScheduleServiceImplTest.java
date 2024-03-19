@@ -93,7 +93,7 @@ class ScheduleServiceImplTest {
     void shouldThrowEntityNotFoundExceptionWhenEntityNameIsNullTest() {
         String expectedMessage = "GroupResponse return a null!";
 
-        GroupResponse groupResponse = new GroupResponse("", null, 1);
+        GroupResponse groupResponse = new GroupResponse("", null, 1, 1);
 
         when(groupService.getGroupByUserId("")).thenReturn(groupResponse);
 
@@ -117,7 +117,7 @@ class ScheduleServiceImplTest {
     void shouldThrowEntityNotFoundExceptionWhenGetListOfScheduleTomorrowReturnNameNullTest() {
         String expectedMessage = "GroupResponse return a null!";
 
-        GroupResponse groupResponse = new GroupResponse("", null, 1);
+        GroupResponse groupResponse = new GroupResponse("", null, 1, 1);
 
         when(groupService.getGroupByUserId("")).thenReturn(groupResponse);
 
@@ -171,7 +171,7 @@ class ScheduleServiceImplTest {
         CourseRequest courseRequest = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         Group group = new Group("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
-        GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupRequest groupRequest = new GroupRequest("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         Schedule schedule = Schedule.builder()
                 .teacher(teacherAccount)
@@ -242,7 +242,7 @@ class ScheduleServiceImplTest {
     @Test
     void shouldReturnListOfScheduleToday() {
         LocalDate localDate = LocalDate.of(2024,1,27);
-        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         List<Schedule> listOfScheduleToday = new ArrayList<>();
         List<ScheduleResponse> scheduleResponseListToday = new ArrayList<>();
@@ -257,7 +257,7 @@ class ScheduleServiceImplTest {
     @Test
     void shouldReturnListOfScheduleTomorrow() {
         LocalDate localDate = LocalDate.of(2024,1,27);
-        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1);
+        GroupResponse groupResponse = new GroupResponse("1d95bc79-a549-4d2c-aeb5-3f929aeEgt23", "GD-32", 1, 1);
 
         List<Schedule> listOfScheduleToday = new ArrayList<>();
         List<ScheduleResponse> scheduleResponseListToday = new ArrayList<>();
@@ -335,6 +335,63 @@ class ScheduleServiceImplTest {
 
         assertEquals(scheduleResponse, scheduleService.createSchedule("33c99439-aaf0-4ebd-a07a-bd0c550d8799",
                 "1d95bc79-a549-4d2c-aeb5-3f929aee5432", "1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionForCourseWhenUseCreateScheduleTest() {
+        String expectedMessage = "Course not found!";
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.createSchedule("33c99439-aaf0-4ebd-a07a-bd0c550d8799",
+                "1d95bc79-a549-4d2c-aeb5-3f929aee5432", "1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionForTeacherAccountWhenUseCreateScheduleTest() {
+        String expectedMessage = "TeacherAccount not found!";
+
+        Course testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(testCourse));
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.createSchedule("33c99439-aaf0-4ebd-a07a-bd0c550d8799",
+                "1d95bc79-a549-4d2c-aeb5-3f929aee5432", "1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionForGroupWhenUseCreateScheduleTest() {
+        String expectedMessage = "Group not found!";
+
+        Course testCourse = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+
+        TeacherAccount teacherAccountTest = TeacherAccount.teacherBuilder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .firstName("Jin")
+                .lastName("Tores")
+                .email("teacherMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .roles(new HashSet<>())
+                .registrationStatus(RegistrationStatus.REGISTERED)
+                .degree(Degree.DOCTORAL)
+                .phoneNumber("067-768-874")
+                .diplomaStudents(new ArrayList<>())
+                .build();
+
+        when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(testCourse));
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccountTest));
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.createSchedule("33c99439-aaf0-4ebd-a07a-bd0c550d8799",
+                "1d95bc79-a549-4d2c-aeb5-3f929aee5432", "1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test

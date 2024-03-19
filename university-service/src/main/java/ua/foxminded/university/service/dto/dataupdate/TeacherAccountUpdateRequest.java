@@ -32,4 +32,5 @@ public class TeacherAccountUpdateRequest {
     private Degree degree;
     private String phoneNumber;
     private List<StudentAccount> diplomaStudents;
+    private Integer version;
 }

@@ -3,6 +3,7 @@ package ua.foxminded.university.validator.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
+import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.validator.CourseValidator;
 import ua.foxminded.university.validator.ValidationService;
@@ -48,6 +49,13 @@ public class CourseValidatorImpl implements CourseValidator {
     public void validateCourseId(String courseId) throws ValidationException {
         if (courseRepository.findById(courseId).isEmpty()) {
             throw new ValidationException("This courseId is not exists!");
+        }
+    }
+
+    @Override
+    public void validateAvailableCourseSeatsBeforeRemove(Course course) throws ValidationException {
+        if (course.getNumberOfSeats() != course.getSeatsAvailable()) {
+            throw new ValidationException("Students are enrolled in this course");
         }
     }
 }

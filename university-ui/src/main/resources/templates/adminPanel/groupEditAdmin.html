@@ -2,9 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Moderator</title>
+    <title>Edit group for Admin</title>
     <link rel="stylesheet" th:href="@{/main.css}">
-    <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
     <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
@@ -24,13 +23,13 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
-    <h2 th:text="#{elementonpage.hellomessage}"></h2>
-    <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnCreateSchedule" th:href="@{/moderator/schedule}" th:text="#{infopage.createschedule}"></a>
-    <a class="btnEditSchedule" th:href="@{/moderator/schedule/edit}" th:text="#{infopage.editschedule}"></a>
-    <a class="btnCourses" th:href="@{/moderator/courses}" th:text="#{infopage.courses}"></a>
-    <a class="btnAllGroups" th:href="@{/moderator/groups}" th:text="#{infopage.listallgroups}"></a>
+    <h1 th:text="#{button.editdata}"></h1>
+    <form class="editInfoAdmin" method="POST" th:action="@{'/admin/groups/' + ${groupId} + '/edit'}" th:object="${groupResponse}">
+        <h3 th:text="#{paramname.groupid}"></h3>
+        <h3><span style="color: yellowgreen" th:text="${groupResponse.groupId}"></span></h3>
+        <input th:value="*{groupName}" type="text" class="form-control" id="groupName" name="groupName" th:placeholder="#{placeholder.groupName}"><br>
+        <button type="submit" th:text="#{button.changedata}"></button>
+    </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

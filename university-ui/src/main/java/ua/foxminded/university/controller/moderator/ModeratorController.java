@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,8 +15,8 @@ import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.ScheduleService;
 import ua.foxminded.university.service.TeacherAccountService;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
-import ua.foxminded.university.validator.ScheduleValidator;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.service.dto.response.GroupResponse;
+import ua.foxminded.university.validator.exception.ValidationException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -23,22 +24,24 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class ModeratorController {
+    private static final String GROUP_MODERATOR_API = "/moderator/groups";
+    private static final String SCHEDULE_MODERATOR_API = "/moderator/schedule";
+    private static final String COURSE_MODERATOR_API = "/moderator/courses";
 
     private final ScheduleService scheduleService;
     private final CourseService courseService;
     private final GroupService groupService;
     private final TeacherAccountService teacherAccountService;
     private final DateService dateService;
-    private final ScheduleValidator scheduleValidator;
 
-    @GetMapping("/user/moderator")
+    @GetMapping("/moderator")
     public String openModeratorPage(Model model) {
         model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "moderator_panel/moderatorPage";
     }
 
-    @GetMapping("/user/moderator/schedule")
+    @GetMapping(SCHEDULE_MODERATOR_API)
     public String openCreateSchedulePage(Model model) {
         LocalDate currentDate = dateService.getCurrentDate();
 
@@ -58,21 +61,21 @@ public class ModeratorController {
         return "moderator_panel/createSchedulePage";
     }
 
-    @PostMapping(value = "/user/moderator/schedule", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String actionCreateSchedulePage(@RequestBody ScheduleRequestBody scheduleRequestBody, Model model) {
+    @PostMapping(value = SCHEDULE_MODERATOR_API, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String actionCreateSchedulePage(@RequestBody ScheduleRequestBody scheduleRequestBody) {
         scheduleService.register(scheduleRequestBody);
 
-        return "redirect:/user/moderator";
+        return "redirect:/moderator";
     }
 
-    @GetMapping("/user/moderator/schedule/edit")
+    @GetMapping(SCHEDULE_MODERATOR_API + "/edit")
     public String openEditSchedulePage(Model model) {
         model.addAttribute("dateService", dateService.getCurrentDate());
 
         return "moderator_panel/editSchedulePage";
     }
 
-    @GetMapping("/user/moderator/courses")
+    @GetMapping(COURSE_MODERATOR_API)
     public String openCoursesPage(Model model) {
         model.addAttribute("dateService", dateService.getCurrentDate());
         model.addAttribute("allCourses", courseService.getAllCourses());
@@ -80,16 +83,53 @@ public class ModeratorController {
         return "moderator_panel/coursesPage";
     }
 
-    @PostMapping("/user/moderator/courses")
+    @PostMapping(COURSE_MODERATOR_API)
     public String actionRemoveCourse(@RequestParam String courseId, Model model) {
         try {
             courseService.removeCourse(courseId);
-        } catch (CourseException e) {
+        } catch (ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
 
             return "error_panel/errorPage";
         }
 
-        return "redirect:/user/moderator/courses";
+        return "redirect:" + COURSE_MODERATOR_API;
+    }
+
+    @GetMapping(GROUP_MODERATOR_API)
+    public String viewGroups(Model model) {
+        model.addAttribute("groups", groupService.getAllGroups());
+        model.addAttribute("dateService", dateService.getCurrentDate());
+
+        return "moderator_panel/allGroups";
+    }
+
+    @GetMapping(GROUP_MODERATOR_API + "/{groupId}")
+    public String viewGroupData(@PathVariable String groupId, Model model) {
+        model.addAttribute("groupResponse", groupService.getGroupById(groupId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+
+        return "moderator_panel/groupPageModerator";
+    }
+
+    @GetMapping(GROUP_MODERATOR_API + "/{groupId}/edit")
+    public String editGroupNamePage(@PathVariable String groupId, Model model) {
+        model.addAttribute("groupResponse", groupService.getGroupById(groupId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+
+        return "moderator_panel/groupEditModerator";
+    }
+
+    @PostMapping(GROUP_MODERATOR_API + "/{groupId}/edit")
+    public String actionEditGroupName(GroupResponse groupResponse, Model model) {
+        try {
+            groupService.updateGroupName(groupResponse);
+        } catch (ValidationException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "error_panel/errorPage";
+        }
+
+        return "redirect:" + GROUP_MODERATOR_API;
     }
 }

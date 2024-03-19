@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"courseId", "courseName"})
+@EqualsAndHashCode(of = {"courseId", "courseName", "version"})
 public class CourseResponse {
     private String courseId;
     private String courseName;
@@ -19,6 +19,7 @@ public class CourseResponse {
     private List<TeacherAccountResponse> teachers;
     private int numberOfSeats;
     private int seatsAvailable;
+    private Integer version;
 
     public CourseResponse(String courseId, String courseName, String courseDescription, List<TeacherAccountResponse> teachers) {
         this.courseId = courseId;

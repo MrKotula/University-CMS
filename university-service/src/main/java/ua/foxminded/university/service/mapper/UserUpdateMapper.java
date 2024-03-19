@@ -18,6 +18,7 @@ public interface UserUpdateMapper {
     @Mapping(target = "passwordCheck", source = "passwordCheck")
     @Mapping(target = "registrationStatus", source = "registrationStatus")
     @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "version", source = "version")
     UserAccount transformUserAccountFromDtoResponse(UserAccountResponse userAccountResponse);
 
     UserAccount transformUserAccountFromDtoRequest(UserAccountUpdateRequest userAccountUpdateRequest);
@@ -30,6 +31,7 @@ public interface UserUpdateMapper {
     @Mapping(target = "passwordCheck", source = "passwordCheck")
     @Mapping(target = "registrationStatus", source = "registrationStatus")
     @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "version", source = "version")
     UserAccountResponse transformUserAccountToDtoResponse(UserAccount userAccount);
 
     @Mapping(target = "userId", source = "userId")
@@ -40,6 +42,7 @@ public interface UserUpdateMapper {
     @Mapping(target = "passwordCheck", source = "passwordCheck")
     @Mapping(target = "registrationStatus", source = "registrationStatus")
     @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "version", source = "version")
     UserAccountUpdateRequest transformUserAccountToDtoRequest(UserAccount userAccount);
 
     List<UserAccountUpdateRequest> transformListUserAccountToDtoRequest(List<UserAccount> userAccount);

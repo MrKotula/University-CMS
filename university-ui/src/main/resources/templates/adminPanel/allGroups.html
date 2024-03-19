@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>All users</title>
+    <title>All groups</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
@@ -24,18 +24,16 @@
 <br><br><br>
 <main class="container">
     <h1 class="adminPanel" th:text="#{infopage.adminpanel}"></h1>
-    <h2 th:text="#{infopage.listallusers}"></h2>
-    <form style="float: left;" class="formAllUsersInfo" method="POST" th:action="@{/admin/users}" th:object="${users}">
-        <ul th:each="user : ${users}">
-            <li style="float: left;"> <h4 th:text="#{paramname.useridalluser}"></h4>
-                <h4><span style="color: olivedrab" th:text="${user.userId}"></span></h4>
-                <h4 th:text="#{paramname.email}"></h4>
-                <h4><span style="color: olivedrab" th:text="${user.email}"></span></h4>
-                <h4 th:text="#{paramname.roles}"></h4>
-                <h4><span style="color: olivedrab" th:text="${user.roles}"></span></h4>
-                <h4 th:text="#{paramname.regstatus}"></h4>
-                <h4>Status: <span style="color: olivedrab" th:text="${user.registrationStatus}"></span></h4>
-                <a class="btnInfoAboutUser" th:href="@{/admin/users/{userId}(userId=${user.userId})}" th:text="#{button.userinfo}"></a>
+    <h2 th:text="#{infopage.listallgroups}"></h2><br>
+    <form style="float: left;" class="formAllGroupsInfo" method="POST" th:action="@{/admin/groups}" th:object="${groups}">
+        <ul th:each="group : ${groups}">
+            <li style="float: left;"> <h4 th:text="#{paramname.groupid}"></h4>
+                <h4><span style="color: olivedrab" th:text="${group.groupId}"></span></h4>
+                <h4 th:text="#{paramname.groupname}"></h4>
+                <h4><span style="color: olivedrab" th:text="${group.groupName}"></span></h4>
+                <h4 th:text="#{paramname.countstudent}"></h4>
+                <h4><span style="color: olivedrab" th:text="${group.countStudents}"></span></h4>
+                <a class="btnInfoAboutGroup" th:href="@{/admin/groups/{groupId}(groupId=${group.groupId})}" th:text="#{button.groupinfo}"></a>
             </li>
         </ul>
     </form>

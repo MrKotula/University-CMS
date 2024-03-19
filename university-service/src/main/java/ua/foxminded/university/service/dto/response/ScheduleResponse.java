@@ -15,4 +15,5 @@ public class ScheduleResponse {
     private GroupResponse group;
     private TeacherAccountResponse teacher;
     private LectureResponse lecture;
+    private Integer version;
 }

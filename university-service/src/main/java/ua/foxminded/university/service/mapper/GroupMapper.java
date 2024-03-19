@@ -15,17 +15,22 @@ public interface GroupMapper {
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "groupName", source = "groupName")
     @Mapping(target = "countStudents", source = "countStudents")
+    @Mapping(target = "version", source = "version")
     GroupResponse transformGroupToDto(Group group);
 
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "groupName", source = "groupName")
     @Mapping(target = "countStudents", source = "countStudents")
+    @Mapping(target = "version", source = "version")
     GroupRequest transformGroupToDtoRequest(Group group);
 
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "groupName", source = "groupName")
     @Mapping(target = "countStudents", source = "countStudents")
+    @Mapping(target = "version", source = "version")
     Group transformGroupFromDto(GroupResponse group);
 
     Group transformGroupFromDto(GroupRequest groupRequest);
+
+    GroupRequest transformGroupRequestFromDtoResponse(GroupResponse groupResponse);
 }

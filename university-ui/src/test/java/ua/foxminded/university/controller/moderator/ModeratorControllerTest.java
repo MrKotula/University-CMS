@@ -25,10 +25,13 @@ import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.ScheduleService;
 import ua.foxminded.university.service.TeacherAccountService;
+import ua.foxminded.university.service.dto.request.GroupRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
+import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
+import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.validator.ScheduleValidator;
-import ua.foxminded.university.validator.exception.CourseException;
+import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,6 +42,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,6 +76,9 @@ class ModeratorControllerTest {
     @MockBean
     private ScheduleValidator scheduleValidator;
 
+    @MockBean
+    private GroupMapper groupMapper;
+
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
             .withDatabaseName("integration-tests-db").withUsername("sa").withPassword("sa");
@@ -98,21 +105,21 @@ class ModeratorControllerTest {
 
     @Test
     void openModeratorPageTest() throws Exception {
-        mockMvc.perform(get("/user/moderator")
+        mockMvc.perform(get("/moderator")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void openCreateSchedulePageTest() throws Exception {
-        mockMvc.perform(get("/user/moderator/schedule")
+        mockMvc.perform(get("/moderator/schedule")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void openEditSchedulePageTest() throws Exception {
-        mockMvc.perform(get("/user/moderator/schedule/edit")
+        mockMvc.perform(get("/moderator/schedule/edit")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -133,17 +140,17 @@ class ModeratorControllerTest {
 
         when(scheduleService.createSchedule(anyString(), anyString(), anyString())).thenReturn(mockScheduleResponse);
 
-        mockMvc.perform(post("/user/moderator/schedule")
+        mockMvc.perform(post("/moderator/schedule")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(scheduleRequestBody)))
-                .andExpect(redirectedUrl("/user/moderator"));
+                .andExpect(redirectedUrl("/moderator"));
 
         verify(scheduleService, times(1)).register(any());
     }
 
     @Test
     void openCoursePageTest() throws Exception {
-        mockMvc.perform(get("/user/moderator/courses")
+        mockMvc.perform(get("/moderator/courses")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -156,11 +163,11 @@ class ModeratorControllerTest {
 
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(course));
 
-        mockMvc.perform(post("/user/moderator/courses")
+        mockMvc.perform(post("/moderator/courses")
                         .param("courseId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/moderator/courses"));
+                .andExpect(redirectedUrl("/moderator/courses"));
 
         verify(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
     }
@@ -172,9 +179,9 @@ class ModeratorControllerTest {
         Course course = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         when(courseRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(course));
-        doThrow(new CourseException("Students are enrolled in this course")).when(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+        doThrow(new ValidationException("Students are enrolled in this course")).when(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
 
-        mockMvc.perform(post("/user/moderator/courses")
+        mockMvc.perform(post("/moderator/courses")
                         .param("courseId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
@@ -182,5 +189,87 @@ class ModeratorControllerTest {
                 .andExpect(view().name("error_panel/errorPage"));
 
         verify(courseService).removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+    }
+
+    @Test
+    @WithMockUser(authorities = "MODERATOR")
+    void shouldReturnViewAllGroupsPageTest() throws Exception {
+        mockMvc.perform(get("/moderator/groups")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "MODERATOR")
+    void shouldReturnViewGroupDataPageTest() throws Exception {
+        GroupResponse groupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        when(groupService.getGroupById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(groupResponse);
+
+        mockMvc.perform(get("/moderator/groups/1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .param("groupId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "MODERATOR")
+    void shouldReturnEditGroupNamePageTest() throws Exception {
+        GroupResponse groupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        when(groupService.getGroupById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(groupResponse);
+
+        mockMvc.perform(get("/moderator/groups/1d95bc79-a549-4d2c-aeb5-3f929aee5432/edit")
+                        .param("groupId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldEditGroupNameWhenUseMethodEditGroupNameTest() throws Exception {
+        GroupResponse groupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .countStudents(5)
+                .build();
+
+        when(groupService.getGroupById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(groupResponse);
+
+        mockMvc.perform(post("/moderator/groups/1d95bc79-a549-4d2c-aeb5-3f929aee5432/edit")
+                        .param("groupId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(redirectedUrl("/moderator/groups"));
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenUseMethodUpdateGroupNameTest() throws Exception {
+        GroupResponse groupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43S")
+                .countStudents(5)
+                .build();
+
+        GroupRequest groupRequest = GroupRequest.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43S")
+                .countStudents(5)
+                .build();
+
+        when(groupService.getGroupById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(groupResponse);
+        when(groupMapper.transformGroupRequestFromDtoResponse(groupResponse)).thenReturn(groupRequest);
+        doThrow(new ValidationException("Group name cannot special format for group! Use like this format (GR-12)")).when(groupService).updateGroupName(groupResponse);
+
+        mockMvc.perform(post("/moderator/groups/1d95bc79-a549-4d2c-aeb5-3f929aee5432/edit")
+                        .flashAttr("groupResponse", groupResponse)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(model().attribute("errorMessage", "Group name cannot special format for group! Use like this format (GR-12)"));
     }
 }
