@@ -29,4 +29,5 @@ public class StudentAccountUpdateRequest {
     private String groupId;
     private String studentCard;
     private Set<Course> courses = new HashSet<>();
+    private Integer version;
 }

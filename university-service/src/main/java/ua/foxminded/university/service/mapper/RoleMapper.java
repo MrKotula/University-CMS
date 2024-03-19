@@ -14,6 +14,7 @@ public interface RoleMapper {
 
     @Mapping(target = "roleId", source = "roleId")
     @Mapping(target = "role", source = "role")
+    @Mapping(target = "version", source = "version")
     @Named("toEntity")
     Role transformRoleFromDto(RoleResponse roleResponse);
 
@@ -21,11 +22,13 @@ public interface RoleMapper {
 
     @Mapping(target = "roleId", source = "roleId")
     @Mapping(target = "role", source = "role")
+    @Mapping(target = "version", source = "version")
     @Named("toRoleRequest")
     RoleRequest transformRoleRequestFromRole(Role role);
 
     @Mapping(target = "roleId", source = "roleId")
     @Mapping(target = "role", source = "role")
+    @Mapping(target = "version", source = "version")
     @Named("toRoleResponse")
     RoleResponse transformRoleResponseFromRole(Role role);
 

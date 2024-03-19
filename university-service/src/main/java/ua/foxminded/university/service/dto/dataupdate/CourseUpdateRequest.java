@@ -14,4 +14,5 @@ public class CourseUpdateRequest {
     private String courseName;
     private String courseDescription;
     private List<TeacherAccount> teachers;
+    private Integer version;
 }

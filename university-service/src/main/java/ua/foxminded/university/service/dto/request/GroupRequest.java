@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"groupId", "groupName"})
+@EqualsAndHashCode(of = {"groupId", "groupName", "version"})
 public class GroupRequest {
     private String groupId;
     private String groupName;

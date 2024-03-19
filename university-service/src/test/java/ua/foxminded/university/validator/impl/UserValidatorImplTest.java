@@ -56,7 +56,7 @@ class UserValidatorImplTest {
         String expectedMessage = "First name or last name is has more 16 symbols!";
 
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "JohnJohnJohnJohnG", "Doe",
-                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW);
+                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         Exception exception = assertThrows(ValidationException.class, () -> userValidator.validate(userAccountUpdateRequest));
 
@@ -68,7 +68,7 @@ class UserValidatorImplTest {
         String expectedMessage = "First name or last name is has more 16 symbols!";
 
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "DoeDoeDoeDoeDoeDoeDoeDoe",
-                "testema@ukr.net", "1312345678", "12345678", new HashSet<>(), RegistrationStatus.NEW);
+                "testema@ukr.net", "1312345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         Exception exception = assertThrows(ValidationException.class, () -> userValidator.validate(userAccountUpdateRequest));
 
@@ -175,7 +175,7 @@ class UserValidatorImplTest {
         String expectedMessage = "Passwords does not match!";
 
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe",
-                "testema@ukr.net", "1312345678", "12345678", new HashSet<>(), RegistrationStatus.NEW);
+                "testema@ukr.net", "1312345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         Exception exception = assertThrows(ValidationException.class, () -> userValidator.validate(userAccountUpdateRequest));
 
@@ -185,7 +185,7 @@ class UserValidatorImplTest {
     @Test
     void checkMethodValidatePasswordWhenIsOkTest() throws ValidationException {
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe",
-                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW);
+                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         assertDoesNotThrow(() -> userValidator.validate(userAccountUpdateRequest));
     }
@@ -209,7 +209,7 @@ class UserValidatorImplTest {
     @Test
     void checkMethodValidateDataUpdateRequestTest() throws ValidationException {
         UserAccountUpdateRequest userAccountUpdateRequest = new UserAccountUpdateRequest("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe",
-                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW);
+                "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         assertDoesNotThrow(() -> userValidator.validate(userAccountUpdateRequest));
     }

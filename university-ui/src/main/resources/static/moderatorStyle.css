@@ -71,3 +71,7 @@
     transition: background 900ms ease;
     border-color: chocolate;
 }
+
+.moderatorPanel {
+    color: red;
+}

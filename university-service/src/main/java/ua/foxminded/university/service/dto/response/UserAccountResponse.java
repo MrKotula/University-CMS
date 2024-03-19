@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "roles"})
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "roles", "version"})
 @Builder
 public class UserAccountResponse {
     private String userId;
@@ -28,4 +28,5 @@ public class UserAccountResponse {
 
     private Set<Role> roles;
     private RegistrationStatus registrationStatus;
+    private Integer version;
 }

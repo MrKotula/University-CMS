@@ -26,7 +26,7 @@
     <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
     <h1 th:text="#{infopage.course}"></h1>
 
-    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/user/moderator/courses}"
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/moderator/courses}"
           th:object="${allCourses}">
         <h2 style="color:darkgreen" th:text="#{infopage.courses}"></h2>
         <ul>
@@ -36,7 +36,7 @@
                        th:text="${course.courseName}"
                        th:href="@{/course/info/{userId}(userId=${course.courseId})}"></a>
                 </h3>
-                <form th:action="@{/user/moderator/courses}" method="post">
+                <form th:action="@{/moderator/courses}" method="post">
                     <input type="hidden" th:name="courseId" th:value="${course.courseId}">
                     <button type="submit" class="removeCourse" th:text="#{button.removecourse}"></button>
                 </form>

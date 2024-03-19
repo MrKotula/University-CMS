@@ -34,11 +34,11 @@ class RoleServiceImplTest {
     private Role roleTeacher = new Role("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER, 1);
     private Role roleUser = new Role("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
 
-    private RoleResponse roleResponseAdmin = new RoleResponse("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN);
-    private RoleResponse roleResponseModerator = new RoleResponse("64TR9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.MODERATOR);
-    private RoleResponse roleResponseStudent = new RoleResponse("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT);
-    private RoleResponse roleResponseTeacher = new RoleResponse("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER);
-    private RoleResponse roleResponseUser = new RoleResponse("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER);
+    private RoleResponse roleResponseAdmin = new RoleResponse("54RG9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.ADMIN, 1);
+    private RoleResponse roleResponseModerator = new RoleResponse("64TR9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.MODERATOR, 1);
+    private RoleResponse roleResponseStudent = new RoleResponse("98LD9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.STUDENT, 1);
+    private RoleResponse roleResponseTeacher = new RoleResponse("PR3W9439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.TEACHER, 1);
+    private RoleResponse roleResponseUser = new RoleResponse("LDG69439-aaf0-4ebd-a07a-bd0c550db4e1", RoleModel.USER, 1);
 
     @Test
     void shouldReturnListOfRolesWhenUseFindAllRoles() {

@@ -15,4 +15,5 @@ public class ScheduleRequest {
     private GroupRequest group;
     private TeacherAccountRequest teacher;
     private LectureRequest lecture;
+    private Integer version;
 }

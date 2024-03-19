@@ -36,7 +36,7 @@
                 </span>
                 <span sec:authorize="hasAnyAuthority('MODERATOR', 'ADMIN')">
                     <form method="post" th:action="@{/logout}">
-                    <a class="moderatorAccount" href="/user/moderator" th:text="#{button.moderator}"></a>
+                    <a class="moderatorAccount" href="/moderator" th:text="#{button.moderator}"></a>
                     </form>
                 </span>
                 <span sec:authorize="hasAuthority('TEACHER')">

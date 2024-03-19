@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "degree", "phoneNumber"})
+@EqualsAndHashCode(of = {"userId", "firstName", "lastName", "email", "degree", "phoneNumber", "version"})
 public class TeacherAccountRequest {
     private String userId;
     private String firstName;
@@ -27,6 +27,7 @@ public class TeacherAccountRequest {
     private Degree degree;
     private String phoneNumber;
     private List<StudentAccountRequest> diplomaStudents;
+    private Integer version;
 
     @Override
     public String toString() {

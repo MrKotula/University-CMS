@@ -23,6 +23,7 @@ public interface StudentAccountMapper {
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "studentCard", source = "studentCard")
     @Mapping(target = "courses", source = "courses")
+    @Mapping(target = "version", source = "version")
     StudentAccountResponse transformStudentAccountToDto(StudentAccount studentAccount);
 
     @Mapping(target = "userId", source = "userId")
@@ -36,6 +37,7 @@ public interface StudentAccountMapper {
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "studentCard", source = "studentCard")
     @Mapping(target = "courses", source = "courses")
+    @Mapping(target = "version", source = "version")
     StudentAccount transformStudentAccountFromDto(StudentAccountResponse studentAccountResponse);
 
     StudentAccount transformStudentAccountFromDto(StudentAccountRequest studentAccountRequest);
@@ -51,5 +53,6 @@ public interface StudentAccountMapper {
     @Mapping(target = "groupId", source = "groupId")
     @Mapping(target = "studentCard", source = "studentCard")
     @Mapping(target = "courses", source = "courses")
+    @Mapping(target = "version", source = "version")
     StudentAccountRequest transformStudentAccountRequestFromDto(StudentAccountResponse studentAccountResponse);
 }
