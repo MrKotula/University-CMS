@@ -19,18 +19,22 @@ import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.service.mapper.StudentAccountMapper;
+import ua.foxminded.university.validator.GroupValidator;
 import ua.foxminded.university.validator.StudentValidator;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class StudentAccountServiceImpl implements StudentAccountService {
-    private final StudentValidator studentValidator;
     private final PasswordEncoder passwordEncoder;
     private final StudentAccountRepository studentAccountRepository;
     private final RoleRepository roleRepository;
     private final CourseRepository courseRepository;
+
+    private final StudentValidator studentValidator;
+    private final GroupValidator groupValidator;
 
     private final StudentAccountMapper studentAccountMapper;
 
@@ -123,5 +127,63 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     @Override
     public StudentAccountResponse getStudentByEmail(String email) {
         return studentAccountMapper.transformStudentAccountToDto(studentAccountRepository.getStudentByEmail(email));
+    }
+
+    @Override
+    public void updateStudentData(StudentAccountResponse studentAccountResponse) {
+        studentValidator.validateStudentId(studentAccountResponse.getUserId());
+
+        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountResponse.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("StudentAccount not found"));
+
+        if (studentAccountResponse.getFirstName().isEmpty()) {
+            studentAccount.setFirstName(studentAccount.getFirstName());
+        } else {
+            studentAccount.setFirstName(studentAccountResponse.getFirstName());
+        }
+        if (studentAccountResponse.getLastName().isEmpty()) {
+            studentAccount.setLastName(studentAccount.getLastName());
+        } else {
+            studentAccount.setLastName(studentAccountResponse.getLastName());
+        }
+        if (studentAccountResponse.getStudentCard().isEmpty()) {
+            studentAccount.setStudentCard(studentAccount.getStudentCard());
+        } else {
+            studentValidator.validateForSpecialStudentCardPattern(studentAccountResponse.getStudentCard());
+            studentAccount.setStudentCard(studentAccountResponse.getStudentCard());
+        }
+        if (studentAccountResponse.getGroupId().isEmpty()) {
+            studentAccount.setGroupId(studentAccount.getGroupId());
+        } else {
+            groupValidator.validateGroupId(studentAccountResponse.getGroupId());
+            studentAccount.setGroupId(studentAccountResponse.getGroupId());
+        }
+
+        studentValidator.validateStudent(studentAccount);
+
+        studentAccountRepository.save(studentAccount);
+    }
+
+    @Override
+    public void updateStudentCardAndGroupDataByModerator(StudentAccountResponse studentAccountResponse) {
+        studentValidator.validateStudentId(studentAccountResponse.getUserId());
+
+        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountResponse.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("StudentAccount not found"));
+
+        if (studentAccountResponse.getStudentCard().isEmpty()) {
+            studentAccount.setStudentCard(studentAccount.getStudentCard());
+        } else {
+            studentValidator.validateForSpecialStudentCardPattern(studentAccountResponse.getStudentCard());
+            studentAccount.setStudentCard(studentAccountResponse.getStudentCard());
+        }
+        if (studentAccountResponse.getGroupId().isEmpty()) {
+            studentAccount.setGroupId(studentAccount.getGroupId());
+        } else {
+            groupValidator.validateGroupId(studentAccountResponse.getGroupId());
+            studentAccount.setGroupId(studentAccountResponse.getGroupId());
+        }
+
+        studentAccountRepository.save(studentAccount);
     }
 }

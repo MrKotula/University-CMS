@@ -82,4 +82,11 @@ public class GroupServiceImpl implements GroupService {
 
         groupRepository.removeGroup(groupId);
     }
+
+    @Override
+    public String getGroupNameByGroupId(String groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new EntityNotFoundException("Group not found!"));
+
+        return group.getGroupName();
+    }
 }

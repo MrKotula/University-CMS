@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.GroupService;
+import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
 import ua.foxminded.university.service.RoleService;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.UserAccountService;
 import ua.foxminded.university.service.dto.response.GroupResponse;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @Controller
@@ -27,12 +29,14 @@ public class AdminController {
     private static final String ERROR_MESSAGE_VIOLATES_SCHEDULE = "This group have a schedule. Remove schedule before remove group!";
     private static final String GROUP_ADMIN_API = "/admin/groups";
     private static final String USER_ADMIN_API = "/admin/users";
+    private static final String STUDENT_ADMIN_API = "/admin/students";
 
     private final UserAccountService userAccountService;
     private final CourseService courseService;
     private final RoleService roleService;
     private final DateService dateService;
     private final GroupService groupService;
+    private final StudentAccountService studentAccountService;
 
     @GetMapping("/admin")
     public String openAdminPanel(Model model) {
@@ -72,7 +76,7 @@ public class AdminController {
         userAccountService.updateUserData(userAccountUpdateRequest);
         log.warn("Changed data for user by help Admin! " + userAccountUpdateRequest.toString());
 
-        return "redirect:/admin/users/"+ userAccountUpdateRequest.getUserId();
+        return "redirect:" + USER_ADMIN_API + "/" + userAccountUpdateRequest.getUserId();
     }
 
     @GetMapping(USER_ADMIN_API + "/{userId}/roles")
@@ -89,7 +93,7 @@ public class AdminController {
         userAccountService.updateUserRoles(userAccountUpdateRequest, roles);
         log.warn("Changed roles for user by help Admin! UserId: " + userAccountUpdateRequest.getUserId());
 
-        return "redirect:/admin/users/"+ userAccountUpdateRequest.getUserId();
+        return "redirect:" + USER_ADMIN_API + "/" + userAccountUpdateRequest.getUserId();
     }
 
     @GetMapping(GROUP_ADMIN_API)
@@ -123,7 +127,7 @@ public class AdminController {
             return "error_panel/errorPage";
         }
 
-        return "redirect:/admin/groups";
+        return "redirect:" + GROUP_ADMIN_API;
     }
 
     @GetMapping(GROUP_ADMIN_API + "/{groupId}/edit")
@@ -144,6 +148,47 @@ public class AdminController {
             return "error_panel/errorPage";
         }
 
-        return "redirect:/admin/groups";
+        return "redirect:" + GROUP_ADMIN_API;
+    }
+
+    @GetMapping(STUDENT_ADMIN_API)
+    public String viewAllStudentsPage(Model model) {
+        model.addAttribute("listAllStudents", studentAccountService.findAllStudents());
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("groupService", groupService);
+
+        return "adminPanel/allStudentsPage";
+    }
+
+    @GetMapping(STUDENT_ADMIN_API + "/{userId}")
+    public String viewStudentInfoPage(@PathVariable String userId, Model model) {
+        model.addAttribute("student", studentAccountService.findStudentById(userId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("courses", courseService.findByStudentId(userId));
+        model.addAttribute("groupService", groupService);
+
+        return "adminPanel/studentPageInfoAdmin";
+    }
+
+    @GetMapping(STUDENT_ADMIN_API + "/{userId}/edit")
+    public String viewEditStudentsPage(@PathVariable String userId, Model model) {
+        model.addAttribute("student", studentAccountService.findStudentById(userId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+
+        return "adminPanel/studentEditPageAdmin";
+    }
+
+    @PostMapping(STUDENT_ADMIN_API + "/{userId}/edit")
+    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountResponse, Model model) {
+        try {
+            studentAccountService.updateStudentData(studentAccountResponse);
+            log.warn("Changed data for student by help Admin! " + studentAccountResponse.toString());
+        } catch (ValidationException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "error_panel/errorPage";
+        }
+
+        return "redirect:" + STUDENT_ADMIN_API + "/" +  studentAccountResponse.getUserId();
     }
 }

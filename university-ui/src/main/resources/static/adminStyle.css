@@ -12,7 +12,7 @@
 .formInfoAdmin {
     border-radius: 5px;
     display: block;
-    width: 600px;
+    width: 650px;
     margin-left: 20px;
     padding-left: 15px;
     left: 10px;
@@ -176,6 +176,29 @@
 }
 
 .btnAllGroups:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}
+
+.btnAllStudents {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllStudents:hover {
     webkit-transform: scale(1.1);
     ms-transform: scale(1.1);
     transform: scale(1.1);

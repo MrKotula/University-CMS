@@ -20,4 +20,6 @@ public interface GroupService {
     GroupResponse getGroupById(String groupId);
 
     void removeGroup(String groupId);
+
+    String getGroupNameByGroupId(String groupId);
 }

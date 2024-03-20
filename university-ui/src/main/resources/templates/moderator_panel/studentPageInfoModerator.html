@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Student page for Moderator</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="moderatorPanel" th:text="#{infopage.moderatorpanel}"></h1>
+    <form style="float: left;" class="formInfoAdmin" method="POST" th:action="@{/moderator/students/userId}" th:object="${student}">
+        <div class="mainParamsAdmin">
+            <h3 class="infoAboutUser" th:text="#{infopage.aboutstudent}"></h3>
+            <h3><span style="color: red" th:text="${student.email}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.useridadm}"><span style="color: yellowgreen" th:text="${student.userId}"></span></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.userId}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.firstname}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.firstName}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.lastname}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.lastName}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.email}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.email}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.studentcard}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.studentCard}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.groupid}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.groupId} + ' (' + ${groupService.getGroupNameByGroupId(student.groupId) + ')'}"></span></h3>
+        </div>
+        <div class="mainParamsAdmin">
+            <h3 th:text="#{paramname.regstatus}"></h3>
+            <h3><span style="color: yellowgreen" th:text="${student.registrationStatus}"></span></h3>
+            <a class="btnEditInfoAdmin" th:href="@{/moderator/students/{userId}/edit(userId=${student.userId})}"
+               th:text="#{button.editdata}"></a>
+        </div>
+    </form>
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/moderator/students/userId}"
+          th:object="${courses}">
+        <h2 th:text="#{infopage.studentcourses}" style="color:darkgreen"></h2>
+        <ul th:each="course : ${courses}">
+            <li>
+                <div>
+                    <h3><span style="color: yellowgreen" th:text="${course.courseName}"></span></h3>
+                </div>
+            </li>
+        </ul>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

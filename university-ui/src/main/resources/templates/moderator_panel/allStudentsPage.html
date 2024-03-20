@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>All students for Moderator</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="moderatorPanel" th:text="#{infopage.moderatorpanel}"></h1>
+    <h2 th:text="#{infopage.listallstudents}"></h2><br>
+    <form style="float: left;" class="formAllUsersInfo" method="POST" th:action="@{/moderator/students}" th:object="${listAllStudents}">
+        <ul th:each="student : ${listAllStudents}">
+            <li style="float: left;">
+                <h4 th:text="#{paramname.firstname}"></h4>
+                <h4><span style="color: olivedrab" th:text="${student.firstName}"></span></h4>
+                <h4 th:text="#{paramname.lastname}"></h4>
+                <h4><span style="color: olivedrab" th:text="${student.lastName}"></span></h4>
+                <h4 th:text="#{paramname.email}"></h4>
+                <h4><span style="color: olivedrab" th:text="${student.email}"></span></h4>
+                <h4 th:text="#{paramname.studentid}"></h4>
+                <h4><span style="color: olivedrab" th:text="${student.studentCard}"></span></h4>
+                <h4 th:text="#{paramname.groupname}"></h4>
+                <h4><span style="color: olivedrab" th:text="${groupService.getGroupNameByGroupId(student.groupId)}"></span></h4>
+                <a class="btnInfoAboutUser" th:href="@{/moderator/students/{userId}(userId=${student.userId})}" th:text="#{button.userinfo}"></a>
+            </li>
+        </ul>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>
