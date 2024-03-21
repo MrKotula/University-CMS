@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Edit data student for Moderator</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
@@ -23,12 +23,15 @@
 <div th:replace="~{layouts/header :: header}"></div>
 <br><br><br>
 <main class="container">
-    <h1 class="adminPanel" th:text="#{infopage.welcomeadmpanel}"></h1>
-    <h2 th:text="#{elementonpage.hellomessage}"></h2>
-    <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnAllUsers" th:href="@{/admin/users}" th:text="#{infopage.listallusers}"></a>
-    <a class="btnAllGroups" th:href="@{/admin/groups}" th:text="#{infopage.listallgroups}"></a>
-    <a class="btnAllStudents" th:href="@{/admin/students}" th:text="#{infopage.listallstudents}"></a>
+    <h1 th:text="#{button.editdata}"></h1>
+    <form class="editInfoAdmin" method="POST" th:action="@{'/moderator/students/' + ${userId} + '/edit'}" th:object="${student}">
+        <h3 th:text="#{paramname.userid}"></h3>
+        <h3><span style="color: yellowgreen" th:text="${student.userId}"></span></h3>
+        <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>
+        <input th:value="*{studentCard}" type="text" class="form-control" id="studentCard" name="studentCard" th:placeholder="#{placeholder.studentcard}"><br>
+        <input th:value="*{groupId}" type="text" class="form-control" id="groupId" name="groupId" th:placeholder="#{placeholder.groupid}"><br>
+        <button type="submit" th:text="#{button.changedata}"></button>
+    </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

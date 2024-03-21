@@ -5,7 +5,6 @@
     <title>Moderator</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
-    <link rel="stylesheet" th:href="@{/adminStyle.css}">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
 </script>
@@ -31,6 +30,7 @@
     <a class="btnEditSchedule" th:href="@{/moderator/schedule/edit}" th:text="#{infopage.editschedule}"></a>
     <a class="btnCourses" th:href="@{/moderator/courses}" th:text="#{infopage.courses}"></a>
     <a class="btnAllGroups" th:href="@{/moderator/groups}" th:text="#{infopage.listallgroups}"></a>
+    <a class="btnAllStudents" th:href="@{/moderator/students}" th:text="#{infopage.listallstudents}"></a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

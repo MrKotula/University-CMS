@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
@@ -100,6 +101,17 @@ class StudentValidatorImplTest {
     }
 
     @Test
+    void checkMethodValidateStudentAccountTest() throws ValidationException {
+        StudentAccount studentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+
+        studentValidator.validateStudent(studentAccount);
+
+        verify(userValidator).validate(studentAccount);
+    }
+
+    @Test
     void checkMethodValidateEmailTest() throws ValidationException {
         studentValidator.validateEmail("dis@ukr.net");
 
@@ -166,5 +178,19 @@ class StudentValidatorImplTest {
         studentValidator.validateCourseId("course_id");
 
         verify(courseValidator).validateCourseId("course_id");
+    }
+
+    @Test
+    void shouldReturnValidationExceptionWhenValidateStudentCardTest() throws ValidationException {
+        String expectedMessage = "Student card has special format for field! Use like this format (GR83281023)";
+
+        Exception exception = assertThrows(ValidationException.class, () -> studentValidator.validateForSpecialStudentCardPattern("test"));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldDoesNotThrowValidationExceptionWhenGroupNameCanSpecialCharacter() throws ValidationException {
+        assertDoesNotThrow(() -> studentValidator.validateForSpecialStudentCardPattern("YD94839245"));
     }
 }

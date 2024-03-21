@@ -23,12 +23,15 @@ import ua.foxminded.university.repository.GroupRepository;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.RoleService;
+import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.UserAccountService;
 import ua.foxminded.university.service.dto.request.GroupRequest;
 import ua.foxminded.university.service.dto.response.GroupResponse;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.service.dto.response.UserAccountResponse;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.validator.GroupValidator;
+import ua.foxminded.university.validator.StudentValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.HashSet;
 import static org.mockito.Mockito.doThrow;
@@ -71,6 +74,12 @@ class AdminControllerTest {
 
     @MockBean
     private GroupRepository groupRepository;
+
+    @MockBean
+    private StudentAccountService studentAccountService;
+
+    @MockBean
+    private StudentValidator studentValidator;
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
@@ -345,5 +354,107 @@ class AdminControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(model().attribute("dataIntegrityErrorMessage", "This group have a schedule. Remove schedule before remove group!"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void shouldReturnViewAllStudentsPageTest() throws Exception {
+        mockMvc.perform(get("/admin/students")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void shouldReturnStudentInfoPageTest() throws Exception {
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("Like")
+                .lastName("Test")
+                .email("testMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
+
+        mockMvc.perform(get("/admin/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .param("userId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void shouldReturnStudentEditPageTest() throws Exception {
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("Like")
+                .lastName("Test")
+                .email("testMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
+
+        mockMvc.perform(get("/admin/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1/edit")
+                        .param("userId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void shouldEditStudentDataTest() throws Exception {
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("Like")
+                .lastName("Test")
+                .email("testMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
+
+        mockMvc.perform(post("/admin/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1/edit")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(redirectedUrl("/admin/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void shouldThrowValidationExceptionWhenUpdateStudentDataTest() throws Exception {
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("Like")
+                .lastName("Test")
+                .email("testMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
+        doThrow(new ValidationException("Student card has special format for field! Use like this format (GR83281023)")).when(studentAccountService).updateStudentData(studentAccountResponseTest);
+
+        mockMvc.perform(post("/admin/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1/edit")
+                        .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                        .flashAttr("studentAccountResponse", studentAccountResponseTest)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(model().attribute("errorMessage", "Student card has special format for field! Use like this format (GR83281023)"));
     }
 }

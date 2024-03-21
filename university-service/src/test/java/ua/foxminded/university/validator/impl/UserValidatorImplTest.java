@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.UserAccount;
 import ua.foxminded.university.repository.UserAccountRepository;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
@@ -212,5 +213,14 @@ class UserValidatorImplTest {
                 "testema@ukr.net", "12345678", "12345678", new HashSet<>(), RegistrationStatus.NEW, 1);
 
         assertDoesNotThrow(() -> userValidator.validate(userAccountUpdateRequest));
+    }
+
+    @Test
+    void checkMethodValidateDataForStudentAccountTest() throws ValidationException {
+        StudentAccount studentAccount = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+
+        assertDoesNotThrow(() -> userValidator.validate(studentAccount));
     }
 }

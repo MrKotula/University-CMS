@@ -1,8 +1,10 @@
 package ua.foxminded.university.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,9 @@ import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.RoleMapper;
 import ua.foxminded.university.service.mapper.StudentAccountMapper;
+import ua.foxminded.university.validator.GroupValidator;
 import ua.foxminded.university.validator.StudentValidator;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,6 +61,9 @@ class StudentAccountServiceImplTest {
 
     @Mock
     private RoleMapper roleMapper;
+
+    @Mock
+    private GroupValidator groupValidator;
 
     @InjectMocks
     private StudentAccountServiceImpl studentAccountService;
@@ -274,5 +281,150 @@ class StudentAccountServiceImplTest {
 
         assertEquals(studentAccountResponseTest, studentAccountService.getStudentByEmail("dis@ukr.net"));
         verify(studentAccountRepository).getStudentByEmail("dis@ukr.net");
+    }
+
+    @Test
+    void shouldUpdateStudentCardAndGroupDataByModeratorTest() {
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("John")
+                .lastName("Doe")
+                .email("dis@ukr.net")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce9233")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.of(studentAccountTest));
+
+        studentAccountService.updateStudentCardAndGroupDataByModerator(studentAccountResponseTest);
+
+        verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        verify(studentValidator).validateForSpecialStudentCardPattern("GD94381727");
+        verify(groupValidator).validateGroupId("3c01e6f1-762e-43b8-a6e1-7cf493ce9233");
+        assertEquals("GD94381727", studentAccountTest.getStudentCard());
+        assertEquals("3c01e6f1-762e-43b8-a6e1-7cf493ce9233", studentAccountTest.getGroupId());
+    }
+
+    @Test
+    void shouldNotUpdateStudentCardAndGroupDataByModeratorTest() {
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+        studentAccountTest.setStudentCard("DT94381727");
+
+        StudentAccountResponse studentAccountResponseTest = mock(StudentAccountResponse.class);
+
+        when(studentAccountResponseTest.getUserId()).thenReturn("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        when(studentAccountResponseTest.getStudentCard()).thenReturn("");
+        when(studentAccountResponseTest.getGroupId()).thenReturn("");
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.of(studentAccountTest));
+
+        studentAccountService.updateStudentCardAndGroupDataByModerator(studentAccountResponseTest);
+
+        verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        assertEquals("DT94381727", studentAccountTest.getStudentCard());
+        assertEquals("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", studentAccountTest.getGroupId());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenUpdateStudentCardAndGroupDataByModeratorTest() {
+        String expectedMessage = "StudentAccount not found";
+
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+        studentAccountTest.setStudentCard("DT94381727");
+
+        StudentAccountResponse studentAccountResponseTest = mock(StudentAccountResponse.class);
+
+        when(studentAccountResponseTest.getUserId()).thenReturn("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentAccountService.updateStudentCardAndGroupDataByModerator(studentAccountResponseTest));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenUpdateStudentDataTest() {
+        String expectedMessage = "StudentAccount not found";
+
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+        studentAccountTest.setStudentCard("DT94381727");
+
+        StudentAccountResponse studentAccountResponseTest = mock(StudentAccountResponse.class);
+
+        when(studentAccountResponseTest.getUserId()).thenReturn("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentAccountService.updateStudentData(studentAccountResponseTest));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldUpdateStudentDataTest() {
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+        studentAccountTest.setStudentCard("DT94381727");
+
+        StudentAccountResponse studentAccountResponseTest = StudentAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")
+                .firstName("Like")
+                .lastName("Test")
+                .email("testMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .registrationStatus(RegistrationStatus.NEW)
+                .groupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565")
+                .studentCard("GD94381727")
+                .build();
+
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.of(studentAccountTest));
+
+        studentAccountService.updateStudentData(studentAccountResponseTest);
+
+        verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        verify(studentValidator).validateForSpecialStudentCardPattern("GD94381727");
+        verify(groupValidator).validateGroupId("3c01e6f1-762e-43b8-a6e1-7cf493ce4565");
+        assertEquals("GD94381727", studentAccountTest.getStudentCard());
+        assertEquals("3c01e6f1-762e-43b8-a6e1-7cf493ce4565", studentAccountTest.getGroupId());
+        assertEquals("Like", studentAccountTest.getFirstName());
+        assertEquals("3c01e6f1-762e-43b8-a6e1-7cf493ce4565", studentAccountTest.getGroupId());
+    }
+
+    @Test
+    void shouldNotUpdateStudentDataTest() {
+        StudentAccount studentAccountTest = new StudentAccount("33c99439-aaf0-4ebd-a07a-bd0c550db4e1", "John", "Doe", "dis@ukr.net",
+                "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS", "$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS",
+                RegistrationStatus.NEW, new HashSet<>(), "3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", 1);
+        studentAccountTest.setStudentCard("DT94381727");
+
+        StudentAccountResponse studentAccountResponseTest = mock(StudentAccountResponse.class);
+
+        when(studentAccountResponseTest.getUserId()).thenReturn("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        when(studentAccountResponseTest.getStudentCard()).thenReturn("");
+        when(studentAccountResponseTest.getGroupId()).thenReturn("");
+        when(studentAccountResponseTest.getFirstName()).thenReturn("");
+        when(studentAccountResponseTest.getLastName()).thenReturn("");
+        when(studentAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(Optional.of(studentAccountTest));
+
+        studentAccountService.updateStudentData(studentAccountResponseTest);
+
+        verify(studentValidator).validateStudentId("33c99439-aaf0-4ebd-a07a-bd0c550db4e1");
+        assertEquals("DT94381727", studentAccountTest.getStudentCard());
+        assertEquals("3c01e6f1-762e-43b8-a6e1-7cf493ce92e2", studentAccountTest.getGroupId());
+        assertEquals("John", studentAccountTest.getFirstName());
+        assertEquals("Doe", studentAccountTest.getLastName());
     }
 }
