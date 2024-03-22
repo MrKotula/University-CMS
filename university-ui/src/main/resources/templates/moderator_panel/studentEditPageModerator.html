@@ -28,6 +28,8 @@
         <h3 th:text="#{paramname.userid}"></h3>
         <h3><span style="color: yellowgreen" th:text="${student.userId}"></span></h3>
         <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>
+        <input th:value="*{firstName}" type="hidden" class="form-control" id="firstName" name="firstName" th:placeholder="#{placeholder.firstname}"><br>
+        <input th:value="*{lastName}" type="hidden" class="form-control" id="lastName" name="lastName" th:placeholder="#{placeholder.lastname}"><br>
         <input th:value="*{studentCard}" type="text" class="form-control" id="studentCard" name="studentCard" th:placeholder="#{placeholder.studentcard}"><br>
         <input th:value="*{groupId}" type="text" class="form-control" id="groupId" name="groupId" th:placeholder="#{placeholder.groupid}"><br>
         <button type="submit" th:text="#{button.changedata}"></button>

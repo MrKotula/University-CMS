@@ -372,7 +372,7 @@ class ModeratorControllerTest {
                 .build();
 
         when(studentAccountService.findStudentById("33c99439-aaf0-4ebd-a07a-bd0c550db4e1")).thenReturn(studentAccountResponseTest);
-        doThrow(new ValidationException("Student card has special format for field! Use like this format (GR83281023)")).when(studentAccountService).updateStudentCardAndGroupDataByModerator(studentAccountResponseTest);
+        doThrow(new ValidationException("Student card has special format for field! Use like this format (GR83281023)")).when(studentAccountService).updateStudentData(studentAccountResponseTest);
 
         mockMvc.perform(post("/moderator/students/33c99439-aaf0-4ebd-a07a-bd0c550db4e1/edit")
                         .param("userId", "33c99439-aaf0-4ebd-a07a-bd0c550db4e1")

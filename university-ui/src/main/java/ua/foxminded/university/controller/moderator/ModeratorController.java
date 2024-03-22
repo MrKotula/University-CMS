@@ -168,16 +168,16 @@ public class ModeratorController {
     }
 
     @PostMapping(STUDENT_MODERATOR_API + "/{userId}/edit")
-    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountResponse, Model model) {
+    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountDtoRequest, Model model) {
         try {
-            studentAccountService.updateStudentCardAndGroupDataByModerator(studentAccountResponse);
-            log.warn("Changed data for student by help Moderator! " + studentAccountResponse.toString());
+            studentAccountService.updateStudentData(studentAccountDtoRequest);
+            log.warn("Changed data for student by help Moderator! " + studentAccountDtoRequest.toString());
         } catch (ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
 
             return "error_panel/errorPage";
         }
 
-        return "redirect:" + STUDENT_MODERATOR_API + "/" +  studentAccountResponse.getUserId();
+        return "redirect:" + STUDENT_MODERATOR_API + "/" +  studentAccountDtoRequest.getUserId();
     }
 }
