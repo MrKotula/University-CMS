@@ -179,16 +179,16 @@ public class AdminController {
     }
 
     @PostMapping(STUDENT_ADMIN_API + "/{userId}/edit")
-    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountResponse, Model model) {
+    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountDtoRequest, Model model) {
         try {
-            studentAccountService.updateStudentData(studentAccountResponse);
-            log.warn("Changed data for student by help Admin! " + studentAccountResponse.toString());
+            studentAccountService.updateStudentData(studentAccountDtoRequest);
+            log.warn("Changed data for student by help Admin! " + studentAccountDtoRequest.toString());
         } catch (ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
 
             return "error_panel/errorPage";
         }
 
-        return "redirect:" + STUDENT_ADMIN_API + "/" +  studentAccountResponse.getUserId();
+        return "redirect:" + STUDENT_ADMIN_API + "/" +  studentAccountDtoRequest.getUserId();
     }
 }

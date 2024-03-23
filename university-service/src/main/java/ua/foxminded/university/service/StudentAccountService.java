@@ -27,7 +27,5 @@ public interface StudentAccountService {
 
     StudentAccountResponse getStudentByEmail(String email);
 
-    void updateStudentData(StudentAccountResponse studentAccountResponse);
-
-    void updateStudentCardAndGroupDataByModerator(StudentAccountResponse studentAccountResponse);
+    void updateStudentData(StudentAccountResponse studentAccountDtoRequest);
 }

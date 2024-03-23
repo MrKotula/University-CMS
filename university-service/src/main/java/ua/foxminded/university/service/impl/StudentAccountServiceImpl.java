@@ -130,60 +130,35 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     }
 
     @Override
-    public void updateStudentData(StudentAccountResponse studentAccountResponse) {
-        studentValidator.validateStudentId(studentAccountResponse.getUserId());
+    public void updateStudentData(StudentAccountResponse studentAccountDtoRequest) {
+        studentValidator.validateStudentId(studentAccountDtoRequest.getUserId());
 
-        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountResponse.getUserId())
+        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountDtoRequest.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("StudentAccount not found"));
 
-        if (studentAccountResponse.getFirstName().isEmpty()) {
-            studentAccount.setFirstName(studentAccount.getFirstName());
-        } else {
-            studentAccount.setFirstName(studentAccountResponse.getFirstName());
-        }
-        if (studentAccountResponse.getLastName().isEmpty()) {
-            studentAccount.setLastName(studentAccount.getLastName());
-        } else {
-            studentAccount.setLastName(studentAccountResponse.getLastName());
-        }
-        if (studentAccountResponse.getStudentCard().isEmpty()) {
-            studentAccount.setStudentCard(studentAccount.getStudentCard());
-        } else {
-            studentValidator.validateForSpecialStudentCardPattern(studentAccountResponse.getStudentCard());
-            studentAccount.setStudentCard(studentAccountResponse.getStudentCard());
-        }
-        if (studentAccountResponse.getGroupId().isEmpty()) {
-            studentAccount.setGroupId(studentAccount.getGroupId());
-        } else {
-            groupValidator.validateGroupId(studentAccountResponse.getGroupId());
-            studentAccount.setGroupId(studentAccountResponse.getGroupId());
-        }
+        StudentAccount studentAccountUpdated = updateStudentAccountFields(studentAccount, studentAccountDtoRequest);
 
-        studentValidator.validateStudent(studentAccount);
+        studentValidator.validateStudent(studentAccountUpdated);
 
-        studentAccountRepository.save(studentAccount);
+        studentAccountRepository.save(studentAccountUpdated);
     }
 
-    @Override
-    public void updateStudentCardAndGroupDataByModerator(StudentAccountResponse studentAccountResponse) {
-        studentValidator.validateStudentId(studentAccountResponse.getUserId());
-
-        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountResponse.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("StudentAccount not found"));
-
-        if (studentAccountResponse.getStudentCard().isEmpty()) {
-            studentAccount.setStudentCard(studentAccount.getStudentCard());
-        } else {
-            studentValidator.validateForSpecialStudentCardPattern(studentAccountResponse.getStudentCard());
-            studentAccount.setStudentCard(studentAccountResponse.getStudentCard());
+    private StudentAccount updateStudentAccountFields(StudentAccount studentAccount, StudentAccountResponse studentAccountDtoRequest) {
+        if (!studentAccountDtoRequest.getFirstName().isEmpty()) {
+            studentAccount.setFirstName(studentAccountDtoRequest.getFirstName());
         }
-        if (studentAccountResponse.getGroupId().isEmpty()) {
-            studentAccount.setGroupId(studentAccount.getGroupId());
-        } else {
-            groupValidator.validateGroupId(studentAccountResponse.getGroupId());
-            studentAccount.setGroupId(studentAccountResponse.getGroupId());
+        if (!studentAccountDtoRequest.getLastName().isEmpty()) {
+            studentAccount.setLastName(studentAccountDtoRequest.getLastName());
+        }
+        if (!studentAccountDtoRequest.getStudentCard().isEmpty()) {
+            studentValidator.validateForSpecialStudentCardPattern(studentAccountDtoRequest.getStudentCard());
+            studentAccount.setStudentCard(studentAccountDtoRequest.getStudentCard());
+        }
+        if (!studentAccountDtoRequest.getGroupId().isEmpty()) {
+            groupValidator.validateGroupId(studentAccountDtoRequest.getGroupId());
+            studentAccount.setGroupId(studentAccountDtoRequest.getGroupId());
         }
 
-        studentAccountRepository.save(studentAccount);
+        return studentAccount;
     }
 }
