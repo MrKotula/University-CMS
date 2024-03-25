@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit data student for Admin</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/adminStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 th:text="#{button.editdata}"></h1>
+    <form class="editInfoAdmin" method="POST" th:action="@{'/admin/students/' + ${userId} + '/edit'}" th:object="${student}">
+        <h3 th:text="#{paramname.userid}"></h3>
+        <h3><span style="color: yellowgreen" th:text="${student.userId}"></span></h3>
+        <input th:value="*{userId}" type="hidden" class="form-control" id="userId" name="userId"><br>
+        <input th:value="*{firstName}" type="text" class="form-control" id="firstName" name="firstName" th:placeholder="#{placeholder.firstname}"><br>
+        <input th:value="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" th:placeholder="#{placeholder.lastname}"><br>
+        <input th:value="*{studentCard}" type="text" class="form-control" id="studentCard" name="studentCard" th:placeholder="#{placeholder.studentcard}"><br>
+        <input th:value="*{groupId}" type="text" class="form-control" id="groupId" name="groupId" th:placeholder="#{placeholder.groupid}"><br>
+        <button type="submit" th:text="#{button.changedata}"></button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

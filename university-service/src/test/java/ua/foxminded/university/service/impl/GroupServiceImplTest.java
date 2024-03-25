@@ -177,4 +177,29 @@ class GroupServiceImplTest {
         verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
         verify(groupRepository, never()).removeGroup("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
     }
+
+    @Test
+    void shouldReturnGroupNameWhenUseGetGroupNameByGroupIdTest() {
+        Group group = Group.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.of(group));
+
+        assertEquals(group.getGroupName(), groupService.getGroupNameByGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenUseGetGroupNameByGroupIdTest() {
+        String exceptedMessage = "Group not found!";
+
+        when(groupRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> groupService.getGroupNameByGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+        verify(groupRepository).findById("1d95bc79-a549-4d2c-aeb5-3f929aee5432");
+    }
 }

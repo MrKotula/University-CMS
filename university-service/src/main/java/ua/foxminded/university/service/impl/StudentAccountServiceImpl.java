@@ -19,18 +19,22 @@ import ua.foxminded.university.repository.StudentAccountRepository;
 import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.service.mapper.StudentAccountMapper;
+import ua.foxminded.university.validator.GroupValidator;
 import ua.foxminded.university.validator.StudentValidator;
+import ua.foxminded.university.validator.exception.EntityNotFoundException;
 import ua.foxminded.university.validator.exception.ValidationException;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class StudentAccountServiceImpl implements StudentAccountService {
-    private final StudentValidator studentValidator;
     private final PasswordEncoder passwordEncoder;
     private final StudentAccountRepository studentAccountRepository;
     private final RoleRepository roleRepository;
     private final CourseRepository courseRepository;
+
+    private final StudentValidator studentValidator;
+    private final GroupValidator groupValidator;
 
     private final StudentAccountMapper studentAccountMapper;
 
@@ -123,5 +127,38 @@ public class StudentAccountServiceImpl implements StudentAccountService {
     @Override
     public StudentAccountResponse getStudentByEmail(String email) {
         return studentAccountMapper.transformStudentAccountToDto(studentAccountRepository.getStudentByEmail(email));
+    }
+
+    @Override
+    public void updateStudentData(StudentAccountResponse studentAccountDtoRequest) {
+        studentValidator.validateStudentId(studentAccountDtoRequest.getUserId());
+
+        StudentAccount studentAccount = studentAccountRepository.findById(studentAccountDtoRequest.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("StudentAccount not found"));
+
+        StudentAccount studentAccountUpdated = updateStudentAccountFields(studentAccount, studentAccountDtoRequest);
+
+        studentValidator.validateStudent(studentAccountUpdated);
+
+        studentAccountRepository.save(studentAccountUpdated);
+    }
+
+    private StudentAccount updateStudentAccountFields(StudentAccount studentAccount, StudentAccountResponse studentAccountDtoRequest) {
+        if (!studentAccountDtoRequest.getFirstName().isEmpty()) {
+            studentAccount.setFirstName(studentAccountDtoRequest.getFirstName());
+        }
+        if (!studentAccountDtoRequest.getLastName().isEmpty()) {
+            studentAccount.setLastName(studentAccountDtoRequest.getLastName());
+        }
+        if (!studentAccountDtoRequest.getStudentCard().isEmpty()) {
+            studentValidator.validateForSpecialStudentCardPattern(studentAccountDtoRequest.getStudentCard());
+            studentAccount.setStudentCard(studentAccountDtoRequest.getStudentCard());
+        }
+        if (!studentAccountDtoRequest.getGroupId().isEmpty()) {
+            groupValidator.validateGroupId(studentAccountDtoRequest.getGroupId());
+            studentAccount.setGroupId(studentAccountDtoRequest.getGroupId());
+        }
+
+        return studentAccount;
     }
 }

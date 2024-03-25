@@ -26,4 +26,6 @@ public interface StudentAccountService {
     List<StudentAccountResponse> findAllStudents();
 
     StudentAccountResponse getStudentByEmail(String email);
+
+    void updateStudentData(StudentAccountResponse studentAccountDtoRequest);
 }

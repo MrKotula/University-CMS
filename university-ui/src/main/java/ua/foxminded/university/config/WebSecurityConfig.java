@@ -29,8 +29,7 @@ public class WebSecurityConfig {
                             requests.requestMatchers("/admin", "/admin/**").hasAuthority("ADMIN");
                             requests.requestMatchers("/teacher", "/teacher/**").hasAnyAuthority("TEACHER");
                             requests.requestMatchers("/student", "/student/info/**", "/student/**").hasAnyAuthority("STUDENT", "TEACHER", "ADMIN");
-                            requests.requestMatchers("/user/moderator", "/user/moderator/**").hasAnyAuthority("ADMIN", "MODERATOR");
-                            requests.requestMatchers("/user/group", "/user/group/**", "/user/groups/all", "/user/groups/**").hasAnyAuthority("ADMIN", "MODERATOR");
+                            requests.requestMatchers("/moderator", "/moderator/**").hasAnyAuthority("ADMIN", "MODERATOR");
                             requests.anyRequest().authenticated();
                         }
                 )

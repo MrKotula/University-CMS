@@ -1,10 +1,12 @@
 package ua.foxminded.university.controller.moderator;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +15,11 @@ import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.DateService;
 import ua.foxminded.university.service.GroupService;
 import ua.foxminded.university.service.ScheduleService;
+import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.TeacherAccountService;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
 import ua.foxminded.university.service.dto.response.GroupResponse;
+import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import ua.foxminded.university.validator.exception.ValidationException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,16 +27,19 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@Log4j2
 public class ModeratorController {
     private static final String GROUP_MODERATOR_API = "/moderator/groups";
     private static final String SCHEDULE_MODERATOR_API = "/moderator/schedule";
     private static final String COURSE_MODERATOR_API = "/moderator/courses";
+    private static final String STUDENT_MODERATOR_API = "/moderator/students";
 
     private final ScheduleService scheduleService;
     private final CourseService courseService;
     private final GroupService groupService;
     private final TeacherAccountService teacherAccountService;
     private final DateService dateService;
+    private final StudentAccountService studentAccountService;
 
     @GetMapping("/moderator")
     public String openModeratorPage(Model model) {
@@ -131,5 +138,46 @@ public class ModeratorController {
         }
 
         return "redirect:" + GROUP_MODERATOR_API;
+    }
+
+    @GetMapping(STUDENT_MODERATOR_API)
+    public String viewAllStudentsPage(Model model) {
+        model.addAttribute("listAllStudents", studentAccountService.findAllStudents());
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("groupService", groupService);
+
+        return "moderator_panel/allStudentsPage";
+    }
+
+    @GetMapping(STUDENT_MODERATOR_API + "/{userId}")
+    public String viewStudentInfoPage(@PathVariable String userId, Model model) {
+        model.addAttribute("student", studentAccountService.findStudentById(userId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("courses", courseService.findByStudentId(userId));
+        model.addAttribute("groupService", groupService);
+
+        return "moderator_panel/studentPageInfoModerator";
+    }
+
+    @GetMapping(STUDENT_MODERATOR_API + "/{userId}/edit")
+    public String viewEditStudentsPage(@PathVariable String userId, Model model) {
+        model.addAttribute("student", studentAccountService.findStudentById(userId));
+        model.addAttribute("dateService", dateService.getCurrentDate());
+
+        return "moderator_panel/studentEditPageModerator";
+    }
+
+    @PostMapping(STUDENT_MODERATOR_API + "/{userId}/edit")
+    public String editStudentData(@ModelAttribute StudentAccountResponse studentAccountDtoRequest, Model model) {
+        try {
+            studentAccountService.updateStudentData(studentAccountDtoRequest);
+            log.warn("Changed data for student by help Moderator! " + studentAccountDtoRequest.toString());
+        } catch (ValidationException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "error_panel/errorPage";
+        }
+
+        return "redirect:" + STUDENT_MODERATOR_API + "/" +  studentAccountDtoRequest.getUserId();
     }
 }

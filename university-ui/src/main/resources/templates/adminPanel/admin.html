@@ -28,6 +28,7 @@
     <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
     <a class="btnAllUsers" th:href="@{/admin/users}" th:text="#{infopage.listallusers}"></a>
     <a class="btnAllGroups" th:href="@{/admin/groups}" th:text="#{infopage.listallgroups}"></a>
+    <a class="btnAllStudents" th:href="@{/admin/students}" th:text="#{infopage.listallstudents}"></a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

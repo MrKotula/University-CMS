@@ -72,6 +72,52 @@
     border-color: chocolate;
 }
 
+.btnAllStudents {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: lightcoral;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllStudents:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgray;
+}
+
+.btnAllGroups {
+    padding: 50px 50px;
+    border: 6px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnAllGroups:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}
+
 .moderatorPanel {
     color: red;
 }

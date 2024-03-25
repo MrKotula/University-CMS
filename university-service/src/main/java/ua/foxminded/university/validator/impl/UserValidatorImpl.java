@@ -1,6 +1,7 @@
 package ua.foxminded.university.validator.impl;
 
 import lombok.AllArgsConstructor;
+import ua.foxminded.university.entity.StudentAccount;
 import ua.foxminded.university.repository.UserAccountRepository;
 import ua.foxminded.university.service.dto.registration.UserRegistrationRequest;
 import ua.foxminded.university.service.dto.dataupdate.UserAccountUpdateRequest;
@@ -37,6 +38,11 @@ public class UserValidatorImpl implements UserValidator {
         validateLogin(userAccountUpdateRequest.getEmail().trim());
         validateData(userAccountUpdateRequest.getFirstName().trim(), userAccountUpdateRequest.getLastName().trim());
         validatePassword(userAccountUpdateRequest.getPassword().trim(), userAccountUpdateRequest.getPasswordCheck().trim());
+    }
+
+    @Override
+    public void validate(StudentAccount studentAccount) throws ValidationException {
+        validateData(studentAccount.getFirstName().trim(), studentAccount.getLastName().trim());
     }
 
     @Override
