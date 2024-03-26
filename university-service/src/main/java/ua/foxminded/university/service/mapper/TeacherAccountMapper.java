@@ -12,6 +12,8 @@ public interface TeacherAccountMapper {
 
     List<TeacherAccountResponse> transformListTeachersToDto(List<TeacherAccount> teacherAccounts);
 
+    List<TeacherAccount> transformListTeachersFromDto(List<TeacherAccountResponse> teacherAccounts);
+
     @Mapping(target = "userId", source = "userId")
     @Mapping(target = "firstName", source = "firstName")
     @Mapping(target = "lastName", source = "lastName")
