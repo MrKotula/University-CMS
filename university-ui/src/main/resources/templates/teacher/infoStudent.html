@@ -25,7 +25,7 @@
 <main class="container">
     <h1 th:text="#{infopage.teacherpanel}"></h1>
     <h2 th:text="#{infopage.aboutstudent}"></h2><br>
-    <form style="float: left;" class="formInfoTeacher" method="POST" th:action="@{'/teacher/user/' + ${userId}}" th:object="${student}">
+    <form style="float: left;" class="formInfoTeacher" method="POST" th:action="@{'/teacher/students/' + ${userId}}" th:object="${student}">
         <div class="mainParamsTeacher">
         <h3 th:text="#{paramname.studentid}"></h3>
         <h3><span th:text="${student.userId}"></span></h3>

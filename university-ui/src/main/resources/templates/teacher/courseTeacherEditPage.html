@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit teacher course page</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/teacherStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 th:text="#{button.editdata}"></h1>
+    <form class="editInfoTeacher" method="POST" th:action="@{'/teacher/courses/' + ${courseId} + '/edit'}" th:object="${course}">
+        <h3 th:text="#{paramname.courseid}"></h3>
+        <h3><span style="color: yellowgreen" th:text="${course.courseId}"></span></h3>
+        <input th:value="*{courseId}" type="hidden" class="form-control" id="courseId" name="courseId"><br>
+        <input th:value="*{courseName}" type="hidden" class="form-control" id="courseName" name="courseName"><br>
+        <input th:value="*{numberOfSeats}" type="hidden" class="form-control" id="numberOfSeats" name="numberOfSeats"><br>
+        <input th:value="*{seatsAvailable}" type="hidden" class="form-control" id="seatsAvailable" name="seatsAvailable"><br>
+        <input th:value="*{version}" type="hidden" class="form-control" id="version" name="version"><br>
+        <input th:value="*{courseDescription}" type="text" class="form-control" id="courseDescription" name="courseDescription" th:placeholder="#{placeholder.coursedescription}"><br>
+        <button type="submit" th:text="#{button.changedata}"></button>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

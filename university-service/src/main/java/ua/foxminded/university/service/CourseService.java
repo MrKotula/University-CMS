@@ -8,9 +8,9 @@ import ua.foxminded.university.validator.exception.ValidationException;
 public interface CourseService {
     void register(String courseName, String courseDescription) throws ValidationException;
 
-    void updateCourseName(CourseRequest courseRequest) throws ValidationException;
+    void updateCourseName(CourseResponse courseDtoRequest) throws ValidationException;
 
-    void updateCourseDescription(CourseRequest courseRequest) throws ValidationException;
+    void updateCourseDescription(CourseResponse courseDtoRequest) throws ValidationException;
 
     List<CourseResponse> findByStudentId(String userId);
 
@@ -21,4 +21,6 @@ public interface CourseService {
     CourseResponse getCourseById(String userId);
 
     void removeCourse(String courseId);
+
+    List<CourseResponse> getCoursesTeacher(String userId);
 }

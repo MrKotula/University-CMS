@@ -27,4 +27,8 @@ public interface CourseRepository extends JpaRepository<Course, String> {
     @Modifying
     @Query(value = "DELETE FROM schedule.courses WHERE course_id=:courseId", nativeQuery = true)
     void removeCourse(@Param("courseId") String courseId);
+
+    @Query(value = "SELECT c.course_id, c.course_name, c.course_description, c.number_seats, c.seats_available, c.version FROM schedule.courses c " +
+            "INNER JOIN schedule.course_teachers ct ON c.course_id = ct.course_id WHERE ct.user_id = :userId", nativeQuery = true)
+    List<Course> getCoursesTeacher(@Param("userId") String userId);
 }
