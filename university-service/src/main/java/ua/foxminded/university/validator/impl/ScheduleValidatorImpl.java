@@ -17,10 +17,10 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    public void checkAvailableLectorRoom(ScheduleRequest schedulescheduleRequest) {
-        LocalDate dateOfLecture = schedulescheduleRequest.getLecture().getDateOfLecture();
-        String lectureRoom = schedulescheduleRequest.getLecture().getLectureRoom();
-        LocalTime startOfLecture = schedulescheduleRequest.getLecture().getStartOfLecture();
+    public void checkAvailableLectorRoom(ScheduleRequest scheduleRequest) {
+        LocalDate dateOfLecture = scheduleRequest.getLecture().getDateOfLecture();
+        String lectureRoom = scheduleRequest.getLecture().getLectureRoom();
+        LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
         if (!scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture).equals(Collections.emptyList())) {
             throw new ScheduleException("Lecture room is busy");

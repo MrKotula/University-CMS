@@ -16,4 +16,10 @@ public class LectureResponse {
     private LocalTime endOfLecture;
     private LocalDate dateOfLecture;
     private String lectureRoom;
+
+    @Override
+    public String toString() {
+        return "StartOfLecture=" + startOfLecture + ", endOfLecture=" + endOfLecture +
+                ", dateOfLecture=" + dateOfLecture +", lectureRoom=" + lectureRoom;
+    }
 }

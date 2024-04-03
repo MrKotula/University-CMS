@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>List group schedule</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (selectedOption != '') {
+                window.location.replace(currentUrl + '?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<body>
+<div th:replace="~{layouts/header :: header}"></div>
+<br><br><br>
+<main class="container">
+    <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
+    <h1 th:text="#{infopage.listgroupschedule} + ' ' + ${groupService.getGroupNameByGroupId(groupId)}"></h1>
+    <form class="formAllScheduleInfo" method="POST" th:action="@{'moderator/schedule/edit' + ${groupId}}" th:object="${listGroupSchedule}">
+        <ul th:each="schedule : ${listGroupSchedule}">
+            <li>
+                <h4 th:text="#{paramname.teacher}"></h4>
+                <h4><span style="color: olivedrab" th:text="${schedule.teacher}"></span></h4>
+                <h4 th:text="#{paramname.coursename}"></h4>
+                <h4><span style="color: olivedrab" th:text="${schedule.course}"></span></h4>
+                <h4 th:text="#{paramname.lecture}"></h4>
+                <h4><span style="color: olivedrab" th:text="${schedule.lecture}"></span></h4>
+                <a class="btnInfoAboutGroupSchedule" th:href="@{/moderator/schedule/{scheduleId}/edit(scheduleId=${schedule.scheduleId})}" th:text="#{button.editschedule}"></a>
+            </li>
+        </ul>
+    </form>
+</main>
+<div th:replace="~{layouts/footer :: footer}"></div>
+</body>
+</html>

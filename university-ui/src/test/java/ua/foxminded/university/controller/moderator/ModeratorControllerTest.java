@@ -29,9 +29,11 @@ import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.TeacherAccountService;
 import ua.foxminded.university.service.dto.request.GroupRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
+import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
+import ua.foxminded.university.service.dto.response.TeacherAccountResponse;
 import ua.foxminded.university.service.mapper.GroupMapper;
 import ua.foxminded.university.validator.ScheduleValidator;
 import ua.foxminded.university.validator.exception.ValidationException;
@@ -124,10 +126,71 @@ class ModeratorControllerTest {
     }
 
     @Test
-    void openEditSchedulePageTest() throws Exception {
-        mockMvc.perform(get("/moderator/schedule/edit")
+    void openScheduleGroupsPageTest() throws Exception {
+        mockMvc.perform(get("/moderator/schedule/groups")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void openListGroupSchedulePageTest() throws Exception {
+        mockMvc.perform(get("/moderator/schedule/list/1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .param("groupId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void openEditSchedulePageTest() throws Exception {
+        ScheduleResponse scheduleResponse = ScheduleResponse.builder()
+                .scheduleId("1d95bc79-a549-4d2c-aeb5-3f929aee1111")
+                .course(new CourseResponse())
+                .teacher(new TeacherAccountResponse())
+                .group(new GroupResponse())
+                .build();
+
+        when(scheduleService.getSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(scheduleResponse);
+
+        mockMvc.perform(get("/moderator/schedule/1d95bc79-a549-4d2c-aeb5-3f929aee1111/edit")
+                        .param("scheduleId", "1d95bc79-a549-4d2c-aeb5-3f929aee1111")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldUpdateScheduleWhenUseMethodUpdateScheduleTest() throws Exception {
+        ScheduleResponse scheduleResponse = ScheduleResponse.builder()
+                .scheduleId("1d95bc79-a549-4d2c-aeb5-3f929aee1111")
+                .course(new CourseResponse())
+                .teacher(new TeacherAccountResponse())
+                .group(new GroupResponse())
+                .build();
+
+        ScheduleRequestBody scheduleRequestBody = ScheduleRequestBody.builder()
+                .selectedStartLecture("08:30:00")
+                .selectedEndLecture("10:05:00")
+                .selectedDateOfLecture("2023-12-31")
+                .selectedLectureRoom("c. 103")
+                .selectedCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .build();
+
+        when(scheduleService.getSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(scheduleResponse);
+
+        mockMvc.perform(post("/moderator/schedule/1d95bc79-a549-4d2c-aeb5-3f929aee1111/edit")
+                        .param("scheduleId", "1d95bc79-a549-4d2c-aeb5-3f929aee1111")
+                        .param("selectedTeacherId", "33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                        .param("selectedGroupId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .param("selectedCourseId", "1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                        .param("selectedStartLecture", "08:30:00")
+                        .param("selectedEndLecture", "10:05:00")
+                        .param("selectedDateOfLecture", "2023-12-31")
+                        .param("selectedLectureRoom", "c. 103")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(redirectedUrl("/moderator"));
+
+        verify(scheduleService, times(1)).updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody);
     }
 
     @Test

@@ -31,6 +31,15 @@ public interface ScheduleMapper extends Converter<Schedule, ScheduleResponse> {
     @Mapping(target = "teacher", source = "teacher")
     @Mapping(target = "lecture", source = "lecture")
     @Mapping(target = "version", source = "version")
+    @Named("toScheduleRequest")
+    ScheduleRequest transformScheduleToDtoRequest(Schedule schedule);
+
+    @Mapping(target = "scheduleId", source = "scheduleId")
+    @Mapping(target = "course", source = "course")
+    @Mapping(target = "group", source = "group")
+    @Mapping(target = "teacher", source = "teacher")
+    @Mapping(target = "lecture", source = "lecture")
+    @Mapping(target = "version", source = "version")
     @Named("toEntity")
     Schedule transformScheduleFromDto(ScheduleResponse scheduleResponse);
 
