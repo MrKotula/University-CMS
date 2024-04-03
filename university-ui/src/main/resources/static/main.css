@@ -302,3 +302,26 @@ footer {
     margin-left: 700px;
     margin-top: 250px;
 }
+
+.btnChangeDescription {
+    padding: 20px 20px;
+    border: 3px solid darkgrey;
+    border-radius: 15px;
+    color: snow;
+    font-size: 20px;
+    cursor: pointer;
+    background: mediumseagreen;
+    transition: background 500ms ease;
+    text-decoration: none;
+    display: inline;
+    float: left;
+    margin-left: 50px;
+}
+
+.btnChangeDescription:hover {
+    webkit-transform: scale(1.1);
+    ms-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: background 900ms ease;
+    border-color: darkgreen;
+}

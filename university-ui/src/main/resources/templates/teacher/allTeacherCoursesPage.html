@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Teacher page</title>
+    <title>Teacher courses page</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/teacherStyle.css}">
 </head>
@@ -24,22 +24,14 @@
 <br><br><br>
 <main class="container">
     <h1 th:text="#{infopage.teacherpanel}"></h1>
-    <form style="float: left;" class="formInfoTeacher" method="POST" th:action="@{/teacher}" th:object="${teacherUpdateRequest}">
-        <div class="mainParams">
-            <h3 th:text="#{paramname.degree}"></h3>
-            <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.degree}"></span></h3>
-        </div>
-        <div class="mainParams">
-            <h3 th:text="#{paramname.phonenumber}"></h3>
-            <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.phoneNumber}"></span></h3>
-        </div>
-        <div class="mainParams">
-            <h3 th:text="#{paramname.diplomastudents}"></h3>
-            <h3><span style="color: yellowgreen" th:text="${teacherUpdateRequest.diplomaStudents}"></span></h3>
-        </div>
+    <h2 th:text="#{infopage.mycourses}"></h2><br>
+    <form style="float: left;" class="formCourseInfo" method="POST" th:action="@{/teacher/courses}" th:object="${teacher}">
+        <h2 style="color:darkgreen" th:text="#{infopage.courses}"></h2>
+        <ul th:each="course : ${courseService.getCoursesTeacher(teacher.userId)}">
+            <li><h3><a class="courseLinkInfo" style="color: yellowgreen" th:text="${course.courseName}"
+                       th:href="@{/teacher/courses/{courseId}(courseId=${course.courseId})}"></a></h3></li>
+        </ul>
     </form>
-    <a class="btnAllStudents" th:href="@{/teacher/students}" th:text="#{infopage.listallstudents}"></a>
-    <a class="btnTeacherCourses" th:href="@{/teacher/courses}" th:text="#{infopage.mycourses}"></a>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

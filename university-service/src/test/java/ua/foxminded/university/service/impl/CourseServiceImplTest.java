@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.repository.CourseRepository;
-import ua.foxminded.university.service.dto.request.CourseRequest;
 import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.mapper.CourseMapper;
 import ua.foxminded.university.service.mapper.TeacherAccountMapper;
@@ -55,7 +54,7 @@ class CourseServiceImplTest {
 
     @Test
     void verifyUseMethodUpdateCourseName() throws ValidationException {
-        CourseRequest testCourseRequest = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+        CourseResponse testCourseRequest = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         when(courseMapper.transformCourseFromDto(testCourseRequest)).thenReturn(testCourse);
 
@@ -67,9 +66,7 @@ class CourseServiceImplTest {
 
     @Test
     void verifyUseMethodUpdateCourseDescription() throws ValidationException {
-        CourseRequest testCourseRequest = new CourseRequest("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
-
-        when(courseMapper.transformCourseFromDto(testCourseRequest)).thenReturn(testCourse);
+        CourseResponse testCourseRequest = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
 
         courseService.updateCourseDescription(testCourseRequest);
 
@@ -164,5 +161,23 @@ class CourseServiceImplTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> courseService.removeCourse("1d95bc79-a549-4d2c-aeb5-3f929aee7658"));
 
         assertEquals(exceptedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnListOfCourseResponseWhenUseGetCoursesTeacherTest() {
+        List<CourseResponse> listOfCourseResponses = new ArrayList<>();
+        List<Course> listOfCourses = new ArrayList<>();
+
+        CourseResponse courseResponseEnglish = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
+        Course courseEnglish = new Course("1d95bc79-a549-4d2c-aeb5-3f929aee7658", "English", "course of English", new ArrayList<>(), 30, 30, 1);
+
+        listOfCourseResponses.add(courseResponseEnglish);
+        listOfCourses.add(courseEnglish);
+
+        when(courseRepository.getCoursesTeacher("1d95bc79-a549-4d2c-aeb5-3f929aee8745")).thenReturn(listOfCourses);
+        when(courseMapper.transformListCourseToDto(listOfCourses)).thenReturn(listOfCourseResponses);
+
+        assertEquals(listOfCourseResponses, courseService.getCoursesTeacher("1d95bc79-a549-4d2c-aeb5-3f929aee8745"));
+        verify(courseRepository).getCoursesTeacher("1d95bc79-a549-4d2c-aeb5-3f929aee8745");
     }
 }

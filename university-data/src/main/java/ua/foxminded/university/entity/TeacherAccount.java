@@ -24,7 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, of = {"degree", "phoneNumber", "diplomaStudents"})
 @Entity
 @DiscriminatorValue("US_TA")
 @Builder

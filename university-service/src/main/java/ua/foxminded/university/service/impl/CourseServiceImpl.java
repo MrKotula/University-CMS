@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import ua.foxminded.university.service.dto.request.CourseRequest;
 import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.repository.CourseRepository;
 import ua.foxminded.university.entity.Course;
@@ -34,17 +33,27 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateCourseName(CourseRequest courseRequest) throws ValidationException {
-        courseValidator.validateCourseName(courseRequest.getCourseName());
+    public void updateCourseName(CourseResponse courseDtoRequest) throws ValidationException {
+        courseValidator.validateCourseName(courseDtoRequest.getCourseName());
 
-        courseRepository.save(courseMapper.transformCourseFromDto(courseRequest));
+        courseRepository.save(courseMapper.transformCourseFromDto(courseDtoRequest));
     }
 
     @Override
-    public void updateCourseDescription(CourseRequest courseRequest) throws ValidationException {
-        courseValidator.validateCourseDescription(courseRequest.getCourseDescription());
+    public void updateCourseDescription(CourseResponse courseDtoRequest) throws ValidationException {
+        courseValidator.validateCourseDescription(courseDtoRequest.getCourseDescription());
 
-        courseRepository.save(courseMapper.transformCourseFromDto(courseRequest));
+        Course courseUpdated = Course.builder()
+                .courseId(courseDtoRequest.getCourseId())
+                .courseDescription(courseDtoRequest.getCourseDescription())
+                .courseName(courseDtoRequest.getCourseName())
+                .numberOfSeats(courseDtoRequest.getNumberOfSeats())
+                .seatsAvailable(courseDtoRequest.getSeatsAvailable())
+                .teachers(teacherAccountMapper.transformListTeachersFromDto(courseDtoRequest.getTeachers()))
+                .version(courseDtoRequest.getVersion())
+                .build();
+
+        courseRepository.save(courseUpdated);
     }
 
     @Override
@@ -88,5 +97,10 @@ public class CourseServiceImpl implements CourseService {
         courseValidator.validateAvailableCourseSeatsBeforeRemove(course);
 
         courseRepository.removeCourse(courseId);
+    }
+
+    @Override
+    public List<CourseResponse> getCoursesTeacher(String userId) {
+        return courseMapper.transformListCourseToDto(courseRepository.getCoursesTeacher(userId));
     }
 }
