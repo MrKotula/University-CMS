@@ -39,4 +39,6 @@ public interface ScheduleRepository extends JpaRepository <Schedule, String> {
 
     @Query(value = "SELECT * FROM schedule.timetable WHERE date_of_lecture BETWEEN :firstDateOfLecture AND :lastDateOfLecture", nativeQuery = true)
     List<Schedule> findSchedulesByDateTwoWeek(@Param("firstDateOfLecture") LocalDate firstDateOfLecture, @Param("lastDateOfLecture") LocalDate lastDateOfLecture);
+
+    List<Schedule> findByGroupGroupId(String groupId);
 }

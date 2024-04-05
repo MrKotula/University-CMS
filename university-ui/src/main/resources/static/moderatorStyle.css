@@ -121,3 +121,104 @@
 .moderatorPanel {
     color: red;
 }
+
+
+.formAllGroupsInfoEdit {
+    display: block;
+}
+
+.formAllGroupsInfoEdit span {
+    background: darkgrey;
+    display: inline;
+}
+
+.formAllGroupsInfoEdit h4 {
+    background: darkgrey;
+    display: inline;
+    float: left;
+    margin-left: 15px;
+    margin-top: 3px;
+}
+
+.formAllGroupsInfoEdit li {
+    background: darkgrey;
+    display: inline;
+    float: left;
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 10px;
+    margin-right: 25px;
+}
+
+.btnInfoAboutGroupSchedule {
+    margin-right: 25px;
+    margin-bottom: 10px;
+    float: right;
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    background: cornflowerblue;
+    transition: background 500ms ease;
+    text-decoration: none;
+}
+
+.btnInfoAboutGroupSchedule:hover {
+    webkit-transform: scale(1.2);
+    ms-transform: scale(1.2);
+    transform: scale(1.2);
+    color: snow;
+    transition: all 0.3s ease;
+}
+
+.formAllScheduleInfo span {
+    background: darkgrey;
+}
+
+.formAllScheduleInfo h4 {
+    background: darkgrey;
+    display: inline;
+    float: left;
+    margin-left: 15px;
+    margin-top: 3px;
+}
+
+.formAllScheduleInfo li {
+    background: darkgrey;
+    width: 1900px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 10px;
+    float: left;
+}
+
+.groupName {
+    color: green;
+}
+
+.formInfo {
+    border-radius: 5px;
+    display: block;
+    width: 1800px;
+}
+
+.formInfo h2 {
+    margin-left: 50px;
+}
+
+.scheduleId {
+    text-align: center;
+    font-size: 22px;
+    margin-left: 250px;
+}
+
+.scheduleId h1 span {
+    text-align: center;
+    font-size: 25px;
+    margin-left: 45px;
+}
+

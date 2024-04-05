@@ -18,6 +18,7 @@ import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.request.LectureRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
+import ua.foxminded.university.service.dto.request.TeacherAccountRequest;
 import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
@@ -149,5 +150,58 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRequest.setLecture(lectureRequest);
 
         return scheduleRequest;
+    }
+
+    @Override
+    public List<ScheduleResponse> getListGroupSchedule(String groupId) {
+        List<Schedule> listGroupSchedule = scheduleRepository.findByGroupGroupId(groupId);
+
+        return scheduleMapper.transformListSchedulesToDto(listGroupSchedule);
+    }
+
+    @Override
+    public ScheduleResponse getSchedule(String scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
+
+        return scheduleMapper.transformScheduleToDto(schedule);
+    }
+
+    @Override
+    public void updateSchedule(String scheduleId, ScheduleRequestBody scheduleRequestBody) {
+        ScheduleRequest scheduleRequest = buildScheduleRequest(scheduleId);
+        TeacherAccountRequest teacherAccountRequest = buildSTeacherAccountRequest(scheduleRequestBody);
+        LectureRequest lectureRequest = buildLectureRequest(scheduleRequestBody);
+
+        scheduleRequest.setLecture(lectureRequest);
+        scheduleRequest.setTeacher(teacherAccountRequest);
+
+        scheduleValidator.checkAvailableLectorRoom(scheduleRequest);
+        scheduleValidator.checkAvailableTeacher(scheduleRequest);
+
+        Schedule updatedSchedule = scheduleMapper.transformScheduleFromDto(scheduleRequest);
+
+        scheduleRepository.save(updatedSchedule);
+    }
+
+    private LectureRequest buildLectureRequest(ScheduleRequestBody scheduleRequestBody) {
+        return LectureRequest.builder()
+                .startOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedStartLecture()))
+                .endOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedEndLecture()))
+                .dateOfLecture(LocalDate.parse(scheduleRequestBody.getSelectedDateOfLecture()))
+                .lectureRoom(scheduleRequestBody.getSelectedLectureRoom())
+                .build();
+    }
+
+    private ScheduleRequest buildScheduleRequest(String scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
+
+        return scheduleMapper.transformScheduleToDtoRequest(schedule);
+    }
+
+    private TeacherAccountRequest buildSTeacherAccountRequest(ScheduleRequestBody scheduleRequestBody) {
+        TeacherAccount teacherAccount = teacherAccountRepository.findById(scheduleRequestBody.getSelectedTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + scheduleRequestBody.getSelectedTeacherId()));
+
+        return teacherAccountMapper.transformTeacherAccountToDtoRequest(teacherAccount);
     }
 }
