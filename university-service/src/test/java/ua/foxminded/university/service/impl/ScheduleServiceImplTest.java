@@ -567,6 +567,9 @@ class ScheduleServiceImplTest {
                 .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
                 .build();
 
+        TeacherAccount teacherAccount = new TeacherAccount();
+
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccount));
         when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody));
@@ -588,11 +591,6 @@ class ScheduleServiceImplTest {
                 .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
                 .build();
 
-        Schedule schedule = new Schedule();
-        ScheduleRequest scheduleRequest = new ScheduleRequest();
-
-        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.of(schedule));
-        when(scheduleMapper.transformScheduleToDtoRequest(schedule)).thenReturn(scheduleRequest);
         when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody));
@@ -613,20 +611,15 @@ class ScheduleServiceImplTest {
                 .build();
 
         Schedule schedule = new Schedule();
-        ScheduleRequest scheduleRequest = new ScheduleRequest();
-
         TeacherAccount teacherAccount = new TeacherAccount();
-        TeacherAccountRequest teacherAccountRequest = new TeacherAccountRequest();
 
-        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.of(schedule));
-        when(scheduleMapper.transformScheduleToDtoRequest(schedule)).thenReturn(scheduleRequest);
         when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccount));
-        when(teacherAccountMapper.transformTeacherAccountToDtoRequest(teacherAccount)).thenReturn(teacherAccountRequest);
-        when(scheduleMapper.transformScheduleFromDto(scheduleRequest)).thenReturn(schedule);
+        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.of(schedule));
 
         scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody);
 
-        verify(scheduleMapper).transformScheduleFromDto(scheduleRequest);
+        verify(scheduleValidator).checkAvailableLectorRoom(schedule);
+        verify(scheduleValidator).checkAvailableTeacher(schedule);
         verify(scheduleRepository).save(any(Schedule.class));
     }
 }
