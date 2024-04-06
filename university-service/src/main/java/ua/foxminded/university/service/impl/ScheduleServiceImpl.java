@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.entity.Group;
+import ua.foxminded.university.entity.Lecture;
 import ua.foxminded.university.entity.Schedule;
 import ua.foxminded.university.entity.TeacherAccount;
 import ua.foxminded.university.repository.CourseRepository;
@@ -18,7 +19,6 @@ import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.request.LectureRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.service.dto.request.ScheduleRequestBody;
-import ua.foxminded.university.service.dto.request.TeacherAccountRequest;
 import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.dto.response.GroupResponse;
 import ua.foxminded.university.service.dto.response.ScheduleResponse;
@@ -168,40 +168,29 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void updateSchedule(String scheduleId, ScheduleRequestBody scheduleRequestBody) {
-        ScheduleRequest scheduleRequest = buildScheduleRequest(scheduleId);
-        TeacherAccountRequest teacherAccountRequest = buildSTeacherAccountRequest(scheduleRequestBody);
-        LectureRequest lectureRequest = buildLectureRequest(scheduleRequestBody);
+        TeacherAccount teacherAccount = teacherAccountRepository.findById(scheduleRequestBody.getSelectedTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + scheduleRequestBody.getSelectedTeacherId()));
 
-        scheduleRequest.setLecture(lectureRequest);
-        scheduleRequest.setTeacher(teacherAccountRequest);
+        Schedule updatedSchedule = scheduleRepository.findById(scheduleId)
+                .map(schedule -> {
+                    schedule.setLecture(buildLectureFromRequest(scheduleRequestBody));
+                    schedule.setTeacher(teacherAccount);
+                    return schedule;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
 
-        scheduleValidator.checkAvailableLectorRoom(scheduleRequest);
-        scheduleValidator.checkAvailableTeacher(scheduleRequest);
-
-        Schedule updatedSchedule = scheduleMapper.transformScheduleFromDto(scheduleRequest);
+        scheduleValidator.checkAvailableLectorRoom(updatedSchedule);
+        scheduleValidator.checkAvailableTeacher(updatedSchedule);
 
         scheduleRepository.save(updatedSchedule);
     }
 
-    private LectureRequest buildLectureRequest(ScheduleRequestBody scheduleRequestBody) {
-        return LectureRequest.builder()
+    private Lecture buildLectureFromRequest(ScheduleRequestBody scheduleRequestBody) {
+        return Lecture.builder()
                 .startOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedStartLecture()))
                 .endOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedEndLecture()))
                 .dateOfLecture(LocalDate.parse(scheduleRequestBody.getSelectedDateOfLecture()))
                 .lectureRoom(scheduleRequestBody.getSelectedLectureRoom())
                 .build();
-    }
-
-    private ScheduleRequest buildScheduleRequest(String scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
-
-        return scheduleMapper.transformScheduleToDtoRequest(schedule);
-    }
-
-    private TeacherAccountRequest buildSTeacherAccountRequest(ScheduleRequestBody scheduleRequestBody) {
-        TeacherAccount teacherAccount = teacherAccountRepository.findById(scheduleRequestBody.getSelectedTeacherId())
-                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + scheduleRequestBody.getSelectedTeacherId()));
-
-        return teacherAccountMapper.transformTeacherAccountToDtoRequest(teacherAccount);
     }
 }
