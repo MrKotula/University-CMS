@@ -22,7 +22,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String lectureRoom = scheduleRequest.getLecture().getLectureRoom();
         LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture).isEmpty()) {
+        if (scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
             throw new ScheduleException("Lecture room is busy");
         }
     }
@@ -33,9 +35,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String lectureRoom = schedule.getLecture().getLectureRoom();
         LocalTime startOfLecture = schedule.getLecture().getStartOfLecture();
 
-        System.out.println(scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture));
-
-        if (!scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture).isEmpty()) {
+        if (scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(schedule.getScheduleId()))) {
             throw new ScheduleException("Lecture room is busy");
         }
     }
@@ -46,7 +48,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String teacherId = scheduleRequest.getTeacher().getUserId();
         LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture).isEmpty()) {
+        if (scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
             throw new ScheduleException("Teacher is busy at this time");
         }
     }
@@ -57,7 +61,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String teacherId = schedule.getTeacher().getUserId();
         LocalTime startOfLecture = schedule.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture).isEmpty()) {
+        if (scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(schedule.getScheduleId()))) {
             throw new ScheduleException("Teacher is busy at this time");
         }
     }
@@ -68,7 +74,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String groupId = scheduleRequest.getGroup().getGroupId();
         LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndGroup(dateOfLecture, groupId, startOfLecture).isEmpty()) {
+        if (scheduleRepository.findSchedulesByDateAndGroup(dateOfLecture, groupId, startOfLecture)
+                .stream()
+                .anyMatch(s->!s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
             throw new ScheduleException("Group has lesson at this time");
         }
     }
