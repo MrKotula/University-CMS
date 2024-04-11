@@ -106,7 +106,6 @@ public class ModeratorController {
         model.addAttribute("endOfLecture", endOfLecture);
         model.addAttribute("lectureRooms", lectureRooms);
 
-
         return "moderator_panel/editSchedulePage";
     }
 
