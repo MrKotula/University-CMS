@@ -60,6 +60,9 @@
                     th:text="${lectureRoom}"></option>
         </select>
 
+        <input th:value="*{group.groupId}" type="hidden" class="form-control" id="selectedGroupId" name="selectedGroupId"><br>
+        <input th:value="*{course.courseId}" type="hidden" class="form-control" id="selectedCourseId" name="selectedCourseId"><br>
+
         <script>
             $(document).ready(function () {
                 $('.formInfo').submit(function (event) {
@@ -68,6 +71,8 @@
 
                     var formData = {
                         selectedTeacherId: $('#selectedTeacherId').val(),
+                        selectedGroupId: $('#selectedGroupId').val(),
+                        selectedCourseId: $('#selectedCourseId').val(),
                         selectedStartLecture: $('#selectedStartLecture').val(),
                         selectedEndLecture: $('#selectedEndLecture').val(),
                         selectedDateOfLecture: $('#selectedDateOfLecture').val(),
