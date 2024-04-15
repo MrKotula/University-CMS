@@ -41,4 +41,11 @@ public interface ScheduleRepository extends JpaRepository <Schedule, String> {
     List<Schedule> findSchedulesByDateTwoWeek(@Param("firstDateOfLecture") LocalDate firstDateOfLecture, @Param("lastDateOfLecture") LocalDate lastDateOfLecture);
 
     List<Schedule> findByGroupGroupId(String groupId);
+
+    @Query("SELECT DISTINCT s FROM Schedule s " +
+            "LEFT JOIN FETCH s.course " +
+            "LEFT JOIN FETCH s.group " +
+            "LEFT JOIN FETCH s.teacher " +
+            "LEFT JOIN FETCH s.lecture")
+    List<Schedule> findAllWithAssociatedEntities();
 }
