@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.university.entity.Schedule;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
 import ua.foxminded.university.repository.ScheduleRepository;
 import ua.foxminded.university.service.CourseService;
@@ -26,8 +25,6 @@ import ua.foxminded.university.service.dto.response.CourseResponse;
 import ua.foxminded.university.service.dto.response.StudentAccountResponse;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -104,14 +101,5 @@ class CourseControllerTest {
                         .param("courseId", "1d95bc79-a549-4d2c-aeb5-3f929aee0f22")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(redirectedUrl("/student/info/33c99439-aaf0-4ebd-a07a-bd0c550db4e1"));
-    }
-
-    //this is temporary test
-    @Test
-    void testFetchSchedulesWithAssociatedEntitiesEagerly() {
-        List<Schedule> schedules = scheduleRepository.findAllWithAssociatedEntities();
-
-        //i have 7 records in base;
-        assertEquals(3, schedules.size());
     }
 }

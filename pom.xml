@@ -28,6 +28,7 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
         <maven-surefire.version>3.1.2</maven-surefire.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -56,6 +57,11 @@
                 <groupId>ua.foxminded</groupId>
                 <artifactId>university-ui</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-docker-compose</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -109,6 +115,18 @@
                             </exclude>
                         </excludes>
                         <mainClass>ua.foxminded.university.UniversityApplication</mainClass>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>ua.foxminded.university.UniversityApplication</mainClass>
+                            </manifest>
+                        </archive>
                     </configuration>
                 </plugin>
             </plugins>
