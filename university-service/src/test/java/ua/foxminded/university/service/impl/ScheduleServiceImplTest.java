@@ -463,4 +463,163 @@ class ScheduleServiceImplTest {
 
         assertEquals(scheduleRequest, scheduleService.getPreparedScheduleRequest(scheduleRequestBody));
     }
+
+    @Test
+    void shouldReturnListOfScheduleResponseWhenUseGetListGroupScheduleTest() {
+        List<ScheduleResponse> listScheduleResponse = new ArrayList<>();
+        List<Schedule> listOfSchedule = new ArrayList<>();
+
+        TeacherAccountResponse teacherAccountResponseTest = TeacherAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .firstName("Jin")
+                .lastName("Tores")
+                .email("teacherMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .roles(new HashSet<>())
+                .registrationStatus(RegistrationStatus.REGISTERED)
+                .degree(Degree.DOCTORAL)
+                .phoneNumber("067-768-874")
+                .diplomaStudents(new ArrayList<>())
+                .build();
+
+        CourseResponse testCourseResponse = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+
+        GroupResponse testGroupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        ScheduleResponse scheduleResponse = ScheduleResponse.builder()
+                .course(testCourseResponse)
+                .teacher(teacherAccountResponseTest)
+                .group(testGroupResponse)
+                .build();
+
+        listScheduleResponse.add(scheduleResponse);
+
+        when(scheduleRepository.findByGroupGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")).thenReturn(listOfSchedule);
+        when(scheduleMapper.transformListSchedulesToDto(listOfSchedule)).thenReturn(listScheduleResponse);
+
+        assertEquals(listScheduleResponse, scheduleService.getListGroupSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee5432"));
+    }
+
+    @Test
+    void shouldReturnScheduleResponseWhenUseGetScheduleTest() {
+        TeacherAccountResponse teacherAccountResponseTest = TeacherAccountResponse.builder()
+                .userId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .firstName("Jin")
+                .lastName("Tores")
+                .email("teacherMail@gmail.com")
+                .password("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .passwordCheck("$2a$10$nWD4aCZMQydDrZjAFYFwOOa7lO3cuI6b/el3ZubPoCmHQnu6YrTMS")
+                .roles(new HashSet<>())
+                .registrationStatus(RegistrationStatus.REGISTERED)
+                .degree(Degree.DOCTORAL)
+                .phoneNumber("067-768-874")
+                .diplomaStudents(new ArrayList<>())
+                .build();
+
+        CourseResponse testCourseResponse = new CourseResponse("1d95bc79-a549-4d2c-aeb5-3f929aee5432", "testCourse", "testDescription", 30);
+
+        GroupResponse testGroupResponse = GroupResponse.builder()
+                .groupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .groupName("DT-43")
+                .build();
+
+        ScheduleResponse scheduleResponse = ScheduleResponse.builder()
+                .scheduleId("1d95bc79-a549-4d2c-aeb5-3f929aee1111")
+                .course(testCourseResponse)
+                .teacher(teacherAccountResponseTest)
+                .group(testGroupResponse)
+                .build();
+
+        Schedule schedule = new Schedule();
+
+        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.of(schedule));
+        when(scheduleMapper.transformScheduleToDto(schedule)).thenReturn(scheduleResponse);
+
+        assertEquals(scheduleResponse, scheduleService.getSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111"));
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenUseGetScheduleTest() {
+        String exceptedMessage = "Schedule not found with id: 1d95bc79-a549-4d2c-aeb5-3f929aee1111";
+
+        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.getSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111"));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionScheduleWhenUpdateScheduleTest() {
+        String exceptedMessage = "Schedule not found with id: 1d95bc79-a549-4d2c-aeb5-3f929aee1111";
+
+        ScheduleRequestBody scheduleRequestBody = ScheduleRequestBody.builder()
+                .selectedStartLecture("08:30:00")
+                .selectedEndLecture("10:05:00")
+                .selectedDateOfLecture("2023-12-31")
+                .selectedLectureRoom("c. 103")
+                .selectedCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .build();
+
+        TeacherAccount teacherAccount = new TeacherAccount();
+
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccount));
+        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowEntityNotFoundExceptionTeacherWhenUpdateScheduleTest() {
+        String exceptedMessage = "Teacher not found with id: 33c99439-aaf0-4ebd-a07a-bd0c550d8799";
+
+        ScheduleRequestBody scheduleRequestBody = ScheduleRequestBody.builder()
+                .selectedStartLecture("08:30:00")
+                .selectedEndLecture("10:05:00")
+                .selectedDateOfLecture("2023-12-31")
+                .selectedLectureRoom("c. 103")
+                .selectedCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .build();
+
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody));
+
+        assertEquals(exceptedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldUpdateScheduleWhenUseUpdateScheduleTest() {
+        ScheduleRequestBody scheduleRequestBody = ScheduleRequestBody.builder()
+                .selectedStartLecture("08:30:00")
+                .selectedEndLecture("10:05:00")
+                .selectedDateOfLecture("2023-12-31")
+                .selectedLectureRoom("c. 103")
+                .selectedCourseId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedGroupId("1d95bc79-a549-4d2c-aeb5-3f929aee5432")
+                .selectedTeacherId("33c99439-aaf0-4ebd-a07a-bd0c550d8799")
+                .build();
+
+        Schedule schedule = new Schedule();
+        TeacherAccount teacherAccount = new TeacherAccount();
+
+        when(teacherAccountRepository.findById("33c99439-aaf0-4ebd-a07a-bd0c550d8799")).thenReturn(Optional.of(teacherAccount));
+        when(scheduleRepository.findById("1d95bc79-a549-4d2c-aeb5-3f929aee1111")).thenReturn(Optional.of(schedule));
+
+        scheduleService.updateSchedule("1d95bc79-a549-4d2c-aeb5-3f929aee1111", scheduleRequestBody);
+
+        verify(scheduleValidator).checkAvailableLectorRoom(schedule);
+        verify(scheduleValidator).checkAvailableTeacher(schedule);
+        verify(scheduleRepository).save(any(Schedule.class));
+    }
 }

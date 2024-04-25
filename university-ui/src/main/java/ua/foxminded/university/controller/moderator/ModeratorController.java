@@ -75,11 +75,45 @@ public class ModeratorController {
         return "redirect:/moderator";
     }
 
-    @GetMapping(SCHEDULE_MODERATOR_API + "/edit")
-    public String openEditSchedulePage(Model model) {
+    @GetMapping(SCHEDULE_MODERATOR_API + "/list/{groupId}")
+    public String openListGroupSchedulePage(@PathVariable String groupId, Model model) {
         model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("listGroupSchedule", scheduleService.getListGroupSchedule(groupId));
+        model.addAttribute("groupService", groupService);
+
+        return "moderator_panel/listGroupSchedulePage";
+    }
+
+    @GetMapping(SCHEDULE_MODERATOR_API + "/groups")
+    public String openScheduleAllGroupsPage(Model model) {
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("allGroups", groupService.getAllGroups());
+
+        return "moderator_panel/scheduleAllGroupsPage";
+    }
+
+    @GetMapping(SCHEDULE_MODERATOR_API + "/{scheduleId}/edit")
+    public String openEditSchedulePage(@PathVariable String scheduleId, Model model) {
+        List<LocalTime> startOfLecture = scheduleService.getListLectureStartTimes();
+        List<LocalTime> endOfLecture = scheduleService.getListLectureEndTimes();
+        List<String> lectureRooms = scheduleService.getListLectureRooms();
+
+        model.addAttribute("dateService", dateService.getCurrentDate());
+        model.addAttribute("schedule", scheduleService.getSchedule(scheduleId));
+        model.addAttribute("teachers", teacherAccountService.getAllTeachers());
+        model.addAttribute("startOfLecture", startOfLecture);
+        model.addAttribute("listOfNextTwoWeeks", dateService.getNearNextTwoWeeks());
+        model.addAttribute("endOfLecture", endOfLecture);
+        model.addAttribute("lectureRooms", lectureRooms);
 
         return "moderator_panel/editSchedulePage";
+    }
+
+    @PostMapping(SCHEDULE_MODERATOR_API + "/{scheduleId}/edit")
+    public String editSchedulePage(@PathVariable String scheduleId, @ModelAttribute ScheduleRequestBody scheduleRequestBody) {
+        scheduleService.updateSchedule(scheduleId, scheduleRequestBody);
+
+        return "redirect:/moderator";
     }
 
     @GetMapping(COURSE_MODERATOR_API)

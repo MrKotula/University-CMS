@@ -1,6 +1,7 @@
 package ua.foxminded.university.validator.impl;
 
 import lombok.AllArgsConstructor;
+import ua.foxminded.university.entity.Schedule;
 import ua.foxminded.university.repository.ScheduleRepository;
 import ua.foxminded.university.service.dto.request.ScheduleRequest;
 import ua.foxminded.university.validator.ScheduleValidator;
@@ -8,7 +9,6 @@ import ua.foxminded.university.validator.ValidationService;
 import ua.foxminded.university.validator.exception.ScheduleException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 
 @ValidationService
 @AllArgsConstructor
@@ -17,12 +17,27 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    public void checkAvailableLectorRoom(ScheduleRequest schedulescheduleRequest) {
-        LocalDate dateOfLecture = schedulescheduleRequest.getLecture().getDateOfLecture();
-        String lectureRoom = schedulescheduleRequest.getLecture().getLectureRoom();
-        LocalTime startOfLecture = schedulescheduleRequest.getLecture().getStartOfLecture();
+    public void checkAvailableLectorRoom(ScheduleRequest scheduleRequest) {
+        LocalDate dateOfLecture = scheduleRequest.getLecture().getDateOfLecture();
+        String lectureRoom = scheduleRequest.getLecture().getLectureRoom();
+        LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture).equals(Collections.emptyList())) {
+        if (scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
+            throw new ScheduleException("Lecture room is busy");
+        }
+    }
+
+    @Override
+    public void checkAvailableLectorRoom(Schedule schedule) {
+        LocalDate dateOfLecture = schedule.getLecture().getDateOfLecture();
+        String lectureRoom = schedule.getLecture().getLectureRoom();
+        LocalTime startOfLecture = schedule.getLecture().getStartOfLecture();
+
+        if (scheduleRepository.findSchedulesByDateAndLectorRoom(dateOfLecture, lectureRoom, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(schedule.getScheduleId()))) {
             throw new ScheduleException("Lecture room is busy");
         }
     }
@@ -33,7 +48,22 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String teacherId = scheduleRequest.getTeacher().getUserId();
         LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture).equals(Collections.emptyList())) {
+        if (scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
+            throw new ScheduleException("Teacher is busy at this time");
+        }
+    }
+
+    @Override
+    public void checkAvailableTeacher(Schedule schedule) {
+        LocalDate dateOfLecture = schedule.getLecture().getDateOfLecture();
+        String teacherId = schedule.getTeacher().getUserId();
+        LocalTime startOfLecture = schedule.getLecture().getStartOfLecture();
+
+        if (scheduleRepository.findSchedulesByDateAndTeacher(dateOfLecture, teacherId, startOfLecture)
+                .stream()
+                .anyMatch(s-> !s.getScheduleId().equalsIgnoreCase(schedule.getScheduleId()))) {
             throw new ScheduleException("Teacher is busy at this time");
         }
     }
@@ -44,7 +74,9 @@ public class ScheduleValidatorImpl implements ScheduleValidator {
         String groupId = scheduleRequest.getGroup().getGroupId();
         LocalTime startOfLecture = scheduleRequest.getLecture().getStartOfLecture();
 
-        if (!scheduleRepository.findSchedulesByDateAndGroup(dateOfLecture, groupId, startOfLecture).equals(Collections.emptyList())) {
+        if (scheduleRepository.findSchedulesByDateAndGroup(dateOfLecture, groupId, startOfLecture)
+                .stream()
+                .anyMatch(s->!s.getScheduleId().equalsIgnoreCase(scheduleRequest.getScheduleId()))) {
             throw new ScheduleException("Group has lesson at this time");
         }
     }

@@ -116,6 +116,12 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct-processor.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.yannbriancon</groupId>
+            <artifactId>spring-hibernate-query-utils</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>

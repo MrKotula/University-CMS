@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.university.entity.Course;
 import ua.foxminded.university.entity.Group;
+import ua.foxminded.university.entity.Lecture;
 import ua.foxminded.university.entity.Schedule;
 import ua.foxminded.university.entity.TeacherAccount;
 import ua.foxminded.university.repository.CourseRepository;
@@ -149,5 +150,47 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRequest.setLecture(lectureRequest);
 
         return scheduleRequest;
+    }
+
+    @Override
+    public List<ScheduleResponse> getListGroupSchedule(String groupId) {
+        List<Schedule> listGroupSchedule = scheduleRepository.findByGroupGroupId(groupId);
+
+        return scheduleMapper.transformListSchedulesToDto(listGroupSchedule);
+    }
+
+    @Override
+    public ScheduleResponse getSchedule(String scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
+
+        return scheduleMapper.transformScheduleToDto(schedule);
+    }
+
+    @Override
+    public void updateSchedule(String scheduleId, ScheduleRequestBody scheduleRequestBody) {
+        TeacherAccount teacherAccount = teacherAccountRepository.findById(scheduleRequestBody.getSelectedTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + scheduleRequestBody.getSelectedTeacherId()));
+
+        Schedule updatedSchedule = scheduleRepository.findById(scheduleId)
+                .map(schedule -> {
+                    schedule.setLecture(buildLectureFromRequest(scheduleRequestBody));
+                    schedule.setTeacher(teacherAccount);
+                    return schedule;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + scheduleId));
+
+        scheduleValidator.checkAvailableLectorRoom(updatedSchedule);
+        scheduleValidator.checkAvailableTeacher(updatedSchedule);
+
+        scheduleRepository.save(updatedSchedule);
+    }
+
+    private Lecture buildLectureFromRequest(ScheduleRequestBody scheduleRequestBody) {
+        return Lecture.builder()
+                .startOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedStartLecture()))
+                .endOfLecture(LocalTime.parse(scheduleRequestBody.getSelectedEndLecture()))
+                .dateOfLecture(LocalDate.parse(scheduleRequestBody.getSelectedDateOfLecture()))
+                .lectureRoom(scheduleRequestBody.getSelectedLectureRoom())
+                .build();
     }
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Moderator</title>
+    <title>Schedule groups</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="stylesheet" th:href="@{/moderatorStyle.css}">
 </head>
@@ -24,13 +24,16 @@
 <br><br><br>
 <main class="container">
     <h1 class="moderatorPanel" th:text="#{infopage.welcomemoderpanel}"></h1>
-    <h2 th:text="#{elementonpage.hellomessage}"></h2>
-    <h2 style="color: red" ><span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h2><br>
-    <a class="btnCreateSchedule" th:href="@{/moderator/schedule}" th:text="#{infopage.createschedule}"></a>
-    <a class="btnEditSchedule" th:href="@{/moderator/schedule/groups}" th:text="#{infopage.editschedule}"></a>
-    <a class="btnCourses" th:href="@{/moderator/courses}" th:text="#{infopage.courses}"></a>
-    <a class="btnAllGroups" th:href="@{/moderator/groups}" th:text="#{infopage.listallgroups}"></a>
-    <a class="btnAllStudents" th:href="@{/moderator/students}" th:text="#{infopage.listallstudents}"></a>
+    <h1 th:text="#{infopage.editschedule}"></h1>
+    <form class="formAllGroupsInfoEdit" method="POST" th:action="@{moderator/schedule/edit}" th:object="${allGroups}">
+        <ul th:each="group : ${allGroups}">
+            <li>
+                <h4 th:text="#{paramname.groupname}"></h4>
+                <h4><span style="color: olivedrab" th:text="${group.groupName}"></span></h4>
+                <a class="btnInfoAboutGroupSchedule" th:href="@{/moderator/schedule/list/{groupId}(groupId=${group.groupId})}" th:text="#{button.groupschedule}"></a>
+            </li>
+        </ul>
+    </form>
 </main>
 <div th:replace="~{layouts/footer :: footer}"></div>
 </body>

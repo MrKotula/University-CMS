@@ -32,7 +32,7 @@ public class StudentAccount extends UserAccount {
     @Column(name = "student_card")
     private String studentCard;
 
-    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Column(name = "courses")
     @JoinTable(
             name = "students_courses", schema = "schedule",

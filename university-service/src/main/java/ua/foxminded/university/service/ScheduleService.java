@@ -22,4 +22,10 @@ public interface ScheduleService {
     List<String> getListLectureRooms();
 
     ScheduleRequest getPreparedScheduleRequest(ScheduleRequestBody scheduleRequestBody);
+
+    List<ScheduleResponse> getListGroupSchedule(String groupId);
+
+    ScheduleResponse getSchedule(String scheduleId);
+
+    void updateSchedule(String scheduleId, ScheduleRequestBody scheduleRequestBody);
 }

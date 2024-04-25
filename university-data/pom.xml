@@ -23,6 +23,7 @@
         <maven-surefire.version>3.1.2</maven-surefire.version>
         <maven-compiler.version>3.11.0</maven-compiler.version>
         <snakeyaml.version>2.0</snakeyaml.version>
+        <spring-boot-actuator.version>3.2.1</spring-boot-actuator.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator</artifactId>
+            <version>${spring-boot-actuator.version}</version>
         </dependency>
     </dependencies>
 

@@ -18,6 +18,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.university.entity.enums.RegistrationStatus;
+import ua.foxminded.university.repository.ScheduleRepository;
 import ua.foxminded.university.service.CourseService;
 import ua.foxminded.university.service.StudentAccountService;
 import ua.foxminded.university.service.dto.response.CourseResponse;
@@ -46,6 +47,9 @@ class CourseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2")
